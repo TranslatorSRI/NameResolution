@@ -1,0 +1,18 @@
+version: '3'
+services:
+  solr:
+    container_name: name_solr
+    image: solr
+    ports:
+      - '8983:8983'
+    command: ['-DzkRun']
+ 
+  name_lookup:
+    container_name: name_lookup
+    image: name_lookup
+    build:
+      context: .
+    environment:
+      - SOLR_HOST=name_solr
+    ports:
+      - '2433:2433'
