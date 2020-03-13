@@ -26,5 +26,5 @@ spec:
           - name: SOLR_HOST
             value: name-lookup-solr.translator-sri
           - name: SOLR_PORT
-            value: 8983
+            value: 8983dos  
       restartPolicy: Always
