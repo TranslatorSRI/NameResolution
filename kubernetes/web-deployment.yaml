@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name-lookup-web-deployment
+  labels:
+    service: name-lookup-web
+    app: name-lookup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: name-lookup
+  template:
+    metadata:
+      labels:
+        app: name-lookup
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: solr-container
+        image: renciorg/name_lookup:latest
+        ports:
+          - containerPort: 2433
+            name: http
+        env:
+          - name: SOLR_HOST
+            value: name-lookup-solr.translator-sri
+          - name: SOLR_PORT
+            value: 8983
+      restartPolicy: Always

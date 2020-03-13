@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name-lookup-solr-deployment
+  labels:
+    service: name-lookup-solr
+    app: name-lookup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: name-lookup
+  template:
+    metadata:
+      labels:
+        app: name-lookup
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: solr-container
+        image: solr
+        ports:
+          - containerPort: 8983
+            name: http
+
+        args: [
+          "-DzkRun"
+        ]
+        volumeMounts:
+        - mountPath: /var/solr/data
+          name: solr-data-volume
+        resources:
+          requests:
+            memory: "4200Mi"
+      restartPolicy: Always
+      volumes:
+        - name: solr-data-volume
+          persistentVolumeClaim:
+            claimName: name-lookup-solr-pvc
