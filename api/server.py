@@ -23,7 +23,11 @@ SOLR_PORT = os.getenv('SOLR_PORT', '8983')
 
 app = FastAPI(
     title='Name Resolver',
-    description='Biomedical entity name resolution service',
+    description='''Name resolution service<p/>This service takes lexical strings and attempts to map them to identifiers 
+                (curies) from a vocabulary or ontology.  The lookup is not exact, but includes partial matches.<p/>
+                Multiple results may be returned representing possible conceptual matches, but all of the identifiers
+                have been correctly normalized using the <a href="https://nodenormalization-sri.renci.org>NodeNormalization
+                service</a>.''',
     version='1.0.0',
 )
 app.add_middleware(
