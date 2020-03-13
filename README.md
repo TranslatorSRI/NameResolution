@@ -6,7 +6,7 @@ The lookup is not exact, but includes partial matches.
 Multiple results may be returned representing possible conceptual matches, but all of the identifiers have been 
 correctly normalized using the [NodeNormalization service](https://nodenormalization-sri.renci.org/apidocs).
 
-See the documentation [notebook](documentation/nameresolution.ipynb) for examples of use.
+See the documentation [notebook](documentation/NameResolution.ipynb) for examples of use.
 
 ## Docker setup
 
