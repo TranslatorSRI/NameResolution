@@ -74,7 +74,7 @@ async def lookup_curies(string: str, offset: int = 0, limit: int = 10) -> Dict[s
         curie_filter = f'curie:/{re.escape(curie)}/'
 
         # get matching names - return these first
-        filters = f'{curie_filter} AND {name_filters}'
+        filters = f'{curie_filter} AND ({name_filters})'
         query = f'http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select'
         params = {
             'q': filters,
@@ -90,7 +90,7 @@ async def lookup_curies(string: str, offset: int = 0, limit: int = 10) -> Dict[s
         output[curie].extend(names)
 
         # get non-matching names - return these second
-        filters = f'{curie_filter} AND NOT {name_filters}'
+        filters = f'{curie_filter} AND NOT ({name_filters})'
         query = f'http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select'
         params = {
             'q': filters,
