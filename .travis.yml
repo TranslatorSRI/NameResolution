@@ -1,0 +1,33 @@
+dist: xenial
+
+language: python
+python:
+  - "3.7"
+
+notifications:
+  email:
+    - bizon@renci.org
+
+services:
+  - docker
+
+before_install:
+  - docker run --name name_lookup -d -p 8983:8983 -t solr -DzkRun
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+
+env:
+  global:
+    - PYTHONPATH=$PWD
+
+# command to run tests
+script:
+  - mkdir data
+  - cp tests/data/test-synonyms.json data/all-synonyms.json
+  - ./setup.sh
+  - pytest -p no:warnings tests
+
+after_success:
+  - coveralls
