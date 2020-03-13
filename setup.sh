@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # add collection
-curl -X POST 'http://localhost:8983/solr/admin/collections?action=CREATE&name=name_lookup&numShards=1&replicationFactor=1'
+curl -X POST 'http://0.0.0.0:8983/solr/admin/collections?action=CREATE&name=name_lookup&numShards=1&replicationFactor=1'
+echo "OK"
 
 # do not autocreate fields
 curl http://localhost:8983/solr/name_lookup/config -d '{"set-user-property": {"update.autoCreateFields":"false"}}'
