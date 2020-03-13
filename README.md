@@ -1,4 +1,4 @@
-#Name resolution service
+# Name resolution service
 
 This service takes lexical strings and attempts to map them to identifiers (curies) from a vocabulary or ontology.  
 The lookup is not exact, but includes partial matches.
