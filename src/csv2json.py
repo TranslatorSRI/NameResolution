@@ -2,7 +2,7 @@ from collections import defaultdict
 import csv
 import json
 import asyncio
-import aiohttp
+import httpx
 import os
 
 csv_file_name = os.environ.get('CSV_FILE_NAME')
@@ -31,7 +31,7 @@ async def async_get_json(url, headers={}):
     """
         Gets json response from url asyncronously.
     """
-    async with aiohttp.ClientSession() as session :
+    async with httpx.AsyncClient() as session:
         try:
             async with session.get(url, headers= headers) as response:
                 if response.status != 200:
