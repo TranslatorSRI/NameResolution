@@ -12,7 +12,7 @@ json_out_name = os.environ.get('JSON_FILE_NAME')
 def reformat_csv(csv_file_name: str) -> list:
     output = []
     with open(csv_file_name, 'r', encoding='utf-8') as f:
-        reader = csv.reader(f, delimiter=',', quotechar='"')
+        reader = csv.reader(f.readlines(), delimiter=',', quotechar='"')
         # skip header
         next(reader)
         for idx, row in enumerate(reader):

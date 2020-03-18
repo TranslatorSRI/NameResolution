@@ -300,3 +300,30 @@ mock_curies = [
     "length": 121
   }
 ]
+
+mock_csv = """cls,pred,val
+http://purl.obolibrary.org/obo/CHEBI_10000,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,Vismione D
+http://purl.obolibrary.org/obo/CHEBI_10001,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,Visnadin
+http://purl.obolibrary.org/obo/CHEBI_10001,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,visnacorin
+http://purl.obolibrary.org/obo/CHEBI_10001,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,Visnadine
+http://purl.obolibrary.org/obo/CHEBI_10001,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,visnamine
+http://purl.obolibrary.org/obo/CHEBI_10002,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,"4-methoxy-7-methyl-5H-furo[3,2-g]chromen-5-one"
+http://purl.obolibrary.org/obo/CHEBI_10002,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,5-methoxy-2-methylfuranochromone
+http://purl.obolibrary.org/obo/CHEBI_10002,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,desmethoxykhellin
+http://purl.obolibrary.org/obo/CHEBI_10002,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,FUK-724
+http://purl.obolibrary.org/obo/CHEBI_10002,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,visnagidin
+http://purl.obolibrary.org/obo/CHEBI_10002,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,visnagine
+http://purl.obolibrary.org/obo/UBERON_5106050,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,digit III digitopodial skeleton
+http://purl.obolibrary.org/obo/UBERON_5106050,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,digit 3
+http://purl.obolibrary.org/obo/UBERON_5106050,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,digit 3 skeleton
+http://purl.obolibrary.org/obo/UBERON_5106051,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,digit IV digitopodial skeleton
+http://purl.obolibrary.org/obo/UBERON_5106051,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,digit 4
+http://purl.obolibrary.org/obo/UBERON_5106051,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,digit 4 skeleton
+http://purl.obolibrary.org/obo/UBERON_5106052,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,digit V digitopodial skeleton
+http://purl.obolibrary.org/obo/UBERON_5106052,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,digit 5
+http://purl.obolibrary.org/obo/UBERON_5106052,http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym,digit 5 skeleton
+http://www.kegg.jp/dbget-bin/www_bget?hsa:100008586,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,AL4
+http://www.kegg.jp/dbget-bin/www_bget?hsa:100008586,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,CT4.7
+http://www.kegg.jp/dbget-bin/www_bget?hsa:100008586,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,GAGE-7
+http://www.kegg.jp/dbget-bin/www_bget?hsa:100008586,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,GAGE7
+http://www.kegg.jp/dbget-bin/www_bget?hsa:100008586,http://www.geneontology.org/formats/oboInOwl#hasExactSynonym,GAGE-7B"""
