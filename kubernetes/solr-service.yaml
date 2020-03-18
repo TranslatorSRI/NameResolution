@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: name-lookup-solr
 spec:
-  type: NodePort
+  type: Loadbalancer
   selector:
     app:  name-lookup
   ports:
