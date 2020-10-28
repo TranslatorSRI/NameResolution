@@ -15,6 +15,7 @@ from typing import Dict, List
 
 from fastapi import FastAPI
 import httpx
+from pydantic import conint
 from starlette.middleware.cors import CORSMiddleware
 
 LOGGER = logging.getLogger(__name__)
@@ -36,72 +37,69 @@ app.add_middleware(
 
 
 @app.post('/lookup', response_model=Dict[str, List[str]], tags=['lookup'])
-async def lookup_curies(string: str, offset: int = 0, limit: int = 10) -> Dict[str, List[str]]:
+async def lookup_curies(
+        string: str,
+        offset: int = 0,
+        limit: conint(le=1000) = 10,
+) -> Dict[str, List[str]]:
     """Look up curies from name or fragment."""
     fragments = string.split(' ')
-    name_filters = ' AND '.join(f'name:/.*{re.escape(fragment)}.*/' for fragment in fragments)
+    name_filters = ' AND '.join(
+        f'name:/.*{re.escape(fragment)}.*/'
+        for fragment in fragments
+    )
     query = f'http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select'
     params = {
-        'q': name_filters,
-        'start': 0,
-        'rows': 0,
+        'query': name_filters,
+        'limit': 0,
         'sort': 'length ASC',
-        'json.facet': f'''{{
-            categories : {{
-                type: terms,
-                field: curie,
-                sort: "x asc",
-                offset: {offset},
-                limit: {limit},
-                facet: {{
-                    x: "min(length)"
-                }},
-                numBuckets: true
-            }}
-        }}'''
+        'facet': {
+            "categories": {
+                "type": "terms",
+                "field": "curie",
+                "sort": "x asc",
+                "offset": offset,
+                "limit": limit,
+                "facet": {
+                    "x": "min(length)",
+                },
+                "numBuckets": True,
+            }
+        }
     }
     async with httpx.AsyncClient(timeout=None) as client:
-        response = await client.get(query, params=params)
-    assert response.status_code < 300
+        response = await client.post(query, json=params)
+    response.raise_for_status()
     response = response.json()
     if not response['response']['numFound']:
         return dict()
     buckets = response['facets']['categories']['buckets']
 
+    curie_filter = " OR ".join(
+        f"curie:/{re.escape(bucket['val'])}/"
+        for bucket in buckets
+    )
+    params = {
+        'query': f"({curie_filter}) AND ({name_filters})",
+        'limit': 1000000,
+        'sort': 'length ASC',
+        'fields': 'curie,name',
+    }
+    async with httpx.AsyncClient(timeout=None) as client:
+        response = await client.post(query, json=params)
+    response.raise_for_status()
     output = defaultdict(list)
-    for bucket in buckets:
-        curie = bucket['val']
-        curie_filter = f'curie:/{re.escape(curie)}/'
-
-        # get matching names - return these first
-        filters = f'{curie_filter} AND ({name_filters})'
-        query = f'http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select'
-        params = {
-            'q': filters,
-            'start': 0,
-            'rows': 100,
-            'sort': 'length ASC',
-            'fl': 'name'
-        }
-        async with httpx.AsyncClient(timeout=None) as client:
-            response = await client.get(query, params=params)
-        docs = response.json()['response']['docs']
-        names = [doc['name'] for doc in docs]
-        output[curie].extend(names)
-
-        # get non-matching names - return these second
-        filters = f'{curie_filter} AND NOT ({name_filters})'
-        query = f'http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select'
-        params = {
-            'q': filters,
-            'start': 0,
-            'rows': 100,
-            'sort': 'length ASC',
-            'fl': 'name'
-        }
-        async with httpx.AsyncClient(timeout=None) as client:
-            response = await client.get(query, params=params)
-        docs = response.json()['response']['docs']
-        names = [doc['name'] for doc in docs]
-        output[curie].extend(names)
+    for doc in response.json()['response']['docs']:
+        output[doc["curie"]].append(doc["name"])
+    params = {
+        'query': f"({curie_filter}) AND NOT ({name_filters})",
+        'limit': 1000000,
+        'sort': 'length ASC',
+        'fields': 'curie,name',
+    }
+    async with httpx.AsyncClient(timeout=None) as client:
+        response = await client.post(query, json=params)
+    response.raise_for_status()
+    for doc in response.json()['response']['docs']:
+        output[doc["curie"]].append(doc["name"])
     return output
