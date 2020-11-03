@@ -23,7 +23,7 @@ ADD --chown=murphy:murphy ./main.sh /home/murphy/main.sh
 # become murphy
 ENV HOME=/home/murphy
 ENV USER=murphy
-USER murphy
+USER murphy4
 
 # set up entrypoint
 CMD ["./main.sh"]
