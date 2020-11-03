@@ -5,7 +5,7 @@ services:
     image: solr
     ports:
       - '8983:8983'
-    command: ['-DzkRun']
+    command: ['-DzkRun', '-q']
  
   name_lookup:
     container_name: name_lookup
