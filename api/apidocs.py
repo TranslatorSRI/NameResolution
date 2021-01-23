@@ -1,6 +1,5 @@
 """
 Open API configuration
-# TODO use examples from openapi.yml to drive examples
 """
 
 from pathlib import Path

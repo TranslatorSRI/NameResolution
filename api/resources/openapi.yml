@@ -22,6 +22,6 @@ info:
       - Standards Reference Implementation Team
 servers:
   - description: Default server
-    url: http://robokop.renci.org:2433/docs
+    url: http://robokop.renci.org:2433/
 tags:
   - name: translator
