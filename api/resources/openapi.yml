@@ -1,0 +1,27 @@
+openapi: 3.0.2
+info:
+  title: Name Resolver
+  version: 1.0.0
+  contact:
+    email: patrick@covar.com
+    name: Patrick Wang
+    x-id: https://github.com/patrickkwang
+    x-role: responsible developer
+  description: 'Name resolution service<p/>This service takes lexical strings and attempts to map them to identifiers
+    (curies) from a vocabulary or ontology.  The lookup is not exact, but includes partial matches.<p/>
+     Multiple results may be returned representing possible conceptual matches, but all of the identifiers
+     have been correctly normalized using the <a href="https://nodenormalization-sri.renci.org>NodeNormalization
+     service</a>.'
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: robokop.renci.org:7055/tos?service_long=Name+Resolver&provider_long=the+Translator+Consortium
+  x-translator:
+    component: Utility
+    team:
+      - Standards Reference Implementation Team
+servers:
+  - description: Default server
+    url: http://robokop.renci.org:2433/docs
+tags:
+  - name: translator
