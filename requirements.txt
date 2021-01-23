@@ -2,3 +2,4 @@ requests
 fastapi
 httpx
 uvicorn
+pyyaml

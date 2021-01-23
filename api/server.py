@@ -18,19 +18,14 @@ import httpx
 from pydantic import conint
 from starlette.middleware.cors import CORSMiddleware
 
+from .apidocs import get_app_info, construct_open_api_schema
+
 LOGGER = logging.getLogger(__name__)
 SOLR_HOST = os.getenv("SOLR_HOST", "localhost")
 SOLR_PORT = os.getenv("SOLR_PORT", "8983")
 
-app = FastAPI(
-    title="Name Resolver",
-    description="""Name resolution service<p/>This service takes lexical strings and attempts to map them to identifiers 
-                (curies) from a vocabulary or ontology.  The lookup is not exact, but includes partial matches.<p/>
-                Multiple results may be returned representing possible conceptual matches, but all of the identifiers
-                have been correctly normalized using the <a href="https://nodenormalization-sri.renci.org>NodeNormalization
-                service</a>.""",
-    version="1.0.0",
-)
+app = FastAPI(**get_app_info())
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -107,3 +102,6 @@ async def lookup_curies(
     for doc in response.json()["response"]["docs"]:
         output[doc["curie"]].append(doc["name"])
     return output
+
+# Override open api schema with custom schema
+app.openapi_schema = construct_open_api_schema(app)
