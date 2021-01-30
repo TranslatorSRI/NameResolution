@@ -22,6 +22,6 @@ info:
       - Standards Reference Implementation Team
 servers:
   - description: Default server
-    url: http://name-resolution-sri.renci.org/
+    url: https://name-resolution-sri.renci.org/
 tags:
   - name: translator
