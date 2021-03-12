@@ -13,9 +13,9 @@ import os
 import re
 from typing import Dict, List
 
-from fastapi import FastAPI
+from fastapi import Body, FastAPI
 import httpx
-from pydantic import conint
+from pydantic import BaseModel, conint
 from starlette.middleware.cors import CORSMiddleware
 
 from .apidocs import get_app_info, construct_open_api_schema
@@ -33,6 +33,45 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class Request(BaseModel):
+    """Reverse-lookup request body."""
+
+    curies: List[str]
+
+
+@app.post(
+    "/reverse_lookup",
+    response_model=Dict[str, List[str]],
+    tags=["lookup"],
+)
+async def lookup_names(
+        request: Request = Body(..., example={
+            "curies": ["MONDO:0005737", "MONDO:0009757"],
+        }),
+) -> Dict[str, List[str]]:
+    """Look up curies from name or fragment."""
+    query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
+    curie_filter = " OR ".join(
+        f"curie:/{curie}/"
+        for curie in request.curies
+    )
+    params = {
+        "query": curie_filter,
+        "limit": 1000000,
+    }
+    async with httpx.AsyncClient(timeout=None) as client:
+        response = await client.post(query, json=params)
+    response.raise_for_status()
+    response_json = response.json()
+    output = {
+        curie: []
+        for curie in request.curies
+    }
+    for doc in response_json["response"]["docs"]:
+        output[doc["curie"]].append(doc["name"])
+    return output
 
 
 @app.post("/lookup", response_model=Dict[str, List[str]], tags=["lookup"])
