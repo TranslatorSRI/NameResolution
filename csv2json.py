@@ -7,10 +7,15 @@ import json
 from tqdm import tqdm
 
 
-def reformat(infile: str, outfile: str, separator: str = ","):
+def reformat(
+        infile: str,
+        outfile: str,
+        separator: str = ",",
+        quotechar: str = "🤪",
+):
     """Reformat name file."""
     with open(infile, "r") as f:
-        reader = csv.reader(f, delimiter=separator, quotechar="\"")
+        reader = csv.reader(f, delimiter=separator, quotechar=quotechar)
         with open(outfile, "w") as f:
             f.write("[\n")
             for idx, row in tqdm(enumerate(reader)):
@@ -48,6 +53,13 @@ if __name__ == "__main__":
         help="the input file field separator",
         default=",",
     )
+    parser.add_argument(
+        "--quote",
+        type=str,
+        help="the input file quote character",
+        default="🤪",
+    )
 
     args = parser.parse_args()
-    reformat(args.input, args.output, )
+    args.sep = args.sep.replace("\\t", "\t")
+    reformat(args.input, args.output, args.sep, args.quote)
