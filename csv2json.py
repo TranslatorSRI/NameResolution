@@ -25,7 +25,6 @@ def reformat(
                     f.write(",\n")
                 f.write("\t")
                 json.dump({
-                    "id": idx,
                     "curie": entity_id,
                     "name": name,
                     "length": len(name)
