@@ -23,7 +23,7 @@ def reformat(
                 name = row[-1]
                 if idx:
                     f.write(",\n")
-                f.write("\t")
+                f.write("    ")
                 json.dump({
                     "curie": entity_id,
                     "name": name,
