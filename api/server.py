@@ -83,7 +83,7 @@ async def lookup_curies(
     """Look up curies from name or fragment."""
     fragments = string.split(" ")
     name_filters = " AND ".join(
-        f"name:*{re.escape(fragment)}*"
+        f"name:{re.escape(fragment)}*"
         for fragment in fragments
     )
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
@@ -107,7 +107,9 @@ async def lookup_curies(
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
-    response.raise_for_status()
+    if response.status_code >= 300:
+        LOGGER.error("Solr REST error: " + response.text)
+        response.raise_for_status()
     response = response.json()
     if not response["response"]["numFound"]:
         return dict()
