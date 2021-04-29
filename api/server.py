@@ -54,7 +54,7 @@ async def lookup_names(
     """Look up curies from name or fragment."""
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     curie_filter = " OR ".join(
-        f"curie:/{curie}/"
+        f"curie:{re.escape(curie)}"
         for curie in request.curies
     )
     params = {
@@ -83,7 +83,7 @@ async def lookup_curies(
     """Look up curies from name or fragment."""
     fragments = string.split(" ")
     name_filters = " AND ".join(
-        f"name:/.*{re.escape(fragment)}.*/"
+        f"name:*{re.escape(fragment)}*"
         for fragment in fragments
     )
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
@@ -114,7 +114,7 @@ async def lookup_curies(
     buckets = response["facets"]["categories"]["buckets"]
 
     curie_filter = " OR ".join(
-        f"curie:/{re.escape(bucket['val'])}/"
+        f"curie:{re.escape(bucket['val'])}"
         for bucket in buckets
     )
     params = {
