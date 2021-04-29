@@ -32,7 +32,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
      "positionIncrementGap":"100",
      "analyzer" : {
         "tokenizer":{
-           "class":"solr.WhitespaceTokenizerFactory" },
+           "class":"solr.StandardTokenizerFactory" },
         "filters":[{
            "class":"solr.LowerCaseFilterFactory"}]}}
 }' 'http://localhost:8983/solr/name_lookup/schema'
