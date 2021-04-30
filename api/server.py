@@ -108,7 +108,7 @@ async def lookup_curies(
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
     if response.status_code >= 300:
-        LOGGER.error("Solr REST error: " + response.text)
+        LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
     if not response["response"]["numFound"]:
@@ -127,7 +127,9 @@ async def lookup_curies(
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
-    response.raise_for_status()
+    if response.status_code >= 300:
+        LOGGER.error("Solr REST error: %s", response.text)
+        response.raise_for_status()
     output = defaultdict(list)
     for doc in response.json()["response"]["docs"]:
         output[doc["curie"]].append(doc["name"])
@@ -139,7 +141,9 @@ async def lookup_curies(
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
-    response.raise_for_status()
+    if response.status_code >= 300:
+        LOGGER.error("Solr REST error: %s", response.text)
+        response.raise_for_status()
     for doc in response.json()["response"]["docs"]:
         output[doc["curie"]].append(doc["name"])
     return output
