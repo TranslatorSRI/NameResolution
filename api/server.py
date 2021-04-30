@@ -116,7 +116,7 @@ async def lookup_curies(
     buckets = response["facets"]["categories"]["buckets"]
 
     curie_filter = " OR ".join(
-        f"curie:{re.escape(bucket['val'])}"
+        "curie:{}".format(bucket["val"].replace(":", r"\:"))
         for bucket in buckets
     )
     params = {
