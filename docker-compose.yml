@@ -3,6 +3,8 @@ services:
   solr:
     container_name: name_solr
     image: solr
+    environment:
+      SOLR_JAVA_MEM: '-Xms2g -Xmx2g'
     ports:
       - '8983:8983'
     command: ['-DzkRun']
