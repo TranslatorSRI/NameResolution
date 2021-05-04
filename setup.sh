@@ -63,7 +63,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 }' 'http://localhost:8983/solr/name_lookup/schema'
 
 # add data
-for f in $1/*.json; do
+for f in $1; do
 echo "Loading $f..."
 curl -X POST -H 'Content-Type: application/json' -d @$f \
     'http://localhost:8983/solr/name_lookup/update?processor=uuid&uuid.fieldName=id&commit=true'
