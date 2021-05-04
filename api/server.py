@@ -54,7 +54,7 @@ async def lookup_names(
     """Look up curies from name or fragment."""
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     curie_filter = " OR ".join(
-        f"curie:/{curie}/"
+        f"curie:{re.escape(curie)}"
         for curie in request.curies
     )
     params = {
@@ -83,7 +83,7 @@ async def lookup_curies(
     """Look up curies from name or fragment."""
     fragments = string.split(" ")
     name_filters = " AND ".join(
-        f"name:/.*{re.escape(fragment)}.*/"
+        f"name:{re.escape(fragment)}*"
         for fragment in fragments
     )
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
@@ -107,14 +107,16 @@ async def lookup_curies(
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
-    response.raise_for_status()
+    if response.status_code >= 300:
+        LOGGER.error("Solr REST error: %s", response.text)
+        response.raise_for_status()
     response = response.json()
     if not response["response"]["numFound"]:
         return dict()
     buckets = response["facets"]["categories"]["buckets"]
 
     curie_filter = " OR ".join(
-        f"curie:/{re.escape(bucket['val'])}/"
+        "curie:{}".format(bucket["val"].replace(":", r"\:"))
         for bucket in buckets
     )
     params = {
@@ -125,7 +127,9 @@ async def lookup_curies(
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
-    response.raise_for_status()
+    if response.status_code >= 300:
+        LOGGER.error("Solr REST error: %s", response.text)
+        response.raise_for_status()
     output = defaultdict(list)
     for doc in response.json()["response"]["docs"]:
         output[doc["curie"]].append(doc["name"])
@@ -137,7 +141,9 @@ async def lookup_curies(
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
-    response.raise_for_status()
+    if response.status_code >= 300:
+        LOGGER.error("Solr REST error: %s", response.text)
+        response.raise_for_status()
     for doc in response.json()["response"]["docs"]:
         output[doc["curie"]].append(doc["name"])
     return output

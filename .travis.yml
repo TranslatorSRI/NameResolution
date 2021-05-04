@@ -26,7 +26,7 @@ env:
 script:
   - mkdir data
   - cp tests/data/test-synonyms.json data/all-synonyms.json
-  - ./setup.sh
+  - ./setup.sh data/
   - pytest -p no:warnings tests
 
 after_success:
