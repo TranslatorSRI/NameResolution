@@ -30,6 +30,10 @@ pip install -r requirements.txt
 ./main.sh
 ```
 
+### Kubernetes
+
+Helm charts can be found at https://github.com/helxplatform/translator-devops/helm/r3
+
 ## examples
 
 ```bash
