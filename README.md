@@ -20,7 +20,7 @@ See the documentation [notebook](documentation/NameResolution.ipynb) for example
 docker run --name name_lookup -d -p 8983:8983 -t solr -DzkRun
 docker run -it -v /local/NameResolution/data:/json -v /projects/datatrans/synonyms/March17_2021/:/csv -v /local/NameResolution:/NameResolution python:3.9 bash
     ./csv2json.py /csv/anatomy.txt_synonyms.txt /json --sep "\t"
-./setup.sh /local/NameResolution/data/*.json
+./setup.sh "/local/NameResolution/data/*.json"
 ```
 
 ### API
