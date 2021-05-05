@@ -34,6 +34,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+not_alpha = re.compile(r"[\W\d_]+")
+
 
 class Request(BaseModel):
     """Reverse-lookup request body."""
@@ -54,7 +56,7 @@ async def lookup_names(
     """Look up curies from name or fragment."""
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     curie_filter = " OR ".join(
-        f"curie:{re.escape(curie)}"
+        f"curie:\"{curie}\""
         for curie in request.curies
     )
     params = {
@@ -83,7 +85,7 @@ async def lookup_curies(
     """Look up curies from name or fragment."""
     fragments = string.split(" ")
     name_filters = " AND ".join(
-        f"name:{re.escape(fragment)}*"
+        f"name:{not_alpha.sub('', fragment)}*"
         for fragment in fragments
     )
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
@@ -116,7 +118,7 @@ async def lookup_curies(
     buckets = response["facets"]["categories"]["buckets"]
 
     curie_filter = " OR ".join(
-        "curie:{}".format(bucket["val"].replace(":", r"\:"))
+        f"curie:\"{bucket['val']}\""
         for bucket in buckets
     )
     params = {
