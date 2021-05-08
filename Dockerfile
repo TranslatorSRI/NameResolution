@@ -26,5 +26,5 @@ ENV USER=murphy
 USER murphy
 
 # set up entrypoint
-CMD ["./main.sh"]
+ENTRYPOINT ["bash", "main.sh"]
 EXPOSE 2433
