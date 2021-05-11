@@ -34,7 +34,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-not_alpha = re.compile(r"[\W\d_]+")
+not_alpha = re.compile(r"[\W_]+")
 
 
 class Request(BaseModel):
