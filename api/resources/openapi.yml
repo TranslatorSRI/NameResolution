@@ -20,6 +20,7 @@ info:
     component: Utility
     team:
       - Standards Reference Implementation Team
+    infores: infores:sri-name-resolver
 servers:
   - description: Default server
     url: https://name-resolution-sri.renci.org/
