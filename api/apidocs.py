@@ -61,8 +61,10 @@ def construct_open_api_schema(app) -> Dict[str, str]:
 
     # adds support to override server root path
     server_root = os.environ.get('SERVER_ROOT', '/')
+
     # make sure not to add double slash at the end.
     server_root = server_root.rstrip('/') + '/'
+
     if 'servers' in api_docs:
         for s in api_docs['servers']:
             # override if server root env var is provided
