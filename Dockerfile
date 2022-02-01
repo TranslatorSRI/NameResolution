@@ -1,30 +1,24 @@
-FROM python:3.8.1-buster
+# leverage the renci python base image
+FROM renciorg/renci-python-image:v0.0.1
 
-# install basic tools
-RUN apt-get update
-RUN apt-get install -yq \
-    vim sudo
+# set up working directory
+RUN mkdir /home/nru
+WORKDIR /home/nru
 
-# set up murphy
-ARG UID=1000
-ARG GID=1000
-RUN groupadd -o -g $GID murphy
-RUN useradd -m -u $UID -g $GID -s /bin/bash murphy
+# make sure all is writeable for the nru USER later on
+RUN chmod -R 777 .
 
-# set up requirements
-WORKDIR /home/murphy
-ADD --chown=murphy:murphy ./requirements.txt /home/murphy/requirements.txt
-RUN pip install -r /home/murphy/requirements.txt
+# install python package requirements
+ADD ./requirements.txt /home/nru/requirements.txt
+RUN pip install -r /home/nru/requirements.txt --src /usr/local/src
+
+USER nru
 
 # set up source
-ADD --chown=murphy:murphy ./api /home/murphy/api
-ADD --chown=murphy:murphy ./main.sh /home/murphy/main.sh
+ADD ./api /home/nru/api
+ADD ./main.sh /home/nru/main.sh
 
-# become murphy
-ENV HOME=/home/murphy
-ENV USER=murphy
-USER murphy
+EXPOSE 2433
 
 # set up entrypoint
 ENTRYPOINT ["bash", "main.sh"]
-EXPOSE 2433
