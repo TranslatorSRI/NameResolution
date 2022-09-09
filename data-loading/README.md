@@ -6,7 +6,7 @@ To create this dataset is a three-step process.
 1. Set up a Solr server locally. The easiest way to do this is via Docker:
 
    ```shell
-   $ docker run --name name_lookup -d -p 8983:8983 -t solr -DzkRun
+   $ docker run -v "$PWD/data/solrdata:/var/solr" --name name_lookup -d -p 8983:8983 -t solr solr-precreate name_lookup
    ```
 
 2. Convert all the synonym text files into JSON document. To do this, you need to use the `csv2json.py` script
