@@ -7,8 +7,10 @@ JSON_FILES=$(addprefix $(JSON_DIR)/,$(notdir $(SYNONYMS_FILES:.txt=.json)))
 
 CSV2JSON=python csv2json.py
 
-.PHONY:all
+.PHONY:all clean
 all: $(JSON_FILES)
+clean:
+	rm -rf $(JSON_FILES)
 
 $(JSON_FILES): $(SYNONYMS_FILES)
-	$(CSV2JSON) $< $@ --sep "\t"
+	echo $(CSV2JSON) $^ $@ --sep "\t"
