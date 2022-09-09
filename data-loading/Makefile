@@ -12,5 +12,5 @@ all: $(JSON_FILES)
 clean:
 	rm -rf $(JSON_FILES)
 
-$(JSON_FILES): $(SYNONYMS_FILES)
-	echo $(CSV2JSON) $^ $@ --sep "\t"
+$(JSON_DIR)/%.json: $(SYNONYMS_DIR)/%.txt
+	$(CSV2JSON) $< $@ --sep "\t"
