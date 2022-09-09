@@ -17,3 +17,9 @@ To create this dataset is a three-step process.
    $ pip install -r requirements.txt
    $ make
    ```
+
+3. Load the JSON files into the Solr database by running:
+
+   ```shell
+   $ ./setup.sh data/json/*.json
+   ```
