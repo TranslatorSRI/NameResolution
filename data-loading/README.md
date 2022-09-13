@@ -38,7 +38,16 @@ To create this dataset is a three-step process.
    
    Note the double-quotes: setup.sh requires a glob pattern as its first argument, not a list of files to process!
 
-4. Shutdown the Solr instance.
+4. Generate a backup of the Solr instance. The first command will create a directory at
+   `solrdata/data/name_lookup_shard1_repical_n1/data/snapshot.backup` -- you can track its progress by comparing the
+   number of files in that directory to the number of files in `../data/index` (as I write this, it has 513 files).
+
+   ```shell
+   $ curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup'
+   $ curl 'http://localhost:8983/solr/name_lookup/replication?command=details'
+   ```
+
+5. Shutdown the Solr instance.
 
    ```shell
    $ docker exec name_lookup solr stop -p 8983 -verbose
