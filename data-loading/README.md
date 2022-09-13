@@ -21,7 +21,7 @@ To create this dataset is a three-step process.
    $ gsplit -l 5000000 -d --additional-suffix .txt MolecularMixture.txt MolecularMixture
    ```
 
-2. Convert all the synonym text files into JSON document. To do this, you need to use the `csv2json.py` script
+3. Convert all the synonym text files into JSON document. To do this, you need to use the `csv2json.py` script
    included in this directory. By default, the Makefile expects the synonym files to be present in `data/synonyms`
    and writes out JSON files to `data/json`.
 
@@ -30,7 +30,7 @@ To create this dataset is a three-step process.
    $ make
    ```
 
-3. Load the JSON files into the Solr database by running:
+4. Load the JSON files into the Solr database by running:
 
    ```shell
    $ ./setup.sh "data/json/*.json"
@@ -38,7 +38,7 @@ To create this dataset is a three-step process.
    
    Note the double-quotes: setup.sh requires a glob pattern as its first argument, not a list of files to process!
 
-4. Generate a backup of the Solr instance. The first command will create a directory at
+5. Generate a backup of the Solr instance. The first command will create a directory at
    `solrdata/data/name_lookup_shard1_repical_n1/data/snapshot.backup` -- you can track its progress by comparing the
    number of files in that directory to the number of files in `../data/index` (as I write this, it has 513 files).
 
@@ -46,9 +46,39 @@ To create this dataset is a three-step process.
    $ curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup'
    $ curl 'http://localhost:8983/solr/name_lookup/replication?command=details'
    ```
+   
+   Once the backup is complete, you'll see a part of the `details` response that looks like this:
 
-5. Shutdown the Solr instance.
+   ```json
+   "backup":{
+      "startTime":"2022-09-13T18:42:43.678219123Z",
+      "fileCount":512,
+      "indexFileCount":512,
+      "status":"success",
+      "snapshotCompletedAt":"2022-09-13T19:36:00.599797304Z",
+      "endTime":"2022-09-13T19:36:00.599797304Z",
+      "snapshotName":"backup",
+      "directoryName":"snapshot.backup"}
+   }
+   ```
+
+6. Shutdown the Solr instance.
 
    ```shell
    $ docker exec name_lookup solr stop -p 8983 -verbose
    ```
+   
+7. Generate the backup tarball. At the moment, this is expected to be in the format
+   `var/solr/data/snapshot.backup/[index files]`. The easiest way to generate this tarball correctly is to run:
+
+   ```shell
+   $ mkdir -p data/var/solr/data
+   $ mv data/solrdata/data/name_lookup_shard1_replica_n1/data/snapshot.backup data/var/solr/data
+   $ cd data
+   $ tar zcvf snapshot.backup.tar.gz var
+   ```
+
+8. Publish `snapshot.backup.tar.gz` to a publicly-accessible URL.
+
+9. Use the instructions at https://github.com/helxplatform/translator-devops/tree/develop/helm/name-lookup to set up an
+   instance of NameRes that downloads snapshot.backup.tar.gz from this publicly-accessible URL.
