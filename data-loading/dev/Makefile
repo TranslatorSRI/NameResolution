@@ -18,12 +18,15 @@ clean:
 
 # This is a three step process.
 #
-# Step 1. Download synonym files.
+# Step 1. Download an uncompress synonym files.
 data/synonyms/done:
 	wget -c -r -l1 -nd -P data/synonyms ${SYNONYMS_URL}
+	gunzip data/synonyms/*.gz
 	touch $@
 
 # Step 2. Convert synonym files to JSON files.
+data/json/done:
+	echo Convert synonym files to JSON files.
 
 solr_backup:
 	echo Running solr-backup.

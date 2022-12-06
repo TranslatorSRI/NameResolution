@@ -52,7 +52,7 @@ RUN chown nru:nru ${ROOT}
 WORKDIR ${ROOT}
 USER nru
 
-# Download Solr into the
+# Download Solr into the Solr directory.
 RUN mkdir -p "${ROOT}/solr"
 ADD --chown=nru:nru https://www.apache.org/dyn/closer.lua/solr/solr/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz?action=download "${ROOT}/solr"
 RUN tar zxvf "${ROOT}/solr/solr-${SOLR_VERSION}.tgz" --directory "${ROOT}/solr"
