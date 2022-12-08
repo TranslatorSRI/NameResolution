@@ -32,7 +32,7 @@ RUN pip3 install --upgrade pip
 RUN apt install -y openjdk-11-jre
 
 # SOLR uses lsof to check on its status.
-
+RUN apt install -y lsof
 
 # The following packages are useful in debugging, but can be
 # removed once this container is working properly.
