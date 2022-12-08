@@ -33,10 +33,11 @@ data/synonyms/done:
 	wget -c -r -l1 -nd -P data/synonyms ${SYNONYMS_URL}
 	gunzip data/synonyms/*.gz
 	touch $@
+	$(info Downloaded synonyms from ${SYNONYMS_URL})
 
 # Step 2. Convert synonym files to JSON files.
 data/json/done:
-	echo Convert synonym files to JSON files.
+	$(info Convert synonym files to JSON files.)
 
 # Step 3. Start Solr server.
 ${SOLR_PID}:
@@ -45,14 +46,15 @@ ${SOLR_PID}:
 	while [ ! -s ${SOLR_PID} ]; do \
 		${SOLR_EXEC} status | grep -Po 'Solr process \K([0-9]+)' > ${SOLR_PID}; \
 	done
+	$(info Solr started with PID file at ${SOLR_PID})
 	cat ${SOLR_PID}
 
 .PHONY: stop-solr
 stop-solr:
 	rm ${SOLR_PID}
 	${SOLR_EXEC} stop
+	$(info Solr stopped.)
 
 solr_backup:
 	echo Running solr-backup.
-
 
