@@ -36,8 +36,17 @@ data/synonyms/done:
 	$(info Downloaded synonyms from ${SYNONYMS_URL})
 
 # Step 2. Convert synonym files to JSON files.
-data/json/done:
-	$(info Convert synonym files to JSON files.)
+CSV2JSON = python ../csv2json.py
+SYNONYM_FILES = $(wildcard data/synonyms/*.txt)
+JSON_FILES = $(addprefix data/json/,$(notdir $(SYNONYM_FILES:.txt=.json)))
+data/json/%.json: data/synonyms/%.txt
+	mkdir -p data/json
+	$(CSV2JSON) $< $@ --sep "\t"
+	$(info Converted $< to $@ using ${CSV2JSON}.)
+
+data/json/done: data/synonyms/done ${JSON_FILES}
+	touch data/json/done
+	$(info Converted CSV files to ${JSON_FILES})
 
 # Step 3. Start Solr server.
 ${SOLR_PID}:
