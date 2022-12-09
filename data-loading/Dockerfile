@@ -69,6 +69,8 @@ RUN pip3 install -r requirements.txt
 # Copy necessary files.
 COPY --chown=nru csv2json.py ${ROOT}
 COPY --chown=nru setup.sh ${ROOT}
+COPY --chown=nru README.md
+COPY --chown=nru Makefile
 
 # On entry, start the Solr instance.
 ENV SOLR_EXEC="${ROOT}/solr/solr-${SOLR_VERSION}/bin/solr"
