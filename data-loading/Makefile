@@ -36,7 +36,7 @@ data/synonyms/done:
 	$(info Downloaded synonyms from ${SYNONYMS_URL})
 
 # Step 2. Convert synonym files to JSON files.
-CSV2JSON = python ../csv2json.py
+CSV2JSON = python csv2json.py
 SYNONYM_FILES = $(wildcard data/synonyms/*.txt)
 JSON_FILES = $(addprefix data/json/,$(notdir $(SYNONYM_FILES:.txt=.json)))
 data/json/%.json: data/synonyms/%.txt
@@ -60,7 +60,7 @@ ${SOLR_PID}:
 
 # Step 4. Load JSON files into Solr server.
 data/start-solr-backup: data/json/done ${SOLR_PID}
-	bash ../setup.sh "data/json/*.json" && curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup' && touch data/start-solr-backup
+	bash setup.sh "data/json/*.json" && curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup' && touch data/start-solr-backup
 
 # Step 5. Wait for the backup to complete.
 data/check-solr-backup:
