@@ -1,0 +1,15 @@
+# Kubernetes file for setting up a private volume to use for Nameres-Loading.
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nameres-loading-solr
+  labels:
+    app: nameres-loading
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Gi
+  storageClassName: basic
