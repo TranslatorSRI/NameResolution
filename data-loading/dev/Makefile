@@ -58,6 +58,14 @@ ${SOLR_PID}:
 	$(info Solr started with PID file at ${SOLR_PID})
 	cat ${SOLR_PID}
 
+# Step 4. Load JSON files into Solr server.
+data/start-solr-backup: data/json/done ${SOLR_PID}
+	bash ../setup.sh "data/json/*.json" && curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup' && touch data/start-solr-backup
+
+# Step 5. Wait for the backup to complete.
+data/check-solr-backup:
+	curl 'http://localhost:8983/solr/name_lookup/replication?command=details'
+
 .PHONY: stop-solr
 stop-solr:
 	rm ${SOLR_PID}
