@@ -19,8 +19,6 @@ spec:
       name: nameres-loading-solr
     - mountPath: "/code/nameres-data-loading/data"
       name: nameres-loading-data
-    - mountPath: "/tmp"
-      name: nameres-loading-tmp
     resources:
       requests:
         ephemeral-storage: "1G"
@@ -37,6 +35,3 @@ spec:
     - name: nameres-loading-data
       persistentVolumeClaim:
         claimName: nameres-loading-data
-    - name: nameres-loading-tmp
-      persistentVolumeClaim:
-        claimName: nameres-loading-tmp
