@@ -60,7 +60,8 @@ ${SOLR_PID}:
 
 # Step 4. Load JSON files into Solr server.
 data/setup-complete: data/json/done ${SOLR_PID}
-	bash setup.sh "data/json/*.json" && touch $@
+	mkdir -p data/logs
+	bash setup.sh "data/json/*.json" >> data/logs/setup.sh.log 2>> data/logs/setup.sh.err.log && touch $@
 	
 data/start-solr-backup: data/setup-complete
 	curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup' && touch $@
