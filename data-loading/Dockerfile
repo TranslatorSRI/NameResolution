@@ -75,4 +75,4 @@ COPY --chown=nru Makefile ${ROOT}
 # On entry, start the Solr instance.
 ENV SOLR_EXEC="${ROOT}/solr/solr-${SOLR_VERSION}/bin/solr"
 ENV SOLR_DIR="$SOLR_DIR"
-ENTRYPOINT ${SOLR_EXEC} -cloud -f -p 8983 -m 12G -s ${SOLR_DIR}
+ENTRYPOINT ${SOLR_EXEC} -cloud -f -p 8983 -m 64G -s ${SOLR_DIR}
