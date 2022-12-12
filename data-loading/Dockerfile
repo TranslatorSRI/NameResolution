@@ -16,7 +16,7 @@ FROM renciorg/renci-python-image:latest
 # - ${ROOT} is where the source code will be copied.
 ARG ROOT=/code/nameres-data-loading
 # - ${SOLR_VERSION} is the SOLR version to install.
-ARG SOLR_VERSION=9.0.0
+ARG SOLR_VERSION=9.1.0
 # - ${SOLR_DIR} is the SOLR directory to use.
 ARG SOLR_DIR=/var/solr
 
