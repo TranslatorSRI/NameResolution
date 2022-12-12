@@ -8,10 +8,10 @@ metadata:
     app: nameres-loading
 spec:
   restartPolicy: Never
-  imagePullPolicy: Always
   containers:
   - name: nameres-loading
     image: ggvaidya/nameres-data-loading:dev
+    imagePullPolicy: Always
     # I just need something to run while I figure out how to make this work
     command: [ "/bin/bash", "-c", "--" ]
     args: [ "while true; echo Running; do sleep 30; done;" ]
