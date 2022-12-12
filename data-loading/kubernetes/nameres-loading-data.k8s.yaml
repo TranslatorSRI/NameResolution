@@ -7,7 +7,7 @@
 # - 30G of snapshot.backup files moved here from Solr
 # - 23G of snapshot.backup.tar.gz after compressing
 # Therefore it needs to be a minimum of 100G. I'm going to set a
-# limit of 150G in case we need some extra space.
+# size of 150G in case we need some extra space.
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,7 +20,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
-    limits:
       storage: 150Gi
   storageClassName: basic
