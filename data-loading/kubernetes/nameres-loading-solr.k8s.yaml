@@ -1,4 +1,7 @@
-# Kubernetes file for setting up a private volume to use for Nameres-Loading.
+# Kubernetes file for setting up a PVC to use for nameres-loading.
+# 
+# As of 2022dec11, this seems to come to 37G for files + 30G for snapshot.backup.
+# I'm going to keep it at 150Gi so we have a bit of spare space if needed.
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -11,5 +14,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 200Gi
+      storage: 150Gi
   storageClassName: basic
