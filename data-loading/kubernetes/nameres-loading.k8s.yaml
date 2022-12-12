@@ -8,6 +8,7 @@ metadata:
     app: nameres-loading
 spec:
   restartPolicy: Never
+  imagePullPolicy: Always
   containers:
   - name: nameres-loading
     image: ggvaidya/nameres-data-loading:dev
