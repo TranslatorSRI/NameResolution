@@ -6,7 +6,7 @@ is_solr_up(){
     echo "Checking if solr is up on http://localhost:$SOLR_PORT/solr/admin/cores"
     http_code=`echo $(curl -s -o /dev/null -w "%{http_code}" "http://localhost:$SOLR_PORT/solr/admin/cores")`
     echo $http_code
-    return `test $http_code = "200"
+    return `test $http_code = "200"`
 }
 
 wait_for_solr(){
