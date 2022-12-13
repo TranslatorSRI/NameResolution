@@ -26,7 +26,8 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: solr
-          options: --name name_lookup -d -p 8983:8983 -DzkRun
+          options: --name name_lookup -d -p 8983:8983 
+          run: -DzkRun
 
       - name: Install dependencies
         run: |
