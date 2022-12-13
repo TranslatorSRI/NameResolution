@@ -23,11 +23,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Run SOLR
-        uses: addnab/docker-run-action@v3
-        with:
-          image: solr
-          options: --name name_lookup -d -p 8983:8983 
-          run: -DzkRun
+        run: docker run --name name_lookup -d -p 8983:8983 -t solr -DzkRun
 
       - name: Install dependencies
         run: |
