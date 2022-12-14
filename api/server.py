@@ -83,10 +83,21 @@ async def lookup_curies(
         limit: conint(le=1000) = 10,
 ) -> Dict[str, List[str]]:
     """Look up curies from name or fragment."""
-    fragments = string.split(" ")
+    #This original code tokenizes on spaces, and then removes all other punctuation.
+    # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
+    # This turns out to be rarely what is wanted, especially because the tokenizer
+    # isn't tokenizing this way.  I think that this may have come about due to chemical searching
+    # but there is no documentation explaining the decision.  In the event that chemical or other punctuation
+    # heavy searches start to fail, this may need to be revisited.
+    #fragments = string.split(" ")
+    #name_filters = " AND ".join(
+    #    f"name:{not_alpha.sub('', fragment)}*"
+    #    for fragment in fragments
+    #)
+    fragments = string.split(not_alpha)
     name_filters = " AND ".join(
-        f"name:{not_alpha.sub('', fragment)}*"
-        for fragment in fragments
+        f"name:{fragment}*"
+        for fragment in fragments if len(fragment) > 0
     )
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     params = {
