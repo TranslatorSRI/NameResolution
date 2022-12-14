@@ -32,7 +32,8 @@ jobs:
       - name: Set up tests
         run: mkdir data;
              cp tests/data/test-synonyms.json data/all-synonyms.json;
-             ./setup.sh data/
+             ./setup.sh data/;
+             pip install pytest
 
       - name: Run the tests
         run: |
