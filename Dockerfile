@@ -1,24 +1,33 @@
 # leverage the renci python base image
 FROM renciorg/renci-python-image:v0.0.1
 
-# set up working directory
-RUN mkdir /home/nru
-WORKDIR /home/nru
+#Set the branch
+ARG BRANCH_NAME=main
 
-# make sure all is writeable for the nru USER later on
-RUN chmod -R 777 .
+# install basic tools
+RUN apt-get update
 
-# install python package requirements
-ADD ./requirements.txt /home/nru/requirements.txt
-RUN pip install -r /home/nru/requirements.txt --src /usr/local/src
+# make a directory for the repo
+RUN mkdir /repo
+
+# go to the directory where we are going to upload the repo
+WORKDIR /repo
+
+# get the latest code
+RUN git clone --branch $BRANCH_NAME --single-branch https://github.com/TranslatorSRI/NameResolution.git
+
+# go to the repo dir
+WORKDIR /repo/NameResolution
+
+# install requirements
+RUN pip install -r requirements.txt
+
+# expose the default port
+EXPOSE 2433
+
+RUN chmod 777 -R .
 
 USER nru
 
-# set up source
-ADD ./api /home/nru/api
-ADD ./main.sh /home/nru/main.sh
-
-EXPOSE 2433
-
-# set up entrypoint
+# start the service entry point
 ENTRYPOINT ["bash", "main.sh"]
