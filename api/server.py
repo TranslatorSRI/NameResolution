@@ -94,7 +94,7 @@ async def lookup_curies(
     #    f"name:{not_alpha.sub('', fragment)}*"
     #    for fragment in fragments
     #)
-    fragments = string.split(not_alpha)
+    fragments = re.split(not_alpha,string)
     name_filters = " AND ".join(
         f"name:{fragment}*"
         for fragment in fragments if len(fragment) > 0
