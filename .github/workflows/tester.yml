@@ -29,11 +29,11 @@ jobs:
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      - name: Install pytest
+        run: pip install pytest
+
       - name: Set up tests
-        run: mkdir data;
-             cp tests/data/test-synonyms.json data/all-synonyms.json;
-             ./setup.sh data/;
-             pip install pytest
+        run: ./setup.sh tests/data/
 
       - name: Run the tests
         run: |
