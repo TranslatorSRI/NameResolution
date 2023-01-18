@@ -73,7 +73,7 @@ To create this dataset is a three-step process.
 
    ```shell
    $ mkdir -p data/var/solr/data
-   $ mv data/solrdata/data/name_lookup_shard1_replica_n1/data/snapshot.backup data/var/solr/data
+   $ mv /var/solr/name_lookup_shard1_replica_n1/data/snapshot.backup data/var/solr/data
    $ cd data
    $ tar zcvf snapshot.backup.tar.gz var
    ```
@@ -82,3 +82,5 @@ To create this dataset is a three-step process.
 
 9. Use the instructions at https://github.com/helxplatform/translator-devops/tree/develop/helm/name-lookup to set up an
    instance of NameRes that downloads snapshot.backup.tar.gz from this publicly-accessible URL.
+
+The Makefile included in this directory contains targets for more of these steps.
