@@ -1,0 +1,24 @@
+# Kubernetes file for setting up a PVC to use for nameres-Loading.
+# nameres-loading-data is a directory for storing synonym files,
+# the generated Solr back and its compressed version.
+#
+# As of 2022dec11, this directory needs to contain:
+# - 38G of synonym files (in CSV and JSON)
+# - 30G of snapshot.backup files moved here from Solr
+# - 23G of snapshot.backup.tar.gz after compressing
+# Therefore it needs to be a minimum of 100G. I'm going to set a
+# size of 150G in case we need some extra space.
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nameres-loading-data
+  labels:
+    app: nameres-loading
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 150Gi
+  storageClassName: basic

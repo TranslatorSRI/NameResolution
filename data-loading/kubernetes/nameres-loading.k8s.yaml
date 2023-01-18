@@ -1,0 +1,40 @@
+# Kubernetes file for Nameres-loading 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nameres-loading
+  labels:
+    app: nameres-loading
+spec:
+  restartPolicy: Never
+  containers:
+  - name: nameres-loading
+    image: ggvaidya/nameres-data-loading:dev
+    imagePullPolicy: Always
+    # I just need something to run while I figure out how to make this work
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; echo Running; do sleep 30; done;" ]
+    ports:
+    - containerPort: 8983
+    volumeMounts:
+    - mountPath: "/var/solr"
+      name: nameres-loading-solr
+    - mountPath: "/code/nameres-data-loading/data"
+      name: nameres-loading-data
+    resources:
+      requests:
+        ephemeral-storage: "1G"
+        memory: "64G"
+        cpu: "4"
+      limits:
+        ephemeral-storage: "1G"
+        memory: "128G"
+        cpu: "4"
+  volumes:
+    - name: nameres-loading-solr
+      persistentVolumeClaim:
+        claimName: nameres-loading-solr
+    - name: nameres-loading-data
+      persistentVolumeClaim:
+        claimName: nameres-loading-data
