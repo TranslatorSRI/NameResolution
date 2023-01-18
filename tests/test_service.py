@@ -34,7 +34,7 @@ def test_hyphens():
     Show that we can find it with or without the hyphen"""
     client = TestClient(app)
     #with hyphen
-    params = {'string': 'beta secretase'}
+    params = {'string': 'beta-secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     print(syns)
