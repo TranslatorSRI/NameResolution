@@ -1,0 +1,40 @@
+name: 'test'
+
+on: [push]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11.0]
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Create environment variables
+        run: |
+          echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run SOLR
+        run: docker run --name name_lookup -d -p 8983:8983 -t solr -DzkRun
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Set up tests
+        run: ./setup.sh tests/data/test-synonyms.json
+
+      - name: Run the tests
+        run: |
+          python -m pytest tests/
