@@ -3,7 +3,11 @@ FROM renciorg/renci-python-image:latest
 
 # install basic tools
 RUN apt update
-RUN apt upgrade
+RUN apt upgrade -y
+
+# Make a home directory for the non-root user.
+RUN mkdir /home/nru
+RUN chown nru /home/nru
 
 # make a directory for the repo
 RUN mkdir /repo
@@ -25,8 +29,6 @@ RUN pip install -r requirements.txt
 
 # expose the default port
 EXPOSE 2433
-
-RUN chmod 777 -R .
 
 # start the service entry point
 ENTRYPOINT ["bash", "main.sh"]
