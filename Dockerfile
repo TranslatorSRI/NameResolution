@@ -1,20 +1,21 @@
 # leverage the renci python base image
-FROM renciorg/renci-python-image:v0.0.1
-
-#Set the branch
-ARG BRANCH_NAME=main
+FROM renciorg/renci-python-image:latest
 
 # install basic tools
-RUN apt-get update
+RUN apt update
+RUN apt upgrade
 
 # make a directory for the repo
 RUN mkdir /repo
 
 # go to the directory where we are going to upload the repo
 WORKDIR /repo
+RUN mkdir NameResolution
+RUN chown nru NameResolution
+USER nru
 
-# get the latest code
-RUN git clone --branch $BRANCH_NAME --single-branch https://github.com/TranslatorSRI/NameResolution.git
+# add the current code
+COPY . /repo/NameResolution
 
 # go to the repo dir
 WORKDIR /repo/NameResolution
@@ -26,8 +27,6 @@ RUN pip install -r requirements.txt
 EXPOSE 2433
 
 RUN chmod 777 -R .
-
-USER nru
 
 # start the service entry point
 ENTRYPOINT ["bash", "main.sh"]

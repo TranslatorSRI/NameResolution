@@ -1,0 +1,2 @@
+# Ignore the venv directory when preparing Dockerfile.
+/venv/
