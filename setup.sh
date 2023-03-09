@@ -46,12 +46,8 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
         {
             "name":"name",
             "type":"LowerTextField",
-            "stored":true
-        },
-        {
-            "name":"length",
-            "type":"plong",
-            "stored":true
+            "stored":true,
+            "multiValued":true
         },
         {
             "name":"curie",

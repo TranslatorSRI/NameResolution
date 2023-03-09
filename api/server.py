@@ -102,21 +102,9 @@ async def lookup_curies(
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     params = {
         "query": name_filters,
-        "limit": 0,
-        "sort": "length ASC",
-        "facet": {
-            "categories": {
-                "type": "terms",
-                "field": "curie",
-                "sort": "x asc",
-                "offset": offset,
-                "limit": limit,
-                "facet": {
-                    "x": "min(length)",
-                },
-                "numBuckets": True,
-            }
-        }
+        "limit": limit,
+        "offset": offset,
+        "fields": "curie,name",
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
@@ -124,41 +112,7 @@ async def lookup_curies(
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    if not response["response"]["numFound"]:
-        return dict()
-    buckets = response["facets"]["categories"]["buckets"]
-
-    curie_filter = " OR ".join(
-        f"curie:\"{bucket['val']}\""
-        for bucket in buckets
-    )
-    params = {
-        "query": f"({curie_filter}) AND ({name_filters})",
-        "limit": 1000000,
-        "sort": "length ASC",
-        "fields": "curie,name",
-    }
-    async with httpx.AsyncClient(timeout=None) as client:
-        response = await client.post(query, json=params)
-    if response.status_code >= 300:
-        LOGGER.error("Solr REST error: %s", response.text)
-        response.raise_for_status()
-    output = defaultdict(list)
-    for doc in response.json()["response"]["docs"]:
-        output[doc["curie"]].append(doc["name"])
-    params = {
-        "query": f"({curie_filter}) AND NOT ({name_filters})",
-        "limit": 1000000,
-        "sort": "length ASC",
-        "fields": "curie,name",
-    }
-    async with httpx.AsyncClient(timeout=None) as client:
-        response = await client.post(query, json=params)
-    if response.status_code >= 300:
-        LOGGER.error("Solr REST error: %s", response.text)
-        response.raise_for_status()
-    for doc in response.json()["response"]["docs"]:
-        output[doc["curie"]].append(doc["name"])
+    output = { doc["curie"]: doc["name"] for doc in response["response"]["docs"]}
     return output
 
 # Override open api schema with custom schema
