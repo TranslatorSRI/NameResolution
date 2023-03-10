@@ -21,6 +21,25 @@ def test_limit():
     #There are actually 31 in the test file
     assert len(syns) == 31
 
+
+def test_type_subsetting():
+    client = TestClient(app)
+    #Get everything with Parkinson (57)
+    params = {'string': 'Parkinson', "limit": 100}
+    response = client.post("/lookup", params=params)
+    syns = response.json()
+    assert len(syns) == 57
+    #Now limit to Disease (just 53)
+    params = {'string': 'Parkinson', "limit": 100, "biolink_type": "biolink:Disease"}
+    response = client.post("/lookup", params=params)
+    syns = response.json()
+    assert len(syns) == 53
+    #Now verify that NamedThing is everything
+    params = {'string': 'Parkinson', "limit": 100, "biolink_type": "biolink:NamedThing"}
+    response = client.post("/lookup", params=params)
+    syns = response.json()
+    assert len(syns) == 57
+
 def test_offset():
     client = TestClient(app)
     #There are 31 total.  If we say, start at 20 and give me then next 100 , we should get 11

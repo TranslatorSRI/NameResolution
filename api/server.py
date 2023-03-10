@@ -86,6 +86,7 @@ async def lookup_curies(
         string: str,
         offset: int = 0,
         limit: conint(le=1000) = 10,
+        biolink_type: str = None
 ) -> List[LookupResult]:
     """Look up curies from name or fragment."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
@@ -100,13 +101,18 @@ async def lookup_curies(
     #    for fragment in fragments
     #)
     fragments = re.split(not_alpha,string)
-    name_filters = " AND ".join(
+    filters = [
         f"name:{fragment}*"
         for fragment in fragments if len(fragment) > 0
-    )
+    ]
+    if biolink_type:
+        if biolink_type.startswith('biolink:'):
+            biolink_type = biolink_type[8:]
+        filters.append( f"types:{biolink_type}" )
+    query_filters = " AND ".join(filters)
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     params = {
-        "query": name_filters,
+        "query": query_filters,
         "limit": limit,
         "offset": offset,
         "fields": "curie,name,preferred_name,types",
@@ -117,7 +123,8 @@ async def lookup_curies(
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["name"], "types": doc["types"]}
+    output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["name"],
+                "types": [f"biolink:{d}" for d in doc["types"]]}
                for doc in response["response"]["docs"]]
     return output
 

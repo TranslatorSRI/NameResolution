@@ -7,7 +7,7 @@
         ],
         "preferred_name": "antiparkinson agent",
         "types": [
-            "biolink:NamedThing"
+            "NamedThing"
         ]
     },
     {
@@ -40,7 +40,7 @@
         ],
         "preferred_name": "BACE1 inhibitor",
         "types": [
-            "biolink:NamedThing"
+            "NamedThing"
         ]
     },
     {
@@ -51,12 +51,12 @@
         ],
         "preferred_name": "parkinsonian disorder",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -70,12 +70,12 @@
         ],
         "preferred_name": "Resting tremor",
         "types": [
-            "biolink:PhenotypicFeature",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "PhenotypicFeature",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -87,12 +87,12 @@
         ],
         "preferred_name": "Alzheimer disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -104,12 +104,12 @@
         ],
         "preferred_name": "Parkinsonism with favorable response to dopaminergic medication",
         "types": [
-            "biolink:PhenotypicFeature",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "PhenotypicFeature",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -120,12 +120,12 @@
         ],
         "preferred_name": "juvenile-onset Parkinson disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -137,12 +137,12 @@
         ],
         "preferred_name": "postencephalitic Parkinson disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -160,12 +160,12 @@
         ],
         "preferred_name": "Alzheimer disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -177,12 +177,12 @@
         ],
         "preferred_name": "Parkinson disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -197,12 +197,12 @@
         ],
         "preferred_name": "secondary Parkinson disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -220,12 +220,12 @@
         ],
         "preferred_name": "Alzheimer disease type 1",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -250,12 +250,12 @@
         ],
         "preferred_name": "Alzheimer disease 2",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -276,12 +276,12 @@
         ],
         "preferred_name": "amyotrophic lateral sclerosis-parkinsonism-dementia complex",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -292,12 +292,12 @@
         ],
         "preferred_name": "Charcot-Marie-Tooth disease with ptosis and parkinsonism",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -308,12 +308,12 @@
         ],
         "preferred_name": "dementia/parkinsonism with non-Alzheimer amyloid plaques",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -333,12 +333,12 @@
         ],
         "preferred_name": "Lewy body dementia",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -368,12 +368,12 @@
         ],
         "preferred_name": "dystonia 5",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -393,12 +393,12 @@
         ],
         "preferred_name": "dystonia 12",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -410,12 +410,12 @@
         ],
         "preferred_name": "paralysis agitans, juvenile, of Hunt",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -429,12 +429,12 @@
         ],
         "preferred_name": "late-onset Parkinson disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -451,12 +451,12 @@
         ],
         "preferred_name": "autosomal dominant Parkinson disease 1",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -469,12 +469,12 @@
         ],
         "preferred_name": "Perry syndrome",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -494,12 +494,12 @@
         ],
         "preferred_name": "Wolff-Parkinson-white syndrome",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -513,12 +513,12 @@
         ],
         "preferred_name": "Kifafa seizure disorder",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -539,12 +539,12 @@
         ],
         "preferred_name": "parkinsonian-pyramidal syndrome",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -561,12 +561,12 @@
         ],
         "preferred_name": "progressive supranuclear palsy-parkinsonism syndrome",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -580,12 +580,12 @@
         ],
         "preferred_name": "parkinson disease 12",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -600,12 +600,12 @@
         ],
         "preferred_name": "Alzheimer disease 16",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -618,12 +618,12 @@
         ],
         "preferred_name": "X-linked parkinsonism-spasticity syndrome",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -646,12 +646,12 @@
         ],
         "preferred_name": "early-onset parkinsonism-intellectual disability syndrome",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -674,12 +674,12 @@
         ],
         "preferred_name": "X-linked dystonia-parkinsonism",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -690,7 +690,7 @@
         ],
         "preferred_name": "Alzheimer disease, susceptibility to, mitochondrial",
         "types": [
-            "biolink:NamedThing"
+            "NamedThing"
         ]
     },
     {
@@ -701,12 +701,12 @@
         ],
         "preferred_name": "Parkinson disease, mitochondrial",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -732,12 +732,12 @@
         ],
         "preferred_name": "autosomal recessive juvenile Parkinson disease 2",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -763,12 +763,12 @@
         ],
         "preferred_name": "semantic dementia",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -786,12 +786,12 @@
         ],
         "preferred_name": "Alzheimer disease 5",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -807,12 +807,12 @@
         ],
         "preferred_name": "parkinson disease 3, autosomal dominant",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -824,12 +824,12 @@
         ],
         "preferred_name": "Alzheimer disease without neurofibrillary tangles",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -840,12 +840,12 @@
         ],
         "preferred_name": "Alzheimer disease, familial early-onset, with coexisting amyloid and prion pathology",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -867,12 +867,12 @@
         ],
         "preferred_name": "TH-deficient dopa-responsive dystonia",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -891,12 +891,12 @@
         ],
         "preferred_name": "Alzheimer disease 6",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -913,12 +913,12 @@
         ],
         "preferred_name": "autosomal dominant Parkinson disease 4",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -939,12 +939,12 @@
         ],
         "preferred_name": "autosomal recessive early-onset Parkinson disease 6",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -962,12 +962,12 @@
         ],
         "preferred_name": "Alzheimer disease 7",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -984,12 +984,12 @@
         ],
         "preferred_name": "autosomal recessive early-onset Parkinson disease 7",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1013,12 +1013,12 @@
         ],
         "preferred_name": "Kufor-Rakeb syndrome",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1032,12 +1032,12 @@
         ],
         "preferred_name": "parkinson disease 10",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1058,12 +1058,12 @@
         ],
         "preferred_name": "Alzheimer disease 4",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1080,12 +1080,12 @@
         ],
         "preferred_name": "autosomal dominant Parkinson disease 8",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1103,12 +1103,12 @@
         ],
         "preferred_name": "Alzheimer disease 8",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1124,12 +1124,12 @@
         ],
         "preferred_name": "Parkinson disease 11, autosomal dominant, susceptibility to",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1156,12 +1156,12 @@
         ],
         "preferred_name": "Alzheimer disease 3",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1177,12 +1177,12 @@
         ],
         "preferred_name": "Alzheimer disease 9",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1200,12 +1200,12 @@
         ],
         "preferred_name": "Alzheimer disease 10",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1222,12 +1222,12 @@
         ],
         "preferred_name": "Alzheimer disease 11",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1243,12 +1243,12 @@
         ],
         "preferred_name": "Parkinson disease 13, autosomal dominant, susceptibility to",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1266,12 +1266,12 @@
         ],
         "preferred_name": "Alzheimer disease 12",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1286,12 +1286,12 @@
         ],
         "preferred_name": "Alzheimer disease 13",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1306,12 +1306,12 @@
         ],
         "preferred_name": "Alzheimer disease 14",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1326,7 +1326,7 @@
         ],
         "preferred_name": "AD15",
         "types": [
-            "biolink:NamedThing"
+            "NamedThing"
         ]
     },
     {
@@ -1345,12 +1345,12 @@
         ],
         "preferred_name": "dystonia 16",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1372,12 +1372,12 @@
         ],
         "preferred_name": "autosomal recessive Parkinson disease 14",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1394,12 +1394,12 @@
         ],
         "preferred_name": "parkinsonism-dystonia, infantile",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1412,12 +1412,12 @@
         ],
         "preferred_name": "parkinson disease 16",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1433,12 +1433,12 @@
         ],
         "preferred_name": "Parkinson disease 5, autosomal dominant, susceptibility to",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1456,12 +1456,12 @@
         ],
         "preferred_name": "Parkinson disease 17",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1477,12 +1477,12 @@
         ],
         "preferred_name": "Parkinson disease 18, autosomal dominant, susceptibility to",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1499,12 +1499,12 @@
         ],
         "preferred_name": "Alzheimer disease 17",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1526,12 +1526,12 @@
         ],
         "preferred_name": "juvenile onset Parkinson disease 19A",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1548,12 +1548,12 @@
         ],
         "preferred_name": "early-onset Parkinson disease 20",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1572,12 +1572,12 @@
         ],
         "preferred_name": "Alzheimer disease 18",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1597,12 +1597,12 @@
         ],
         "preferred_name": "Alzheimer disease 19",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1618,12 +1618,12 @@
         ],
         "preferred_name": "Parkinson disease 21",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1638,12 +1638,12 @@
         ],
         "preferred_name": "Parkinson disease 22, autosomal dominant",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1661,12 +1661,12 @@
         ],
         "preferred_name": "autosomal recessive early-onset Parkinson disease 23",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1679,12 +1679,12 @@
         ],
         "preferred_name": "early-onset autosomal dominant Alzheimer disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1697,12 +1697,12 @@
         ],
         "preferred_name": "young-onset Parkinson disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1713,12 +1713,12 @@
         ],
         "preferred_name": "carbon monoxide-induced parkinsonism",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1734,7 +1734,7 @@
         ],
         "preferred_name": "late-onset Parkinson disease",
         "types": [
-            "biolink:NamedThing"
+            "NamedThing"
         ]
     },
     {
@@ -1747,12 +1747,12 @@
         ],
         "preferred_name": "posterior cortical atrophy",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1764,12 +1764,12 @@
         ],
         "preferred_name": "multiple system atrophy, parkinsonian type",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1783,12 +1783,12 @@
         ],
         "preferred_name": "parkinsonism-dystonia, infantile, 1",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1800,12 +1800,12 @@
         ],
         "preferred_name": "parkinsonism-dystonia, infantile, 2",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1816,12 +1816,12 @@
         ],
         "preferred_name": "TH-deficient infantile parkinsonism and motor delay",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1834,12 +1834,12 @@
         ],
         "preferred_name": "familial Alzheimer disease",
         "types": [
-            "biolink:Disease",
-            "biolink:DiseaseOrPhenotypicFeature",
-            "biolink:ThingWithTaxon",
-            "biolink:BiologicalEntity",
-            "biolink:NamedThing",
-            "biolink:Entity"
+            "Disease",
+            "DiseaseOrPhenotypicFeature",
+            "ThingWithTaxon",
+            "BiologicalEntity",
+            "NamedThing",
+            "Entity"
         ]
     },
     {
@@ -1850,7 +1850,7 @@
         ],
         "preferred_name": "Alzheimer disease type 2",
         "types": [
-            "biolink:NamedThing"
+            "NamedThing"
         ]
     },
     {
@@ -1865,7 +1865,7 @@
         ],
         "preferred_name": "DJ-1",
         "types": [
-            "biolink:NamedThing"
+            "NamedThing"
         ]
     }
 ]
