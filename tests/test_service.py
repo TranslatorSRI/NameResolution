@@ -37,14 +37,22 @@ def test_hyphens():
     params = {'string': 'beta-secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
-    print(syns)
     assert len(syns) == 1
-    assert list(syns.keys())[0] == 'CHEBI:74925'
+    assert syns[0]["curie"] == 'CHEBI:74925'
     #no hyphen
     params = {'string': 'beta secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
-    print(syns)
     assert len(syns) == 1
-    assert list(syns.keys())[0] == 'CHEBI:74925'
+    assert syns[0]["curie"] == 'CHEBI:74925'
+
+def test_structure():
+    client = TestClient(app)
+    params = {'string': 'beta-secretase'}
+    response = client.post("/lookup", params=params)
+    syns = response.json()
+    #do we get a preferred name and type?
+    assert syns[0]["label"] == 'BACE1 inhibitor'
+    assert syns[0]["types"] == ["biolink:NamedThing"]
+
 

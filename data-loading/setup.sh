@@ -46,17 +46,24 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
         {
             "name":"name",
             "type":"LowerTextField",
-            "stored":true
-        },
-        {
-            "name":"length",
-            "type":"plong",
-            "stored":true
+            "stored":true,
+            "multiValued":true
         },
         {
             "name":"curie",
             "type":"string",
             "stored":true
+        },
+        {
+            "name":"preferred_name",
+            "type":"string",
+            "stored":true
+        },
+        {
+            "name":"types",
+            "type":"string",
+            "stored":true
+            "multiValued":true
         }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
 

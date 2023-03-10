@@ -75,8 +75,13 @@ async def lookup_names(
         output[doc["curie"]].append(doc["name"])
     return output
 
+class LookupResult(BaseModel):
+    curie:str
+    label: str
+    synonyms: List[str]
+    types: List[str]
 
-@app.post("/lookup", response_model=Dict[str, List[str]], tags=["lookup"])
+@app.post("/lookup", response_model=List[LookupResult], tags=["lookup"])
 async def lookup_curies(
         string: str,
         offset: int = 0,
@@ -104,7 +109,7 @@ async def lookup_curies(
         "query": name_filters,
         "limit": limit,
         "offset": offset,
-        "fields": "curie,name",
+        "fields": "curie,name,preferred_name,types",
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
@@ -112,7 +117,8 @@ async def lookup_curies(
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    output = { doc["curie"]: doc["name"] for doc in response["response"]["docs"]}
+    output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["name"], "types": doc["types"]}
+               for doc in response["response"]["docs"]]
     return output
 
 # Override open api schema with custom schema
