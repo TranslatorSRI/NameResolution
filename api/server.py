@@ -86,7 +86,7 @@ async def lookup_curies(
         string: str,
         offset: int = 0,
         limit: conint(le=1000) = 10,
-) -> Dict[str, List[str]]:
+) -> List[LookupResult]:
     """Look up curies from name or fragment."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
     # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
