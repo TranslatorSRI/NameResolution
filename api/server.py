@@ -72,7 +72,7 @@ async def lookup_names(
         for curie in request.curies
     }
     for doc in response_json["response"]["docs"]:
-        output[doc["curie"]].append(doc["name"])
+        output[doc["curie"]].append(doc["names"])
     return output
 
 class LookupResult(BaseModel):
@@ -102,7 +102,7 @@ async def lookup_curies(
     #)
     fragments = re.split(not_alpha,string)
     filters = [
-        f"name:{fragment}*"
+        f"names:{fragment}*"
         for fragment in fragments if len(fragment) > 0
     ]
     if biolink_type:
@@ -115,7 +115,7 @@ async def lookup_curies(
         "query": query_filters,
         "limit": limit,
         "offset": offset,
-        "fields": "curie,name,preferred_name,types",
+        "fields": "curie,names,preferred_name,types",
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
@@ -123,7 +123,7 @@ async def lookup_curies(
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["name"],
+    output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["names"],
                 "types": [f"biolink:{d}" for d in doc["types"]]}
                for doc in response["response"]["docs"]]
     return output

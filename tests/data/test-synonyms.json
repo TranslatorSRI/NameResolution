@@ -1,7 +1,7 @@
 [
     {
         "curie": "CHEBI:48407",
-        "name": [
+        "names": [
             "antiparkinson agent"
         ],
         "preferred_name": "antiparkinson agent",
@@ -11,7 +11,7 @@
     },
     {
         "curie": "CHEBI:74925",
-        "name": [
+        "names": [
             "BACE1 inhibitor",
             "BACE1 inhibitors",
             "memapsin 2 inhibitor",
@@ -43,7 +43,7 @@
     },
     {
         "curie": "HP:0001300",
-        "name": [
+        "names": [
             "Parkinsonian disease"
         ],
         "preferred_name": "parkinsonian disorder",
@@ -58,7 +58,7 @@
     },
     {
         "curie": "HP:0002322",
-        "name": [
+        "names": [
             "Rest tremor",
             "Resting tremor",
             "Tremor at rest",
@@ -76,7 +76,7 @@
     },
     {
         "curie": "HP:0002511",
-        "name": [
+        "names": [
             "Alzheimer disease",
             "Late-onset form of familial Alzheimer disease"
         ],
@@ -92,7 +92,7 @@
     },
     {
         "curie": "HP:0002548",
-        "name": [
+        "names": [
             "Favorable response to levodopa",
             "Parkinsonism with favourable response to dopaminergic medication"
         ],
@@ -108,7 +108,7 @@
     },
     {
         "curie": "MONDO:0000828",
-        "name": [
+        "names": [
             "juvenile-onset Parkinson's disease"
         ],
         "preferred_name": "juvenile-onset Parkinson disease",
@@ -123,7 +123,7 @@
     },
     {
         "curie": "MONDO:0001945",
-        "name": [
+        "names": [
             "postencephalitic parkinsonism",
             "postencephalitic Parkinsonism"
         ],
@@ -139,7 +139,7 @@
     },
     {
         "curie": "MONDO:0004975",
-        "name": [
+        "names": [
             "AD",
             "Alzheimer disease",
             "Alzheimer dementia",
@@ -161,7 +161,7 @@
     },
     {
         "curie": "MONDO:0005180",
-        "name": [
+        "names": [
             "paralysis agitans",
             "Parkinson's disease"
         ],
@@ -177,7 +177,7 @@
     },
     {
         "curie": "MONDO:0006966",
-        "name": [
+        "names": [
             "secondary Parkinsonism",
             "symptomatic parkinsonism",
             "secondary parkinsonism, unspecified",
@@ -196,7 +196,7 @@
     },
     {
         "curie": "MONDO:0007088",
-        "name": [
+        "names": [
             "AD1",
             "Alzheimer disease 1",
             "Alzheimer disease; AD",
@@ -218,7 +218,7 @@
     },
     {
         "curie": "MONDO:0007089",
-        "name": [
+        "names": [
             "AD2",
             "LOFAD",
             "Alzheimer disease 2",
@@ -247,7 +247,7 @@
     },
     {
         "curie": "MONDO:0007104",
-        "name": [
+        "names": [
             "PDALS",
             "ALS-pDC",
             "Guam disease",
@@ -272,7 +272,7 @@
     },
     {
         "curie": "MONDO:0007312",
-        "name": [
+        "names": [
             "Charcot-Marie-Tooth disease with ptosis and parkinsonism"
         ],
         "preferred_name": "Charcot-Marie-Tooth disease with ptosis and parkinsonism",
@@ -287,7 +287,7 @@
     },
     {
         "curie": "MONDO:0007433",
-        "name": [
+        "names": [
             "dementia/parkinsonism with non-Alzheimer amyloid plaques"
         ],
         "preferred_name": "dementia/parkinsonism with non-Alzheimer amyloid plaques",
@@ -302,7 +302,7 @@
     },
     {
         "curie": "MONDO:0007488",
-        "name": [
+        "names": [
             "DLB",
             "Lewy body disease",
             "Lewy body dementia",
@@ -326,7 +326,7 @@
     },
     {
         "curie": "MONDO:0007495",
-        "name": [
+        "names": [
             "DRD",
             "DYT5a",
             "DYT-GCH1",
@@ -360,7 +360,7 @@
     },
     {
         "curie": "MONDO:0007496",
-        "name": [
+        "names": [
             "RDP",
             "DYT12",
             "DYT-ATP1A3",
@@ -384,7 +384,7 @@
     },
     {
         "curie": "MONDO:0008193",
-        "name": [
+        "names": [
             "paralysis agitans, juvenile, of Hunt",
             "Parkinson disease, juvenile, of Hunt"
         ],
@@ -400,7 +400,7 @@
     },
     {
         "curie": "MONDO:0008199",
-        "name": [
+        "names": [
             "PD",
             "park",
             "Parkinson disease, late-onset",
@@ -418,7 +418,7 @@
     },
     {
         "curie": "MONDO:0008200",
-        "name": [
+        "names": [
             "PARK1",
             "atypical Parkinson disease",
             "Parkinson disease 1, autosomal dominant",
@@ -439,7 +439,7 @@
     },
     {
         "curie": "MONDO:0008201",
-        "name": [
+        "names": [
             "Perry syndrome",
             "parkinsonism with alveolar hypoventilation and mental depression",
             "Parkinsonism with alveolar hypoventilation and mental depression"
@@ -456,7 +456,7 @@
     },
     {
         "curie": "MONDO:0008685",
-        "name": [
+        "names": [
             "WPW",
             "Wpw syndrome",
             "preexcitation syndrome",
@@ -480,7 +480,7 @@
     },
     {
         "curie": "MONDO:0009497",
-        "name": [
+        "names": [
             "Vitsala",
             "Kifafa seizure disorder",
             "Complex familial seizure disorder",
@@ -498,7 +498,7 @@
     },
     {
         "curie": "MONDO:0009830",
-        "name": [
+        "names": [
             "PARK15",
             "pallidopyramidal syndrome",
             "Pallidopyramidal syndrome",
@@ -523,7 +523,7 @@
     },
     {
         "curie": "MONDO:0009839",
-        "name": [
+        "names": [
             "PSP-p",
             "atypical PSP",
             "PSP-parkinsonism",
@@ -544,7 +544,7 @@
     },
     {
         "curie": "MONDO:0010360",
-        "name": [
+        "names": [
             "PARK12",
             "Parkinson disease 12",
             "Parkinson disease, X-linked",
@@ -562,7 +562,7 @@
     },
     {
         "curie": "MONDO:0010422",
-        "name": [
+        "names": [
             "AD16",
             "Alzheimer disease 16",
             "Alzheimer's disease 16",
@@ -581,7 +581,7 @@
     },
     {
         "curie": "MONDO:0010482",
-        "name": [
+        "names": [
             "XPDS",
             "PARKINSONISM with spasticity, X-linked",
             "PARKINSONISM with spasticity, X-linked; XPDS"
@@ -598,7 +598,7 @@
     },
     {
         "curie": "MONDO:0010709",
-        "name": [
+        "names": [
             "Wsn",
             "BGMR",
             "WSMN",
@@ -625,7 +625,7 @@
     },
     {
         "curie": "MONDO:0010747",
-        "name": [
+        "names": [
             "XDP",
             "DYT3",
             "Lubag",
@@ -652,7 +652,7 @@
     },
     {
         "curie": "MONDO:0010783",
-        "name": [
+        "names": [
             "Alzheimer disease, susceptibility to, mitochondrial"
         ],
         "preferred_name": "Alzheimer disease, susceptibility to, mitochondrial",
@@ -662,7 +662,7 @@
     },
     {
         "curie": "MONDO:0010796",
-        "name": [
+        "names": [
             "Parkinson disease, mitochondrial"
         ],
         "preferred_name": "Parkinson disease, mitochondrial",
@@ -677,7 +677,7 @@
     },
     {
         "curie": "MONDO:0010820",
-        "name": [
+        "names": [
             "JP",
             "PDJ",
             "PARK2",
@@ -707,7 +707,7 @@
     },
     {
         "curie": "MONDO:0010857",
-        "name": [
+        "names": [
             "FTD",
             "Ftdp17",
             "Pick Complex",
@@ -737,7 +737,7 @@
     },
     {
         "curie": "MONDO:0011194",
-        "name": [
+        "names": [
             "AD5",
             "Ad5",
             "Alzheimer disease 5",
@@ -759,7 +759,7 @@
     },
     {
         "curie": "MONDO:0011220",
-        "name": [
+        "names": [
             "PARK3",
             "Parkinson disease type 3",
             "autosomal dominant Parkinson disease",
@@ -779,7 +779,7 @@
     },
     {
         "curie": "MONDO:0011401",
-        "name": [
+        "names": [
             "Alzheimer disease without neurofibrillary tangles",
             "Alzheimer's disease without neurofibrillary tangles"
         ],
@@ -795,7 +795,7 @@
     },
     {
         "curie": "MONDO:0011513",
-        "name": [
+        "names": [
             "Alzheimer disease, familial early-onset, with Coexisting amyloid and prion pathology"
         ],
         "preferred_name": "Alzheimer disease, familial early-onset, with coexisting amyloid and prion pathology",
@@ -810,7 +810,7 @@
     },
     {
         "curie": "MONDO:0011551",
-        "name": [
+        "names": [
             "DYT5b",
             "autosomal recessive Segawa syndrome",
             "Segawa syndrome, autosomal recessive",
@@ -836,7 +836,7 @@
     },
     {
         "curie": "MONDO:0011561",
-        "name": [
+        "names": [
             "AD6",
             "AD6",
             "Alzheimer disease 6",
@@ -859,7 +859,7 @@
     },
     {
         "curie": "MONDO:0011562",
-        "name": [
+        "names": [
             "PARK4",
             "Parkinson disease 4, autosomal dominant",
             "autosomal dominant Parkinson's disease 4",
@@ -880,7 +880,7 @@
     },
     {
         "curie": "MONDO:0011613",
-        "name": [
+        "names": [
             "PARK6",
             "PINK1 Parkinson disease",
             "early-onset Parkinson disease 6",
@@ -905,7 +905,7 @@
     },
     {
         "curie": "MONDO:0011647",
-        "name": [
+        "names": [
             "AD7",
             "Ad7",
             "Alzheimer disease 7",
@@ -927,7 +927,7 @@
     },
     {
         "curie": "MONDO:0011658",
-        "name": [
+        "names": [
             "PARK7",
             "PARK7 Parkinson disease",
             "Parkinson disease caused by mutation in PARK7",
@@ -948,7 +948,7 @@
     },
     {
         "curie": "MONDO:0011706",
-        "name": [
+        "names": [
             "KRS",
             "PARK9",
             "KRPPD",
@@ -976,7 +976,7 @@
     },
     {
         "curie": "MONDO:0011737",
-        "name": [
+        "names": [
             "PARK10",
             "Parkinson disease 10",
             "Parkinson disease 10; PARK10",
@@ -994,7 +994,7 @@
     },
     {
         "curie": "MONDO:0011743",
-        "name": [
+        "names": [
             "AD4",
             "Ad4",
             "Alzheimer disease 4",
@@ -1019,7 +1019,7 @@
     },
     {
         "curie": "MONDO:0011764",
-        "name": [
+        "names": [
             "PARK8",
             "LRRK2 Parkinson disease",
             "Parkinson disease 8, autosomal dominant",
@@ -1040,7 +1040,7 @@
     },
     {
         "curie": "MONDO:0011777",
-        "name": [
+        "names": [
             "AD8",
             "Ad8",
             "Alzheimer disease 8",
@@ -1062,7 +1062,7 @@
     },
     {
         "curie": "MONDO:0011896",
-        "name": [
+        "names": [
             "PARK11",
             "GIGYF2 hereditary late onset Parkinson disease",
             "susceptibility to autosomal dominant Parkinson disease 11",
@@ -1082,7 +1082,7 @@
     },
     {
         "curie": "MONDO:0011913",
-        "name": [
+        "names": [
             "AD3",
             "Alzheimer disease 3",
             "Alzheimer's disease 3",
@@ -1113,7 +1113,7 @@
     },
     {
         "curie": "MONDO:0012153",
-        "name": [
+        "names": [
             "AD9",
             "Alzheimer disease 9",
             "Alzheimer disease 9; AD9",
@@ -1133,7 +1133,7 @@
     },
     {
         "curie": "MONDO:0012321",
-        "name": [
+        "names": [
             "AD10",
             "Ad10",
             "Alzheimer disease 10",
@@ -1155,7 +1155,7 @@
     },
     {
         "curie": "MONDO:0012344",
-        "name": [
+        "names": [
             "AD11",
             "Ad11",
             "Alzheimer disease 11",
@@ -1176,7 +1176,7 @@
     },
     {
         "curie": "MONDO:0012466",
-        "name": [
+        "names": [
             "PARK13",
             "HTRA2 young-onset Parkinson disease",
             "young-onset Parkinson disease caused by mutation in HTRA2",
@@ -1196,7 +1196,7 @@
     },
     {
         "curie": "MONDO:0012609",
-        "name": [
+        "names": [
             "AD12",
             "Ad12",
             "Alzheimer disease 12",
@@ -1218,7 +1218,7 @@
     },
     {
         "curie": "MONDO:0012630",
-        "name": [
+        "names": [
             "AD13",
             "Alzheimer disease 13",
             "Alzheimer's disease 13",
@@ -1237,7 +1237,7 @@
     },
     {
         "curie": "MONDO:0012631",
-        "name": [
+        "names": [
             "AD14",
             "Alzheimer disease 14",
             "Alzheimer's disease 14",
@@ -1256,7 +1256,7 @@
     },
     {
         "curie": "MONDO:0012632",
-        "name": [
+        "names": [
             "AD15",
             "Alzheimer disease 15",
             "Alzheimer's disease 15",
@@ -1270,7 +1270,7 @@
     },
     {
         "curie": "MONDO:0012789",
-        "name": [
+        "names": [
             "DYT16",
             "DYT-PRKRA",
             "dystonia 16",
@@ -1293,7 +1293,7 @@
     },
     {
         "curie": "MONDO:0013060",
-        "name": [
+        "names": [
             "PARK14",
             "dystonia-Parkinsonism Adult-onset",
             "dystonia-Parkinsonism, adult-onset",
@@ -1319,7 +1319,7 @@
     },
     {
         "curie": "MONDO:0013150",
-        "name": [
+        "names": [
             "IPD",
             "PKDYS",
             "infantile Parkinsonism-dystonia",
@@ -1340,7 +1340,7 @@
     },
     {
         "curie": "MONDO:0013167",
-        "name": [
+        "names": [
             "PARK16",
             "Parkinson disease 16",
             "Parkinson disease 16; PARK16"
@@ -1357,7 +1357,7 @@
     },
     {
         "curie": "MONDO:0013340",
-        "name": [
+        "names": [
             "PARK5",
             "UCHL1 young-onset Parkinson disease",
             "susceptibility to autosomal dominant Parkinson disease 5",
@@ -1377,7 +1377,7 @@
     },
     {
         "curie": "MONDO:0013625",
-        "name": [
+        "names": [
             "PARK17",
             "Parkinson disease 17",
             "Parkinson's disease 17",
@@ -1399,7 +1399,7 @@
     },
     {
         "curie": "MONDO:0013653",
-        "name": [
+        "names": [
             "PARK18",
             "EIF4G1 hereditary late onset Parkinson disease",
             "susceptibility to autosomal dominant Parkinson disease 18",
@@ -1419,7 +1419,7 @@
     },
     {
         "curie": "MONDO:0014036",
-        "name": [
+        "names": [
             "AD17",
             "Alzheimer disease 17",
             "Alzheimer's disease 17",
@@ -1440,7 +1440,7 @@
     },
     {
         "curie": "MONDO:0014231",
-        "name": [
+        "names": [
             "PARK19",
             "PARK19A",
             "Park19, formerly",
@@ -1466,7 +1466,7 @@
     },
     {
         "curie": "MONDO:0014233",
-        "name": [
+        "names": [
             "PARK20",
             "SYNJ1 Parkinson disease",
             "Parkinson disease 20, early-onset",
@@ -1487,7 +1487,7 @@
     },
     {
         "curie": "MONDO:0014265",
-        "name": [
+        "names": [
             "AD18",
             "Alzheimer disease 18",
             "Alzheimer's disease 18",
@@ -1510,7 +1510,7 @@
     },
     {
         "curie": "MONDO:0014316",
-        "name": [
+        "names": [
             "AD19",
             "Alzheimer disease 19",
             "Alzheimer's disease 19",
@@ -1534,7 +1534,7 @@
     },
     {
         "curie": "MONDO:0014604",
-        "name": [
+        "names": [
             "PARK21",
             "Parkinson disease 21",
             "Parkinson disease type 21",
@@ -1554,7 +1554,7 @@
     },
     {
         "curie": "MONDO:0014742",
-        "name": [
+        "names": [
             "PARK22",
             "CHCHD2 Parkinson disease",
             "Parkinson disease 22, autosomal dominant",
@@ -1573,7 +1573,7 @@
     },
     {
         "curie": "MONDO:0014796",
-        "name": [
+        "names": [
             "PARK23",
             "VPS13C young-onset Parkinson disease",
             "autosomal recessive early-onset Parkinson disease 23",
@@ -1595,7 +1595,7 @@
     },
     {
         "curie": "MONDO:0015140",
-        "name": [
+        "names": [
             "EOFAD",
             "early-onset, autosomal dominant Alzheimer disease",
             "early-onset familial autosomal dominant Alzheimer disease"
@@ -1612,7 +1612,7 @@
     },
     {
         "curie": "MONDO:0017279",
-        "name": [
+        "names": [
             "YOPD",
             "early-onset Parkinson disease",
             "early-onset Parkinson's disease"
@@ -1629,7 +1629,7 @@
     },
     {
         "curie": "MONDO:0017639",
-        "name": [
+        "names": [
             "CO-induced parkinsonism"
         ],
         "preferred_name": "carbon monoxide-induced parkinsonism",
@@ -1644,7 +1644,7 @@
     },
     {
         "curie": "MONDO:0018466",
-        "name": [
+        "names": [
             "LOPD",
             "late-onset Parkinson disease",
             "late onset Parkinson disease",
@@ -1659,7 +1659,7 @@
     },
     {
         "curie": "MONDO:0018899",
-        "name": [
+        "names": [
             "PCA",
             "Benson syndrome",
             "biparietal Alzheimer disease"
@@ -1676,7 +1676,7 @@
     },
     {
         "curie": "MONDO:0020352",
-        "name": [
+        "names": [
             "MSA-p",
             "MSA, parkinsonian type"
         ],
@@ -1692,7 +1692,7 @@
     },
     {
         "curie": "MONDO:0054835",
-        "name": [
+        "names": [
             "PKDYS",
             "PKDYS1",
             "dopamine transporter deficiency syndrome",
@@ -1710,7 +1710,7 @@
     },
     {
         "curie": "MONDO:0054836",
-        "name": [
+        "names": [
             "PKDYS2",
             "Parkinsonism-dystonia, infantile, 2; PKDYS2"
         ],
@@ -1726,7 +1726,7 @@
     },
     {
         "curie": "MONDO:0100065",
-        "name": [
+        "names": [
             "tyrosine hydroxylase infantile parkinsonism and motor delay"
         ],
         "preferred_name": "TH-deficient infantile parkinsonism and motor delay",
@@ -1741,7 +1741,7 @@
     },
     {
         "curie": "MONDO:0100087",
-        "name": [
+        "names": [
             "FAD",
             "GARD:0000632",
             "Alzheimer disease, familial"
@@ -1758,7 +1758,7 @@
     },
     {
         "curie": "MONDO:0100088",
-        "name": [
+        "names": [
             "Alzheimer disease type 2"
         ],
         "preferred_name": "Alzheimer disease type 2",
@@ -1768,7 +1768,7 @@
     },
     {
         "curie": "www:bget?hsa:11315",
-        "name": [
+        "names": [
             "DJ1",
             "DJ-1",
             "GATD2",

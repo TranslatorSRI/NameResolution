@@ -44,7 +44,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 curl -X POST -H 'Content-type:application/json' --data-binary '{
     "add-field": [
         {
-            "name":"name",
+            "name":"names",
             "type":"LowerTextField",
             "stored":true,
             "multiValued":true
