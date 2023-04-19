@@ -33,10 +33,10 @@ To create this dataset is a three-step process.
 4. Load the JSON files into the Solr database by running:
 
    ```shell
-   $ ./setup.sh "data/json/*.json"
+   $ ./setup-and-load-solr.sh "data/json/*.json"
    ```
    
-   Note the double-quotes: setup.sh requires a glob pattern as its first argument, not a list of files to process!
+   Note the double-quotes: setup-and-load-solr.sh requires a glob pattern as its first argument, not a list of files to process!
 
 5. Generate a backup of the Solr instance. The first command will create a directory at
    `solrdata/data/name_lookup_shard1_repical_n1/data/snapshot.backup` -- you can track its progress by comparing the
