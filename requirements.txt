@@ -1,1 +1,6 @@
-requestsfastapihttpxuvicornpyyamljsonlines
+requests
+fastapi
+httpx
+uvicorn
+pyyaml
+jsonlines
