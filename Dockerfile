@@ -25,6 +25,7 @@ COPY . /repo/NameResolution
 WORKDIR /repo/NameResolution
 
 # install requirements
+ENV PATH="${PATH}:/home/nru/.local/bin"
 RUN pip install -r requirements.txt
 
 # expose the default port
