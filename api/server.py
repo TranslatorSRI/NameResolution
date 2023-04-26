@@ -72,7 +72,7 @@ async def lookup_names(
         for curie in request.curies
     }
     for doc in response_json["response"]["docs"]:
-        output[doc["curie"]].append(doc["names"])
+        output[doc["curie"]].extend(doc["names"])
     return output
 
 class LookupResult(BaseModel):
