@@ -102,7 +102,7 @@ async def lookup_curies(
     #)
     fragments = re.split(not_alpha,string)
     filters = [
-        f"names:{fragment}*"
+        f"(preferred_name:{fragment} OR names:{fragment})"
         for fragment in fragments if len(fragment) > 0
     ]
     if biolink_type:
@@ -126,6 +126,7 @@ async def lookup_curies(
     output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["names"],
                 "types": [f"biolink:{d}" for d in doc["types"]]}
                for doc in response["response"]["docs"]]
+    print(f"Got some output: {output}")
     return output
 
 # Override open api schema with custom schema
