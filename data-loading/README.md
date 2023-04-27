@@ -21,9 +21,7 @@ To create this dataset is a three-step process.
    $ gsplit -l 5000000 -d --additional-suffix .txt MolecularMixture.txt MolecularMixture
    ```
 
-3. Convert all the synonym text files into JSON document. To do this, you need to use the `csv2json.py` script
-   included in this directory. By default, the Makefile expects the synonym files to be present in `data/synonyms`
-   and writes out JSON files to `data/json`.
+3. Download all the synonym text files into the `data/json` folder. You can download this by running `make`.
 
    ```shell
    $ pip install -r requirements.txt

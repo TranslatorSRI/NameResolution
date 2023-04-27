@@ -67,7 +67,6 @@ COPY --chown=nru requirements.txt ${ROOT}
 RUN pip3 install -r requirements.txt
 
 # Copy necessary files.
-COPY --chown=nru csv2json.py ${ROOT}
 COPY --chown=nru setup-and-load-solr.sh ${ROOT}
 COPY --chown=nru README.md ${ROOT}
 COPY --chown=nru Makefile ${ROOT}
