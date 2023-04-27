@@ -102,7 +102,11 @@ async def lookup_curies(
     #)
     fragments = re.split(not_alpha,string)
     filters = [
-        f"(preferred_name:{fragment} OR names:{fragment})"
+        # Boost the preferred name by a factor of 10.
+        # Using names:{fragment}* causes Solr to prioritize some odd results;
+        # using names:{fragment} OR names:{fragment}* should cause it to still
+        # include those results while prioritizing complete fragments.
+        f"(preferred_name:{fragment}^10 OR names:{fragment} OR names:{fragment}*)"
         for fragment in fragments if len(fragment) > 0
     ]
     if biolink_type:
