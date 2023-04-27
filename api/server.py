@@ -130,7 +130,6 @@ async def lookup_curies(
     output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["names"],
                 "types": [f"biolink:{d}" for d in doc["types"]]}
                for doc in response["response"]["docs"]]
-    print(f"Got some output: {output}")
     return output
 
 # Override open api schema with custom schema
