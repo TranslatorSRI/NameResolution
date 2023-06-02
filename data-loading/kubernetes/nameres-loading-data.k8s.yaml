@@ -5,8 +5,8 @@
 # As of 2023jun1, this directory needs to contain:
 # - 129G of synonym files (in JSON)
 # - 119G of snapshot.backup files moved here from Solr
-# - 100G of snapshot.backup.tar.gz after compressing
-# Therefore it needs to be a minimum of 400G. I'm going to set a
+# - 85G of snapshot.backup.tar.gz after compressing
+# Therefore it needs to be a minimum of 350G. I'm going to set a
 # size of 400G in case we need some extra space.
 
 apiVersion: v1
