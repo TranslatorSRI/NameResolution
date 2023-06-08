@@ -44,19 +44,26 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 curl -X POST -H 'Content-type:application/json' --data-binary '{
     "add-field": [
         {
-            "name":"name",
+            "name":"names",
             "type":"LowerTextField",
-            "stored":true
-        },
-        {
-            "name":"length",
-            "type":"plong",
-            "stored":true
+            "stored":true,
+            "multiValued":true
         },
         {
             "name":"curie",
             "type":"string",
             "stored":true
+        },
+        {
+            "name":"preferred_name",
+            "type":"string",
+            "stored":true
+        },
+        {
+            "name":"types",
+            "type":"string",
+            "stored":true
+            "multiValued":true
         }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
 
@@ -64,7 +71,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 for f in $1; do
 echo "Loading $f..."
 curl -X POST -H 'Content-Type: application/json' -d @$f \
-    'http://localhost:8983/solr/name_lookup/update?processor=uuid&uuid.fieldName=id&commit=true'
+    'http://localhost:8983/solr/name_lookup/update/json/docs?processor=uuid&uuid.fieldName=id&commit=true'
 done
 echo "Check solr"
 curl -s --negotiate -u: 'localhost:8983/solr/name_lookup/query?q=*:*&rows=0'

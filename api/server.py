@@ -72,16 +72,22 @@ async def lookup_names(
         for curie in request.curies
     }
     for doc in response_json["response"]["docs"]:
-        output[doc["curie"]].append(doc["name"])
+        output[doc["curie"]].extend(doc["names"])
     return output
 
+class LookupResult(BaseModel):
+    curie:str
+    label: str
+    synonyms: List[str]
+    types: List[str]
 
-@app.post("/lookup", response_model=Dict[str, List[str]], tags=["lookup"])
+@app.post("/lookup", response_model=List[LookupResult], tags=["lookup"])
 async def lookup_curies(
         string: str,
         offset: int = 0,
         limit: conint(le=1000) = 10,
-) -> Dict[str, List[str]]:
+        biolink_type: str = None
+) -> List[LookupResult]:
     """Look up curies from name or fragment."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
     # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
@@ -95,28 +101,25 @@ async def lookup_curies(
     #    for fragment in fragments
     #)
     fragments = re.split(not_alpha,string)
-    name_filters = " AND ".join(
-        f"name:{fragment}*"
+    filters = [
+        # Boost the preferred name by a factor of 10.
+        # Using names:{fragment}* causes Solr to prioritize some odd results;
+        # using names:{fragment} OR names:{fragment}* should cause it to still
+        # include those results while prioritizing complete fragments.
+        f"(preferred_name:{fragment}^10 OR names:{fragment} OR names:{fragment}*)"
         for fragment in fragments if len(fragment) > 0
-    )
+    ]
+    if biolink_type:
+        if biolink_type.startswith('biolink:'):
+            biolink_type = biolink_type[8:]
+        filters.append( f"types:{biolink_type}" )
+    query_filters = " AND ".join(filters)
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     params = {
-        "query": name_filters,
-        "limit": 0,
-        "sort": "length ASC",
-        "facet": {
-            "categories": {
-                "type": "terms",
-                "field": "curie",
-                "sort": "x asc",
-                "offset": offset,
-                "limit": limit,
-                "facet": {
-                    "x": "min(length)",
-                },
-                "numBuckets": True,
-            }
-        }
+        "query": query_filters,
+        "limit": limit,
+        "offset": offset,
+        "fields": "curie,names,preferred_name,types",
     }
     async with httpx.AsyncClient(timeout=None) as client:
         response = await client.post(query, json=params)
@@ -124,41 +127,9 @@ async def lookup_curies(
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    if not response["response"]["numFound"]:
-        return dict()
-    buckets = response["facets"]["categories"]["buckets"]
-
-    curie_filter = " OR ".join(
-        f"curie:\"{bucket['val']}\""
-        for bucket in buckets
-    )
-    params = {
-        "query": f"({curie_filter}) AND ({name_filters})",
-        "limit": 1000000,
-        "sort": "length ASC",
-        "fields": "curie,name",
-    }
-    async with httpx.AsyncClient(timeout=None) as client:
-        response = await client.post(query, json=params)
-    if response.status_code >= 300:
-        LOGGER.error("Solr REST error: %s", response.text)
-        response.raise_for_status()
-    output = defaultdict(list)
-    for doc in response.json()["response"]["docs"]:
-        output[doc["curie"]].append(doc["name"])
-    params = {
-        "query": f"({curie_filter}) AND NOT ({name_filters})",
-        "limit": 1000000,
-        "sort": "length ASC",
-        "fields": "curie,name",
-    }
-    async with httpx.AsyncClient(timeout=None) as client:
-        response = await client.post(query, json=params)
-    if response.status_code >= 300:
-        LOGGER.error("Solr REST error: %s", response.text)
-        response.raise_for_status()
-    for doc in response.json()["response"]["docs"]:
-        output[doc["curie"]].append(doc["name"])
+    output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["names"],
+                "types": [f"biolink:{d}" for d in doc["types"]]}
+               for doc in response["response"]["docs"]]
     return output
 
 # Override open api schema with custom schema
