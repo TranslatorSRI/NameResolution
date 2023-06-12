@@ -1,0 +1,9 @@
+# We don't need the .git or .idea directories.
+/.git/
+/.idea/
+
+# Ignore the venv directory when preparing Dockerfile.
+/venv/
+
+# I sometimes use data-loading/data for testing the data-loading code.
+/data-loading/data/

@@ -1,1 +1,6 @@
-dev
+# Ignore venv file is there is one.
+/venv/
+
+
+# I sometimes use data-loading/data for testing the data-loading code.
+/data/

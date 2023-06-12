@@ -32,8 +32,8 @@ jobs:
       - name: Install pytest
         run: pip install pytest
 
-      - name: Set up tests
-        run: ./setup.sh tests/data/test-synonyms.json
+      - name: NameRes Data Loading test.
+        run: ./data-loading/setup-and-load-solr.sh tests/data/test-synonyms.json
 
       - name: Run the tests
         run: |
