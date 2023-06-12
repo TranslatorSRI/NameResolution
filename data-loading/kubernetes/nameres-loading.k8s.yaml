@@ -10,7 +10,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: nameres-loading
-    image: ggvaidya/nameres-data-loading:dev
+    image: ghcr.io/translatorsri/nameresolution-data-loading:change-docker-to-use-current-code
     imagePullPolicy: Always
     # I just need something to run while I figure out how to make this work
     command: [ "/bin/bash", "-c", "--" ]

@@ -127,8 +127,8 @@ async def lookup_curies(
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    output = [ {"curie": doc["curie"], "label":doc["preferred_name"], "synonyms": doc["names"],
-                "types": [f"biolink:{d}" for d in doc["types"]]}
+    output = [ {"curie": doc.get("curie", ""), "label":doc.get("preferred_name", ""), "synonyms": doc.get("names", []),
+                "types": [f"biolink:{d}" for d in doc.get("types", [])]}
                for doc in response["response"]["docs"]]
     return output
 

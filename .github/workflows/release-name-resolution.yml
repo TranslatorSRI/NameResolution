@@ -1,6 +1,7 @@
-name: 'Release a new version to Github Packages'
+name: 'Release a new version of NameResolution to Github Packages'
 
 on:
+    push:
     release:
         types: [published]
 
@@ -11,6 +12,9 @@ jobs:
     push_to_registry:
         name: Push Docker image to GitHub Packages tagged with "latest" and version number.
         runs-on: ubuntu-latest
+        permissions:
+          contents: read
+          packages: write
         steps:
             - name: Check out the repo
               uses: actions/checkout@v2
