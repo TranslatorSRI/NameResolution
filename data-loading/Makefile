@@ -75,7 +75,7 @@ data/check-solr-backup:
 ###    	docker exec name_lookup solr stop -p 8983 -verbose
 
 # Step 7. Generate the backup tarball.
-data/backup:
+data/backup.done:
 	mkdir -p data/var/solr/data
 	mv /var/solr/name_lookup_shard1_replica_n1/data/snapshot.backup data/var/solr/data
 	cd data && tar zcvf snapshot.backup.tar.gz var
