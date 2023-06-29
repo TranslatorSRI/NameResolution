@@ -67,7 +67,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
         },
         {
             "name":"shortest_name_length",
-            "type":"integer",
+            "type":"pint",
             "stored":true
         }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
