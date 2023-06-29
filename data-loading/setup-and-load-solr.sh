@@ -56,7 +56,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
         },
         {
             "name":"preferred_name",
-            "type":"string",
+            "type":"LowerTextField",
             "stored":true
         },
         {
