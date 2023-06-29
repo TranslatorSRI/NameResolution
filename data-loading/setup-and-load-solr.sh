@@ -40,7 +40,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
     }
 }' 'http://localhost:8983/solr/name_lookup/schema'
 
-# add name, length, and curie fields
+# add fields
 curl -X POST -H 'Content-type:application/json' --data-binary '{
     "add-field": [
         {
@@ -64,6 +64,11 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
             "type":"string",
             "stored":true
             "multiValued":true
+        },
+        {
+            "name":"shortest_name_length",
+            "type":"integer",
+            "stored":true
         }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
 
