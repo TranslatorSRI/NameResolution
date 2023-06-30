@@ -7,13 +7,14 @@
   * The curie with the shortest match is first, etc.
   * Matching names are returned first, followed by non-matching names
 """
+import json
 from collections import defaultdict
 import logging
 import os
 import re
-from typing import Dict, List
+from typing import Dict, List, Annotated
 
-from fastapi import Body, FastAPI
+from fastapi import Body, FastAPI, Query
 from fastapi.responses import RedirectResponse
 import httpx
 from pydantic import BaseModel, conint
@@ -119,10 +120,11 @@ async def lookup_curies_get(
         string: str,
         offset: int = 0,
         limit: conint(le=1000) = 10,
-        biolink_type: str = None
+        biolink_type: str = None,
+        only_prefixes: List[str] = ()
 ) -> List[LookupResult]:
     """Look up curies from name or fragment."""
-    return await lookup(string, offset, limit, biolink_type)
+    return await lookup(string, offset, limit, biolink_type, only_prefixes)
 
 
 @app.post("/lookup",
@@ -135,10 +137,11 @@ async def lookup_curies_post(
         string: str,
         offset: int = 0,
         limit: conint(le=1000) = 10,
-        biolink_type: str = None
+        biolink_type: str = None,
+        only_prefixes: str = None
 ) -> List[LookupResult]:
     """Look up curies from name or fragment."""
-    return await lookup(string, offset, limit, biolink_type)
+    return await lookup(string, offset, limit, biolink_type, only_prefixes)
 
 not_alpha = re.compile(r"[\W_]+")
 
@@ -146,7 +149,9 @@ not_alpha = re.compile(r"[\W_]+")
 async def lookup(string: str,
            offset: int = 0,
            limit: conint(le=1000) = 10,
-           biolink_type: str = None) -> List[LookupResult]:
+           biolink_type: str = None,
+           only_prefixes: str = ""
+) -> List[LookupResult]:
     """Look up curies from name or fragment."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
     # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
@@ -175,7 +180,13 @@ async def lookup(string: str,
     if biolink_type:
         if biolink_type.startswith('biolink:'):
             biolink_type = biolink_type[8:]
-        filters.append( f"types:{biolink_type}" )
+        filters.append(f"types:{biolink_type}")
+
+    if only_prefixes:
+        for prefix in re.split('\\s*\\|\\s*', only_prefixes):
+            # TODO: there are better ways to do a prefix search in Solr, such as using Regex,
+            # but I can't hunt down the right syntax at the moment...
+            filters.append(f"curie:{prefix}:*")
 
     # We should probably configure whether or not to apply the sort-by-shortest_name_length rule,
     # but since we don't have an alternative at the moment...
@@ -188,6 +199,7 @@ async def lookup(string: str,
         "sort": "shortest_name_length ASC",
         "fields": "curie,names,preferred_name,types,shortest_name_length",
     }
+    logging.debug(f"Query: {json.dumps(params)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
