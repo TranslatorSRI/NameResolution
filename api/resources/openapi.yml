@@ -21,6 +21,8 @@ info:
       - Standards Reference Implementation Team
     infores: infores:sri-name-resolver
 servers:
+  - description: localhost
+    url: http://localhost:8080/
   - description: Default server
     url: https://name-resolution-sri.renci.org/
 tags:
