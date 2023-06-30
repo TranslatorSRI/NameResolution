@@ -121,7 +121,7 @@ async def lookup_curies_get(
         offset: int = 0,
         limit: conint(le=1000) = 10,
         biolink_type: str = None,
-        only_prefixes: List[str] = ()
+        only_prefixes: str = None
 ) -> List[LookupResult]:
     """Look up curies from name or fragment."""
     return await lookup(string, offset, limit, biolink_type, only_prefixes)
