@@ -183,10 +183,12 @@ async def lookup(string: str,
         filters.append(f"types:{biolink_type}")
 
     if only_prefixes:
+        prefix_filters = []
         for prefix in re.split('\\s*\\|\\s*', only_prefixes):
             # TODO: there are better ways to do a prefix search in Solr, such as using Regex,
             # but I can't hunt down the right syntax at the moment...
-            filters.append(f"curie:{prefix}:*")
+            prefix_filters.append(f"curie:/{prefix}:.*/")
+        filters.append(" OR ".join(prefix_filters))
 
     # We should probably configure whether or not to apply the sort-by-shortest_name_length rule,
     # but since we don't have an alternative at the moment...
@@ -199,7 +201,7 @@ async def lookup(string: str,
         "sort": "shortest_name_length ASC",
         "fields": "curie,names,preferred_name,types,shortest_name_length",
     }
-    logging.debug(f"Query: {json.dumps(params)}")
+    print(f"Query: {json.dumps(params)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
