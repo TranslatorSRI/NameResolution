@@ -14,6 +14,7 @@ import re
 from typing import Dict, List
 
 from fastapi import Body, FastAPI
+from fastapi.responses import RedirectResponse
 import httpx
 from pydantic import BaseModel, conint
 from starlette.middleware.cors import CORSMiddleware
@@ -34,7 +35,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-not_alpha = re.compile(r"[\W_]+")
+# If someone tries accessing /, we should redirect them to the Swagger interface.
+@app.get("/", include_in_schema=False)
+async def docs_redirect():
+    return RedirectResponse(url='/docs')
 
 
 class Request(BaseModel):
@@ -121,6 +125,8 @@ async def lookup_curies_post(
 ) -> List[LookupResult]:
     """Look up curies from name or fragment."""
     return await lookup(string, offset, limit, biolink_type)
+
+not_alpha = re.compile(r"[\W_]+")
 
 
 async def lookup(string: str,
