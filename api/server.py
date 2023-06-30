@@ -49,6 +49,8 @@ class Request(BaseModel):
 
 @app.get(
     "/reverse_lookup",
+    summary="Look up synonyms for a CURIE.",
+    description="Returns a list of synonyms for a particular CURIE.",
     response_model=Dict[str, List[str]],
     tags=["lookup"],
 )
@@ -63,6 +65,8 @@ async def lookup_names_get(
 
 @app.post(
     "/reverse_lookup",
+    summary="Look up synonyms for a CURIE.",
+    description="Returns a list of synonyms for a particular CURIE.",
     response_model=Dict[str, List[str]],
     tags=["lookup"],
 )
@@ -105,7 +109,12 @@ class LookupResult(BaseModel):
     types: List[str]
 
 
-@app.get("/lookup", response_model=List[LookupResult], tags=["lookup"])
+@app.get("/lookup",
+     summary="Look up cliques for a fragment of a name or synonym.",
+     description="Returns cliques with a name or synonym that contains a specified string.",
+     response_model=List[LookupResult],
+     tags=["lookup"]
+)
 async def lookup_curies_get(
         string: str,
         offset: int = 0,
@@ -116,7 +125,12 @@ async def lookup_curies_get(
     return await lookup(string, offset, limit, biolink_type)
 
 
-@app.post("/lookup", response_model=List[LookupResult], tags=["lookup"])
+@app.post("/lookup",
+    summary="Look up cliques for a fragment of a name or synonym.",
+    description="Returns cliques with a name or synonym that contains a specified string.",
+    response_model=List[LookupResult],
+    tags=["lookup"]
+)
 async def lookup_curies_post(
         string: str,
         offset: int = 0,
