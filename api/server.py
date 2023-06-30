@@ -160,7 +160,7 @@ async def lookup(string: str,
     #    for fragment in fragments
     #)
     fragments = re.split(not_alpha,string)
-    filters = [
+    queries = [
         # Boost the preferred name by a factor of 10.
         # Using names:{fragment}* causes Solr to prioritize some odd results;
         # using names:{fragment} OR names:{fragment}* should cause it to still
@@ -168,20 +168,30 @@ async def lookup(string: str,
         f"(preferred_name:{fragment}^10 OR names:{fragment})"
         for fragment in fragments if len(fragment) > 0
     ]
+    query = " AND ".join(queries)
+
+    # Apply filters as needed.
+    filters = []
     if biolink_type:
         if biolink_type.startswith('biolink:'):
             biolink_type = biolink_type[8:]
         filters.append( f"types:{biolink_type}" )
-    query_filters = " AND ".join(filters)
-    query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
+
+    # We should probably configure whether or not to apply the sort-by-shortest_name_length rule,
+    # but since we don't have an alternative at the moment...
+
     params = {
-        "query": query_filters,
+        "query": query,
         "limit": limit,
         "offset": offset,
-        "fields": "curie,names,preferred_name,types",
+        "filter": filters,
+        "sort": "shortest_name_length ASC",
+        "fields": "curie,names,preferred_name,types,shortest_name_length",
     }
+
+    query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
-        response = await client.post(query, json=params)
+        response = await client.post(query_url, json=params)
     if response.status_code >= 300:
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
