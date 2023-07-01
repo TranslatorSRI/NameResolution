@@ -10,9 +10,6 @@ SYNONYMS_URL=https://stars.renci.org/var/babel_outputs/2022dec2-2/synonyms/
 # How much memory should Solr use.
 SOLR_MEM=64G
 
-# Where should the Solr PID file be created?
-SOLR_PID=data/solr.pid
-
 # SOLR_DIR should be set up to point to the Solr data directory (usually /var/solr)
 # and SOLR_EXEC should be set up to point to the Solr executable.
 # These will both be set up by the Dockerfile.
