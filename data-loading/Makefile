@@ -65,7 +65,7 @@ data/check-solr-backup:
 data/backup.done:
 	mkdir -p data/var/solr/data
 	mv /var/solr/name_lookup_shard1_replica_n1/data/snapshot.backup data/var/solr/data
-	cd data && tar zcvf snapshot.backup.tar.gz var && touch $@
+	cd data && tar zcvf snapshot.backup.tar.gz var && touch backup.done
 
 .PHONY: stop-solr
 stop-solr:
