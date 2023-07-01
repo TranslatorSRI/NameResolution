@@ -14,6 +14,7 @@ import re
 from typing import Dict, List
 
 from fastapi import Body, FastAPI
+from fastapi.responses import RedirectResponse
 import httpx
 from pydantic import BaseModel, conint
 from starlette.middleware.cors import CORSMiddleware
@@ -34,7 +35,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-not_alpha = re.compile(r"[\W_]+")
+# If someone tries accessing /, we should redirect them to the Swagger interface.
+@app.get("/", include_in_schema=False)
+async def docs_redirect():
+    return RedirectResponse(url='/docs')
 
 
 class Request(BaseModel):
@@ -43,21 +47,44 @@ class Request(BaseModel):
     curies: List[str]
 
 
-@app.post(
+@app.get(
     "/reverse_lookup",
+    summary="Look up synonyms for a CURIE.",
+    description="Returns a list of synonyms for a particular CURIE.",
     response_model=Dict[str, List[str]],
     tags=["lookup"],
 )
-async def lookup_names(
+async def lookup_names_get(
         request: Request = Body(..., example={
             "curies": ["MONDO:0005737", "MONDO:0009757"],
         }),
 ) -> Dict[str, List[str]]:
     """Look up curies from name or fragment."""
+    return await reverse_lookup(request.curies)
+
+
+@app.post(
+    "/reverse_lookup",
+    summary="Look up synonyms for a CURIE.",
+    description="Returns a list of synonyms for a particular CURIE.",
+    response_model=Dict[str, List[str]],
+    tags=["lookup"],
+)
+async def lookup_names_post(
+        request: Request = Body(..., example={
+            "curies": ["MONDO:0005737", "MONDO:0009757"],
+        }),
+) -> Dict[str, List[str]]:
+    """Look up curies from name or fragment."""
+    return await reverse_lookup(request.curies)
+
+
+async def reverse_lookup(curies) -> Dict[str, List[str]]:
+    """Look up curies from name or fragment."""
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     curie_filter = " OR ".join(
         f"curie:\"{curie}\""
-        for curie in request.curies
+        for curie in curies
     )
     params = {
         "query": curie_filter,
@@ -69,7 +96,7 @@ async def lookup_names(
     response_json = response.json()
     output = {
         curie: []
-        for curie in request.curies
+        for curie in curies
     }
     for doc in response_json["response"]["docs"]:
         output[doc["curie"]].extend(doc["names"])
@@ -81,13 +108,45 @@ class LookupResult(BaseModel):
     synonyms: List[str]
     types: List[str]
 
-@app.post("/lookup", response_model=List[LookupResult], tags=["lookup"])
-async def lookup_curies(
+
+@app.get("/lookup",
+     summary="Look up cliques for a fragment of a name or synonym.",
+     description="Returns cliques with a name or synonym that contains a specified string.",
+     response_model=List[LookupResult],
+     tags=["lookup"]
+)
+async def lookup_curies_get(
         string: str,
         offset: int = 0,
         limit: conint(le=1000) = 10,
         biolink_type: str = None
 ) -> List[LookupResult]:
+    """Look up curies from name or fragment."""
+    return await lookup(string, offset, limit, biolink_type)
+
+
+@app.post("/lookup",
+    summary="Look up cliques for a fragment of a name or synonym.",
+    description="Returns cliques with a name or synonym that contains a specified string.",
+    response_model=List[LookupResult],
+    tags=["lookup"]
+)
+async def lookup_curies_post(
+        string: str,
+        offset: int = 0,
+        limit: conint(le=1000) = 10,
+        biolink_type: str = None
+) -> List[LookupResult]:
+    """Look up curies from name or fragment."""
+    return await lookup(string, offset, limit, biolink_type)
+
+not_alpha = re.compile(r"[\W_]+")
+
+
+async def lookup(string: str,
+           offset: int = 0,
+           limit: conint(le=1000) = 10,
+           biolink_type: str = None) -> List[LookupResult]:
     """Look up curies from name or fragment."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
     # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
