@@ -77,7 +77,7 @@ automatically. This is a seven-step process:
       "snapshotCompletedAt":"2022-09-13T19:36:00.599797304Z",
       "endTime":"2022-09-13T19:36:00.599797304Z",
       "snapshotName":"backup",
-      "directoryName":"snapshot.backup"}
+      "directoryName":"snapshot.backup"
    }
    ```
 
