@@ -17,11 +17,15 @@ SOLR_MEM=64G
 # All and clean targets.
 
 .PHONY: all clean
-all: 
-	echo Done.
+all: data/setup.done
+	echo Solr has now been set up and loaded with the synonym data.
+	echo Run `make start-solr-backup` to start a backup. Run `make check-solr-backup` to check
+	echo if the backup has completed. Once that has completed, run `make data/backup.done` to
+	echo generate a snapshot.backup.tar.gz file that can be used in NameRes.
 
 clean:
 	rm -rf data/*
+	mkdir data
 
 # This is a three step process.
 #
