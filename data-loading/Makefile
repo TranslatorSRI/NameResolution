@@ -32,9 +32,12 @@ clean:
 # Step 1. Download an uncompress synonym files.
 data/synonyms/done:
 	wget -c -r -l1 -nd -P data/synonyms ${SYNONYMS_URL}
-	gunzip data/synonyms/*.gz
+	gunzip data/synonyms/*.txt.gz
+	echo Downloaded synonyms from ${SYNONYMS_URL}
+	split -d -l 10000000 data/synonyms/Protein.txt data/synonyms/Protein.txt. && rm data/synonyms/Protein.txt
+	split -d -l 10000000 data/synonyms/SmallMolecule.txt data/synonyms/SmallMolecule.txt. && rm data/synonyms/SmallMolecule.txt
+	echo Split Protein.txt and SmallMolecule.txt and deleted the original files.
 	touch $@
-	$(info Downloaded synonyms from ${SYNONYMS_URL})
 
 # Step 3. Start Solr server.
 data/solr.pid:
@@ -49,7 +52,7 @@ data/solr.pid:
 # Step 4. Load JSON files into Solr server.
 data/setup.done: data/synonyms/done data/solr.pid
 	mkdir -p data/logs
-	bash setup-and-load-solr.sh "data/synonyms/*.txt" >> data/logs/setup-and-load-solr.sh.log 2>> data/logs/setup-and-load-solr.sh.err.log && touch $@
+	bash setup-and-load-solr.sh "data/synonyms/*.txt*" >> data/logs/setup-and-load-solr.sh.log 2>> data/logs/setup-and-load-solr.sh.err.log && touch $@
 
 # Step 5. Start a Solr backup.
 start-solr-backup: data/setup.done
