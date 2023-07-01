@@ -37,25 +37,27 @@ data/synonyms/done:
 	$(info Downloaded synonyms from ${SYNONYMS_URL})
 
 # Step 3. Start Solr server.
-${SOLR_PID}:
+data/solr.pid:
 	mkdir -p ${SOLR_DIR}/logs
 	${SOLR_EXEC} -cloud -p 8983 -v -m ${SOLR_MEM} -s ${SOLR_DIR} >> ${SOLR_DIR}/logs/solr.txt 2>> ${SOLR_DIR}/logs/solr.err.txt
-	while [ ! -s ${SOLR_PID} ]; do \
-		${SOLR_EXEC} status | grep -Po 'Solr process \K([0-9]+)' > ${SOLR_PID}; \
+	while [ ! -s $@ ]; do \
+		${SOLR_EXEC} status | grep -Po 'Solr process \K([0-9]+)' > $@; \
 	done
-	$(info Solr started with PID file at ${SOLR_PID})
-	cat ${SOLR_PID}
+	$(info Solr started with PID file at $@)
+	cat $@
 
 # Step 4. Load JSON files into Solr server.
-data/setup-complete: data/synonyms/done ${SOLR_PID}
+data/setup.done: data/synonyms/done data/solr.pid
 	mkdir -p data/logs
 	bash setup-and-load-solr.sh "data/synonyms/*.txt" >> data/logs/setup-and-load-solr.sh.log 2>> data/logs/setup-and-load-solr.sh.err.log && touch $@
-	
-data/start-solr-backup: data/setup-complete
-	curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup' && touch $@
 
-# Step 5. Wait for the backup to complete.
-data/check-solr-backup:
+# Step 5. Start a Solr backup.
+start-solr-backup: data/setup.done
+	curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup'
+
+# Step 6. Wait for the backup to complete.
+.PHONY: check-solr-backup
+check-solr-backup:
 	curl 'http://localhost:8983/solr/name_lookup/replication?command=details'
 
 # Step 6. Shutdown the Solr instance.
