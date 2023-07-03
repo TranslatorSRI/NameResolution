@@ -8,13 +8,12 @@
   * Matching names are returned first, followed by non-matching names
 """
 import json
-from collections import defaultdict
 import logging
 import os
 import re
-from typing import Dict, List, Annotated
+from typing import Dict, List
 
-from fastapi import Body, FastAPI, Query
+from fastapi import Body, FastAPI
 from fastapi.responses import RedirectResponse
 import httpx
 from pydantic import BaseModel, conint
