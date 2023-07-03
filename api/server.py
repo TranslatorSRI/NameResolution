@@ -38,12 +38,14 @@ app.add_middleware(
 # If someone tries accessing /, we should redirect them to the Swagger interface.
 @app.get("/", include_in_schema=False)
 async def docs_redirect():
+    """
+    Redirect requests to `/` (where we don't have any content) to `/docs` (which is our Swagger interface).
+    """
     return RedirectResponse(url='/docs')
 
 
 class Request(BaseModel):
     """Reverse-lookup request body."""
-
     curies: List[str]
 
 
@@ -59,7 +61,7 @@ async def lookup_names_get(
             "curies": ["MONDO:0005737", "MONDO:0009757"],
         }),
 ) -> Dict[str, List[str]]:
-    """Look up curies from name or fragment."""
+    """Returns a list of synonyms for a particular CURIE."""
     return await reverse_lookup(request.curies)
 
 
@@ -75,12 +77,12 @@ async def lookup_names_post(
             "curies": ["MONDO:0005737", "MONDO:0009757"],
         }),
 ) -> Dict[str, List[str]]:
-    """Look up curies from name or fragment."""
+    """Returns a list of synonyms for a particular CURIE."""
     return await reverse_lookup(request.curies)
 
 
 async def reverse_lookup(curies) -> Dict[str, List[str]]:
-    """Look up curies from name or fragment."""
+    """Returns a list of synonyms for a particular CURIE."""
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     curie_filter = " OR ".join(
         f"curie:\"{curie}\""
