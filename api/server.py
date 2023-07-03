@@ -128,8 +128,9 @@ async def lookup_curies_get(
         )] = 0,
         limit: Annotated[int, Query(
             description="The number of results to skip. Can be used to page through the results of a query.",
-            # Limit should be greater than or equal to zero.
-            ge=0
+            # Limit should be greater than or equal to zero and less than or equal to 1000.
+            ge=0,
+            le=1000
         )] = 10,
         biolink_type: Annotated[Union[str, None], Query(
             description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
@@ -165,8 +166,9 @@ async def lookup_curies_post(
         )] = 0,
         limit: Annotated[int, Query(
             description="The number of results to skip. Can be used to page through the results of a query.",
-            # Limit should be greater than or equal to zero.
-            ge=0
+            # Limit should be greater than or equal to zero and less than or equal to 1000.
+            ge=0,
+            le=1000
         )] = 10,
         biolink_type: Annotated[Union[str, None], Query(
             description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
