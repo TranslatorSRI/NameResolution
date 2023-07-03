@@ -200,7 +200,7 @@ async def lookup(string: str,
         "sort": "shortest_name_length ASC",
         "fields": "curie,names,preferred_name,types,shortest_name_length",
     }
-    print(f"Query: {json.dumps(params)}")
+    logging.debug(f"Query: {json.dumps(params)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
