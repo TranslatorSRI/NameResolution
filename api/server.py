@@ -11,9 +11,9 @@ import json
 import logging
 import os
 import re
-from typing import Dict, List
+from typing import Dict, List, Union, Annotated
 
-from fastapi import Body, FastAPI
+from fastapi import Body, FastAPI, Query
 from fastapi.responses import RedirectResponse
 import httpx
 from pydantic import BaseModel, conint
@@ -118,13 +118,33 @@ class LookupResult(BaseModel):
      tags=["lookup"]
 )
 async def lookup_curies_get(
-        string: str,
-        offset: int = 0,
-        limit: conint(le=1000) = 10,
-        biolink_type: str = None,
-        only_prefixes: str = None
+        string: Annotated[str, Query(
+            description="The string to search for."
+        )],
+        offset: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Offset should be greater than or equal to zero.
+            ge=0
+        )] = 0,
+        limit: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Limit should be greater than or equal to zero.
+            ge=0
+        )] = 10,
+        biolink_type: Annotated[Union[str, None], Query(
+            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="biolink:Disease"
+        )] = None,
+        only_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="MONDO|EFO"
+        )] = None
 ) -> List[LookupResult]:
-    """Look up curies from name or fragment."""
+    """
+    Returns cliques with a name or synonym that contains a specified string.
+    """
     return await lookup(string, offset, limit, biolink_type, only_prefixes)
 
 
@@ -135,13 +155,33 @@ async def lookup_curies_get(
     tags=["lookup"]
 )
 async def lookup_curies_post(
-        string: str,
-        offset: int = 0,
-        limit: conint(le=1000) = 10,
-        biolink_type: str = None,
-        only_prefixes: str = None
+        string: Annotated[str, Query(
+            description="The string to search for."
+        )],
+        offset: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Offset should be greater than or equal to zero.
+            ge=0
+        )] = 0,
+        limit: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Limit should be greater than or equal to zero.
+            ge=0
+        )] = 10,
+        biolink_type: Annotated[Union[str, None], Query(
+            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="biolink:Disease"
+        )] = None,
+        only_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="MONDO|EFO"
+        )] = None
 ) -> List[LookupResult]:
-    """Look up curies from name or fragment."""
+    """
+    Returns cliques with a name or synonym that contains a specified string.
+    """
     return await lookup(string, offset, limit, biolink_type, only_prefixes)
 
 not_alpha = re.compile(r"[\W_]+")
@@ -153,7 +193,7 @@ async def lookup(string: str,
            biolink_type: str = None,
            only_prefixes: str = ""
 ) -> List[LookupResult]:
-    """Look up curies from name or fragment."""
+    """Returns cliques with a name or synonym that contains a specified string."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
     # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
     # This turns out to be rarely what is wanted, especially because the tokenizer
