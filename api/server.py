@@ -7,13 +7,13 @@
   * The curie with the shortest match is first, etc.
   * Matching names are returned first, followed by non-matching names
 """
-from collections import defaultdict
+import json
 import logging
 import os
 import re
-from typing import Dict, List
+from typing import Dict, List, Union, Annotated
 
-from fastapi import Body, FastAPI
+from fastapi import Body, FastAPI, Query
 from fastapi.responses import RedirectResponse
 import httpx
 from pydantic import BaseModel, conint
@@ -38,12 +38,14 @@ app.add_middleware(
 # If someone tries accessing /, we should redirect them to the Swagger interface.
 @app.get("/", include_in_schema=False)
 async def docs_redirect():
+    """
+    Redirect requests to `/` (where we don't have any content) to `/docs` (which is our Swagger interface).
+    """
     return RedirectResponse(url='/docs')
 
 
 class Request(BaseModel):
     """Reverse-lookup request body."""
-
     curies: List[str]
 
 
@@ -59,7 +61,7 @@ async def lookup_names_get(
             "curies": ["MONDO:0005737", "MONDO:0009757"],
         }),
 ) -> Dict[str, List[str]]:
-    """Look up curies from name or fragment."""
+    """Returns a list of synonyms for a particular CURIE."""
     return await reverse_lookup(request.curies)
 
 
@@ -75,12 +77,12 @@ async def lookup_names_post(
             "curies": ["MONDO:0005737", "MONDO:0009757"],
         }),
 ) -> Dict[str, List[str]]:
-    """Look up curies from name or fragment."""
+    """Returns a list of synonyms for a particular CURIE."""
     return await reverse_lookup(request.curies)
 
 
 async def reverse_lookup(curies) -> Dict[str, List[str]]:
-    """Look up curies from name or fragment."""
+    """Returns a list of synonyms for a particular CURIE."""
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     curie_filter = " OR ".join(
         f"curie:\"{curie}\""
@@ -116,13 +118,35 @@ class LookupResult(BaseModel):
      tags=["lookup"]
 )
 async def lookup_curies_get(
-        string: str,
-        offset: int = 0,
-        limit: conint(le=1000) = 10,
-        biolink_type: str = None
+        string: Annotated[str, Query(
+            description="The string to search for."
+        )],
+        offset: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Offset should be greater than or equal to zero.
+            ge=0
+        )] = 0,
+        limit: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Limit should be greater than or equal to zero and less than or equal to 1000.
+            ge=0,
+            le=1000
+        )] = 10,
+        biolink_type: Annotated[Union[str, None], Query(
+            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="biolink:Disease"
+        )] = None,
+        only_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="MONDO|EFO"
+        )] = None
 ) -> List[LookupResult]:
-    """Look up curies from name or fragment."""
-    return await lookup(string, offset, limit, biolink_type)
+    """
+    Returns cliques with a name or synonym that contains a specified string.
+    """
+    return await lookup(string, offset, limit, biolink_type, only_prefixes)
 
 
 @app.post("/lookup",
@@ -132,13 +156,35 @@ async def lookup_curies_get(
     tags=["lookup"]
 )
 async def lookup_curies_post(
-        string: str,
-        offset: int = 0,
-        limit: conint(le=1000) = 10,
-        biolink_type: str = None
+        string: Annotated[str, Query(
+            description="The string to search for."
+        )],
+        offset: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Offset should be greater than or equal to zero.
+            ge=0
+        )] = 0,
+        limit: Annotated[int, Query(
+            description="The number of results to skip. Can be used to page through the results of a query.",
+            # Limit should be greater than or equal to zero and less than or equal to 1000.
+            ge=0,
+            le=1000
+        )] = 10,
+        biolink_type: Annotated[Union[str, None], Query(
+            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="biolink:Disease"
+        )] = None,
+        only_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="MONDO|EFO"
+        )] = None
 ) -> List[LookupResult]:
-    """Look up curies from name or fragment."""
-    return await lookup(string, offset, limit, biolink_type)
+    """
+    Returns cliques with a name or synonym that contains a specified string.
+    """
+    return await lookup(string, offset, limit, biolink_type, only_prefixes)
 
 not_alpha = re.compile(r"[\W_]+")
 
@@ -146,8 +192,10 @@ not_alpha = re.compile(r"[\W_]+")
 async def lookup(string: str,
            offset: int = 0,
            limit: conint(le=1000) = 10,
-           biolink_type: str = None) -> List[LookupResult]:
-    """Look up curies from name or fragment."""
+           biolink_type: str = None,
+           only_prefixes: str = ""
+) -> List[LookupResult]:
+    """Returns cliques with a name or synonym that contains a specified string."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
     # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
     # This turns out to be rarely what is wanted, especially because the tokenizer
@@ -160,7 +208,7 @@ async def lookup(string: str,
     #    for fragment in fragments
     #)
     fragments = re.split(not_alpha,string)
-    filters = [
+    queries = [
         # Boost the preferred name by a factor of 10.
         # Using names:{fragment}* causes Solr to prioritize some odd results;
         # using names:{fragment} OR names:{fragment}* should cause it to still
@@ -168,20 +216,39 @@ async def lookup(string: str,
         f"(preferred_name:{fragment}^10 OR names:{fragment} OR names:{fragment}*)"
         for fragment in fragments if len(fragment) > 0
     ]
+    query = " AND ".join(queries)
+
+    # Apply filters as needed.
+    filters = []
     if biolink_type:
         if biolink_type.startswith('biolink:'):
             biolink_type = biolink_type[8:]
-        filters.append( f"types:{biolink_type}" )
-    query_filters = " AND ".join(filters)
-    query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
+        filters.append(f"types:{biolink_type}")
+
+    if only_prefixes:
+        prefix_filters = []
+        for prefix in re.split('\\s*\\|\\s*', only_prefixes):
+            # TODO: there are better ways to do a prefix search in Solr, such as using Regex,
+            # but I can't hunt down the right syntax at the moment...
+            prefix_filters.append(f"curie:/{prefix}:.*/")
+        filters.append(" OR ".join(prefix_filters))
+
+    # We should probably configure whether or not to apply the sort-by-shortest_name_length rule,
+    # but since we don't have an alternative at the moment...
+
     params = {
-        "query": query_filters,
+        "query": query,
         "limit": limit,
         "offset": offset,
-        "fields": "curie,names,preferred_name,types",
+        "filter": filters,
+        "sort": "shortest_name_length ASC",
+        "fields": "curie,names,preferred_name,types,shortest_name_length",
     }
+    logging.debug(f"Query: {json.dumps(params)}")
+
+    query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
-        response = await client.post(query, json=params)
+        response = await client.post(query_url, json=params)
     if response.status_code >= 300:
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()

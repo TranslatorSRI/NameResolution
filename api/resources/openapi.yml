@@ -23,5 +23,7 @@ info:
 servers:
   - description: Default server
     url: https://name-resolution-sri.renci.org/
+  - description: localhost
+    url: http://localhost:8080/
 tags:
   - name: translator
