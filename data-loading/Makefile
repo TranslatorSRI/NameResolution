@@ -56,6 +56,7 @@ data/setup.done: data/synonyms/done data/solr.pid
 	bash setup-and-load-solr.sh "data/synonyms/*.txt*" >> data/logs/setup-and-load-solr.sh.log 2>> data/logs/setup-and-load-solr.sh.err.log && touch $@
 
 # Step 5. Start a Solr backup.
+.PHONY: start-solr-backup
 start-solr-backup: data/setup.done
 	curl 'http://localhost:8983/solr/name_lookup/replication?command=backup&name=backup'
 
