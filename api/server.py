@@ -207,16 +207,22 @@ async def lookup(string: str,
     #    f"name:{not_alpha.sub('', fragment)}*"
     #    for fragment in fragments
     #)
-    fragments = re.split(not_alpha,string)
+
+    # Take 1.
+
+    # Option 1. Look for fragments within the list of names.
+    string_lc = string.lower()
+    fragments = re.split(not_alpha,string_lc)
     queries = [
-        # Boost the preferred name by a factor of 10.
-        # Using names:{fragment}* causes Solr to prioritize some odd results;
-        # using names:{fragment} OR names:{fragment}* should cause it to still
-        # include those results while prioritizing complete fragments.
-        f"(preferred_name:{fragment}^10 OR names:{fragment} OR names:{fragment}*)"
+        # We prefer just the fragment by itself, followed by fragment at the start of the word.
+        # We don't care about fragments in between a word.
+        f"(names:{fragment}^10 OR names:{fragment}*)"
         for fragment in fragments if len(fragment) > 0
     ]
     query = " AND ".join(queries)
+
+    # Option 2. Look for the entire phrase.
+    query = f"({query}) OR names:\"{string_lc}\"^20 OR preferred_name:\"{string_lc}\"^100"
 
     # Apply filters as needed.
     filters = []
@@ -244,7 +250,7 @@ async def lookup(string: str,
         "sort": "shortest_name_length ASC",
         "fields": "curie,names,preferred_name,types,shortest_name_length",
     }
-    logging.debug(f"Query: {json.dumps(params)}")
+    logging.info(f"Query: {json.dumps(params)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
