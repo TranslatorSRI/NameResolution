@@ -208,18 +208,22 @@ async def lookup(string: str,
     #    for fragment in fragments
     #)
 
-    # Take 1.
+    # This version of the code replaces the previous facet-based multiple-query search NameRes used to have
+    # (see https://github.com/TranslatorSRI/NameResolution/blob/v1.2.0/api/server.py#L79-L165)
 
-    # Option 1. Look for fragments within the list of names.
+    # First, we need forms of the query that are (1) lowercase, and (2) missing any double-quotes so we can double-quote it.
     string_lc = string.lower()
+    string_lc_no_dq = string_lc.replace('\"', '\'')
 
     # Apply filters as needed.
+    # Biolink type filter
     filters = []
     if biolink_type:
         if biolink_type.startswith('biolink:'):
             biolink_type = biolink_type[8:]
         filters.append(f"types:{biolink_type}")
 
+    # Prefix filter
     if only_prefixes:
         prefix_filters = []
         for prefix in re.split('\\s*\\|\\s*', only_prefixes):
@@ -228,11 +232,8 @@ async def lookup(string: str,
             prefix_filters.append(f"curie:/{prefix}:.*/")
         filters.append(" OR ".join(prefix_filters))
 
-    # We should probably configure whether or not to apply the sort-by-shortest_name_length rule,
-    # but since we don't have an alternative at the moment...
-
     # TODO: run this with the filter, then without.
-    filters.append(f"preferred_name:({string_lc})")
+    # filters.append(f"preferred_name:\"{string_lc.replace('\"')}\"")
 
     params = {
         "query": {
@@ -244,7 +245,6 @@ async def lookup(string: str,
         "limit": limit,
         "offset": offset,
         "filter": filters,
-        "sort": "shortest_name_length ASC",
         "fields": "curie,names,preferred_name,types,shortest_name_length",
     }
     print(f"Query: {json.dumps(params)}")
