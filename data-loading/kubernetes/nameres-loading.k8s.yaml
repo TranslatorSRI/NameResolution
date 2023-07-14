@@ -29,7 +29,7 @@ spec:
         cpu: "6"
       limits:
         ephemeral-storage: "1G"
-        memory: "128G"
+        memory: "150G"
         cpu: "8"
   volumes:
     - name: nameres-loading-solr
