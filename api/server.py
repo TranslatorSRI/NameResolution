@@ -238,14 +238,13 @@ async def lookup(string: str,
     params = {
         "query": {
             "edismax": {
-                "query": string_lc,
-                "qf": "preferred_name^1000 names",
+                "query": string,
+                "qf": "preferred_name_exactish^10000 preferred_name^100 names",
             },
         },
         "limit": limit,
         "offset": offset,
-        "filter": filters,
-        "fields": "curie,names,preferred_name,types,shortest_name_length",
+        "filter": filters
     }
     print(f"Query: {json.dumps(params)}")
 
