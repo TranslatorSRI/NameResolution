@@ -25,12 +25,12 @@ spec:
     resources:
       requests:
         ephemeral-storage: "1G"
-        memory: "64G"
-        cpu: "4"
+        memory: "128G"
+        cpu: "6"
       limits:
         ephemeral-storage: "1G"
         memory: "128G"
-        cpu: "4"
+        cpu: "8"
   volumes:
     - name: nameres-loading-solr
       persistentVolumeClaim:

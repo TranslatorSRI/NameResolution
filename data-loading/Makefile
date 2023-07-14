@@ -8,7 +8,7 @@
 SYNONYMS_URL=https://stars.renci.org/var/babel_outputs/2022dec2-2/synonyms/
 
 # How much memory should Solr use.
-SOLR_MEM=64G
+SOLR_MEM=120G
 
 # SOLR_DIR should be set up to point to the Solr data directory (usually /var/solr)
 # and SOLR_EXEC should be set up to point to the Solr executable.
