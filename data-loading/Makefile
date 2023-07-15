@@ -77,6 +77,6 @@ data/backup.done:
 
 .PHONY: stop-solr
 stop-solr:
-	rm ${SOLR_PID}
+	rm data/solr.pid
 	${SOLR_EXEC} stop
 	$(info Solr stopped.)
