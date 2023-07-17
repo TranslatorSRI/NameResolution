@@ -239,7 +239,10 @@ async def lookup(string: str,
         "query": {
             "edismax": {
                 "query": string,
-                "qf": "preferred_name_exactish^10000 preferred_name^100 names",
+                # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
+                "qf": "preferred_name_exactish^100 preferred_name^10 names",
+                # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
+                "pf": "preferred_name_exactish^100000 preferred_name^10000 names^1000",
             },
         },
         "limit": limit,
