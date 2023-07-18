@@ -240,8 +240,10 @@ async def lookup(string: str,
             "edismax": {
                 "query": string,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
+                # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
                 "qf": "preferred_name_exactish^100 preferred_name^10 names",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
+                # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
                 "pf": "preferred_name_exactish^100000 preferred_name^10000 names^1000",
             },
         },
