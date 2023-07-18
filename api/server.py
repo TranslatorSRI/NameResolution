@@ -215,6 +215,9 @@ async def lookup(string: str,
     string_lc = string.lower()
     string_lc_no_dq = string_lc.replace('\"', '\'')
 
+    # Then we combine it into a query that allows for incomplete words.
+    query = f"\"{string_lc_no_dq}\" OR \"{string_lc_no_dq}\"*"
+
     # Apply filters as needed.
     # Biolink type filter
     filters = []
@@ -232,19 +235,16 @@ async def lookup(string: str,
             prefix_filters.append(f"curie:/{prefix}:.*/")
         filters.append(" OR ".join(prefix_filters))
 
-    # TODO: run this with the filter, then without.
-    # filters.append(f"preferred_name:\"{string_lc.replace('\"')}\"")
-
     params = {
         "query": {
             "edismax": {
-                "query": string,
+                "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
                 "qf": "preferred_name_exactish^100 preferred_name^10 names",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^100000 preferred_name^10000 names^1000",
+                "pf": "preferred_name_exactish^100000 preferred_name^10000 names^1000"
             },
         },
         "limit": limit,
