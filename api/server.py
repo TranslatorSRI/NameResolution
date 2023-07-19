@@ -211,10 +211,10 @@ async def lookup(string: str,
 
     # First, we need forms of the query that are (1) lowercase, and (2) missing any double-quotes so we can double-quote it.
     string_lc = string.lower()
-    string_lc_no_dq = string_lc.replace('"', '\'')
 
     # Then we combine it into a query that allows for incomplete words.
-    query = f"\"{string_lc_no_dq}\" OR \"{string_lc_no_dq}\"*"
+    # (Double-quoting these phrases seems to cause strange matching issues, so I'm going back to using round brackets to group terms.)
+    query = f"({string_lc}) OR ({string_lc})*"
 
     # Apply filters as needed.
     # Biolink type filter
