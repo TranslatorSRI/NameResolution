@@ -186,8 +186,6 @@ async def lookup_curies_post(
     """
     return await lookup(string, offset, limit, biolink_type, only_prefixes)
 
-not_alpha = re.compile(r"[\W_]+")
-
 
 async def lookup(string: str,
            offset: int = 0,
@@ -213,7 +211,7 @@ async def lookup(string: str,
 
     # First, we need forms of the query that are (1) lowercase, and (2) missing any double-quotes so we can double-quote it.
     string_lc = string.lower()
-    string_lc_no_dq = string_lc.replace('\"', '\'')
+    string_lc_no_dq = string_lc.replace('"', '\'')
 
     # Then we combine it into a query that allows for incomplete words.
     query = f"\"{string_lc_no_dq}\" OR \"{string_lc_no_dq}\"*"
