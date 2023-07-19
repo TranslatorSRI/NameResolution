@@ -5,6 +5,7 @@
             "antiparkinson agent"
         ],
         "preferred_name": "antiparkinson agent",
+        "preferred_name_exactish": "antiparkinson agent",
         "types": [
             "NamedThing"
         ],
@@ -38,6 +39,7 @@
             "beta-site Alzheimer's amyloid precursor protein cleaving enzyme 1 (BACE1) inhibitors"
         ],
         "preferred_name": "BACE1 inhibitor",
+        "preferred_name_exactish": "BACE1 inhibitor",
         "types": [
             "NamedThing"
         ],
@@ -49,6 +51,7 @@
             "Parkinsonian disease"
         ],
         "preferred_name": "parkinsonian disorder",
+        "preferred_name_exactish": "parkinsonian disorder",
         "types": [
             "Disease",
             "DiseaseOrPhenotypicFeature",
@@ -68,6 +71,7 @@
             "Parkinsonian tremor"
         ],
         "preferred_name": "Resting tremor",
+        "preferred_name_exactish": "Resting tremor",
         "types": [
             "PhenotypicFeature",
             "DiseaseOrPhenotypicFeature",
@@ -85,6 +89,7 @@
             "Late-onset form of familial Alzheimer disease"
         ],
         "preferred_name": "Alzheimer disease",
+        "preferred_name_exactish": "Alzheimer disease",
         "types": [
             "Disease",
             "DiseaseOrPhenotypicFeature",
@@ -102,6 +107,7 @@
             "Parkinsonism with favourable response to dopaminergic medication"
         ],
         "preferred_name": "Parkinsonism with favorable response to dopaminergic medication",
+        "preferred_name_exactish": "Parkinsonism with favorable response to dopaminergic medication",
         "types": [
             "PhenotypicFeature",
             "DiseaseOrPhenotypicFeature",
