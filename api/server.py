@@ -262,8 +262,8 @@ async def lookup(string: str,
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    output = [ {"curie": doc.get("curie", ""), "label":doc.get("preferred_name", ""), "synonyms": doc.get("names", []),
-                "types": [f"biolink:{d}" for d in doc.get("types", [])]}
+    output = [ LookupResult(curie=doc.get("curie", ""), label=doc.get("preferred_name", ""), synonyms=doc.get("names", []),
+                types=[f"biolink:{d}" for d in doc.get("types", [])])
                for doc in response["response"]["docs"]]
 
     # One downside to using the 'OR' query is that we can end up getting the same
@@ -272,9 +272,9 @@ async def lookup(string: str,
     seen = set()
     deduplicated = []
     for o in output:
-        if o in seen:
+        if o.curie in seen:
             continue
-        seen.add(o)
+        seen.add(o.curie)
         deduplicated.append(o)
 
     return deduplicated
