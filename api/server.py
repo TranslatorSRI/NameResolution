@@ -209,12 +209,16 @@ async def lookup(string: str,
     # This version of the code replaces the previous facet-based multiple-query search NameRes used to have
     # (see https://github.com/TranslatorSRI/NameResolution/blob/v1.2.0/api/server.py#L79-L165)
 
-    # First, we need forms of the query that are (1) lowercase, and (2) missing any double-quotes so we can double-quote it.
+    # First, we need forms of the query that are (1) lowercase, and (2) missing any Lucene special characters
+    # (as listed at https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
     string_lc = string.lower()
+    string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', '\\\1', string_lc)
+
+    # We need to escape '&&' and '||' specially, since they are double-character sequences.
+    string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
 
     # Then we combine it into a query that allows for incomplete words.
-    # (Double-quoting these phrases seems to cause strange matching issues, so I'm going back to using round brackets to group terms.)
-    query = f"({string_lc}) OR ({string_lc})*"
+    query = f"({string_lc_escaped}) OR ({string_lc_escaped}*)"
 
     # Apply filters as needed.
     # Biolink type filter
