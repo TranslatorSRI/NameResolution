@@ -266,18 +266,7 @@ async def lookup(string: str,
                 types=[f"biolink:{d}" for d in doc.get("types", [])])
                for doc in response["response"]["docs"]]
 
-    # One downside to using the 'OR' query is that we can end up getting the same
-    # query returned by both sides of the OR query, which Solr doesn't de-duplicate
-    # for us. So we need to de-duplicate them ourselves.
-    seen = set()
-    deduplicated = []
-    for o in output:
-        if o.curie in seen:
-            continue
-        seen.add(o.curie)
-        deduplicated.append(o)
-
-    return deduplicated
+    return output
 
 # Override open api schema with custom schema
 app.openapi_schema = construct_open_api_schema(app)
