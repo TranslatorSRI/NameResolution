@@ -57,12 +57,13 @@ class Request(BaseModel):
     tags=["lookup"],
 )
 async def lookup_names_get(
-        request: Request = Body(..., example={
-            "curies": ["MONDO:0005737", "MONDO:0009757"],
-        }),
+        curies: Annotated[str, Query(
+            examples=["MONDO:0005737", "MONDO:0009757"],
+            description="A list of CURIEs to look up synonyms for."
+        )]
 ) -> Dict[str, List[str]]:
     """Returns a list of synonyms for a particular CURIE."""
-    return await reverse_lookup(request.curies)
+    return await reverse_lookup(curies)
 
 
 @app.post(
