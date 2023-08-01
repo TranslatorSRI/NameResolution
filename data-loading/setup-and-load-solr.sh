@@ -40,6 +40,25 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
     }
 }' 'http://localhost:8983/solr/name_lookup/schema'
 
+# add exactish text type (as described at https://stackoverflow.com/a/29105025/27310)
+curl -X POST -H 'Content-type:application/json' --data-binary '{
+    "add-field-type" : {
+        "name": "exactish",
+        "class": "solr.TextField",
+        "positionIncrementGap": "100",
+        "analyzer": {
+            "tokenizer": {
+                "class": "solr.KeywordTokenizerFactory"
+            },
+            "filters": [{
+                "class": "solr.LowerCaseFilterFactory"
+            }]
+        }
+    }
+}' 'http://localhost:8983/solr/name_lookup/schema'
+
+
+
 # add fields
 curl -X POST -H 'Content-type:application/json' --data-binary '{
     "add-field": [
@@ -59,6 +78,13 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
             "type":"LowerTextField",
             "stored":true
         },
+	{
+	    "name":"preferred_name_exactish",
+	    "type":"exactish",
+	    "indexed":true,
+	    "stored":false,
+	    "multiValued":false
+	},
         {
             "name":"types",
             "type":"string",
@@ -72,11 +98,20 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
         }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
 
+# Add a copy field to copy preferred_name into preferred_name_exactish.
+curl -X POST -H 'Content-type:application/json' --data-binary '{
+    "add-copy-field": {
+      "source": "preferred_name",
+      "dest": "preferred_name_exactish"
+    }
+}' 'http://localhost:8983/solr/name_lookup/schema'
+
 # add data
 for f in $1; do
-echo "Loading $f..."
-curl -X POST -H 'Content-Type: application/json' -d @$f \
-    'http://localhost:8983/solr/name_lookup/update/json/docs?processor=uuid&uuid.fieldName=id&commit=true'
+	echo "Loading $f..."
+	curl -X POST -H 'Content-Type: application/json' -d @$f \
+	    'http://localhost:8983/solr/name_lookup/update/json/docs?processor=uuid&uuid.fieldName=id&commit=true'
+	sleep 30
 done
 echo "Check solr"
 curl -s --negotiate -u: 'localhost:8983/solr/name_lookup/query?q=*:*&rows=0'

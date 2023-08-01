@@ -56,14 +56,23 @@ def test_hyphens():
     params = {'string': 'beta-secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
-    assert len(syns) == 1
+
+    # Previously, this would actually return only a single result,
+    # but with the updated search algorithm, we return two:
+    # CHEBI:74925 ("beta-secretase") and
+    # MONDO:0011561 ("Alzheimer disease 6"), which has a synonym:
+    #   "plasma Beta-amyloid-42 level quantitative trait locus"
+
+    assert len(syns) == 2
     assert syns[0]["curie"] == 'CHEBI:74925'
+    assert syns[1]["curie"] == 'MONDO:0011561'
     #no hyphen
     params = {'string': 'beta secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
-    assert len(syns) == 1
+    assert len(syns) == 2
     assert syns[0]["curie"] == 'CHEBI:74925'
+    assert syns[1]["curie"] == 'MONDO:0011561'
 
 def test_structure():
     client = TestClient(app)

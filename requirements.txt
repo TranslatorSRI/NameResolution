@@ -4,3 +4,6 @@ httpx
 uvicorn
 pyyaml
 jsonlines
+
+# For testing
+pytest
