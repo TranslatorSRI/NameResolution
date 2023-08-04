@@ -250,6 +250,7 @@ async def lookup(string: str,
                 "pf": "preferred_name_exactish^20 preferred_name^3 names^2"
             },
         },
+        "sort": "score DESC, curie_suffix ASC",
         "limit": limit,
         "offset": offset,
         "filter": filters
