@@ -95,7 +95,15 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
             "name":"shortest_name_length",
             "type":"pint",
             "stored":true
-        }
+    	},
+	{
+	    "name":"curie_suffix",
+	    "type":"plong",
+	    "docValues":true,
+	    "stored":true,
+	    "required":false,
+	    "sortMissingLast":true
+	}
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
 
 # Add a copy field to copy preferred_name into preferred_name_exactish.
