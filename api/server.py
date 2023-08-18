@@ -25,6 +25,18 @@ LOGGER = logging.getLogger(__name__)
 SOLR_HOST = os.getenv("SOLR_HOST", "localhost")
 SOLR_PORT = os.getenv("SOLR_PORT", "8983")
 
+# Set up and load any conflation information
+conflations = dict()
+if os.getenv("CONFLATION", "").strip() != '':
+    it = iter(os.getenv("CONFLATION").split('|'))
+    conflation_to_url = dict(zip(it, it))
+
+    for (conflation, url) in conflation_to_url.items():
+        logging.info(f"Loading URL {url} as conflation {conflation}.")
+
+logging.info(f"Loaded conflations: {conflations}")
+
+# Set up FastAPI app.
 app = FastAPI(**get_app_info())
 
 app.add_middleware(
