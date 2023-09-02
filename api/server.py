@@ -244,10 +244,10 @@ async def lookup(string: str,
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^10 preferred_name^1 names^1",
+                "qf": "preferred_name_exactish^10 names^1",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^20 preferred_name^3 names^2"
+                "pf": "preferred_name_exactish^20 names^2"
             },
         },
         "sort": "score DESC, curie_suffix ASC",
