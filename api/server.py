@@ -58,7 +58,7 @@ class Request(BaseModel):
 )
 async def lookup_names_get(
         curies: List[str]= Query(
-            examples=["MONDO:0005737", "MONDO:0009757"],
+            example=["MONDO:0005737", "MONDO:0009757"],
             description="A list of CURIEs to look up synonyms for."
         )
 ) -> Dict[str, List[str]]:
