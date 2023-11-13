@@ -14,7 +14,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  termsOfService: robokop.renci.org:7055/tos?service_long=Name+Resolver&provider_long=the+Translator+Consortium
+  termsOfService: https://toss.apps.renci.org/tos?service_long=Name+Resolver&provider_long=the+Translator+Consortium
   x-translator:
     component: Utility
     team:
