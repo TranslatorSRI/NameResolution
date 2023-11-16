@@ -146,8 +146,9 @@ async def lookup_curies_get(
         )] = None,
         exclude_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
-            example="UMLS|EFO"
-        )] = "UMLS"
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="UMLS|EFO"
+        )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
@@ -188,8 +189,9 @@ async def lookup_curies_post(
         )] = None,
         exclude_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
-            example="UMLS|EFO"
-        )] = "UMLS"
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="UMLS|EFO"
+        )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
