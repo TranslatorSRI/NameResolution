@@ -53,7 +53,7 @@ class Request(BaseModel):
     "/reverse_lookup",
     summary="Look up synonyms for a CURIE.",
     description="Returns a list of synonyms for a particular CURIE.",
-    response_model=Dict[str, List[str]],
+    response_model=Dict[str, Dict],
     tags=["lookup"],
 )
 async def lookup_names_get(
@@ -61,7 +61,7 @@ async def lookup_names_get(
             example=["MONDO:0005737", "MONDO:0009757"],
             description="A list of CURIEs to look up synonyms for."
         )
-) -> Dict[str, List[str]]:
+) -> Dict[str, Dict]:
     """Returns a list of synonyms for a particular CURIE."""
     return await reverse_lookup(curies)
 
@@ -70,7 +70,7 @@ async def lookup_names_get(
     "/reverse_lookup",
     summary="Look up synonyms for a CURIE.",
     description="Returns a list of synonyms for a particular CURIE.",
-    response_model=Dict[str, List[str]],
+    response_model=Dict[str, Dict],
     tags=["lookup"],
 )
 async def lookup_names_post(
@@ -82,7 +82,7 @@ async def lookup_names_post(
     return await reverse_lookup(request.curies)
 
 
-async def reverse_lookup(curies) -> Dict[str, List[str]]:
+async def reverse_lookup(curies) -> Dict[str, Dict]:
     """Returns a list of synonyms for a particular CURIE."""
     query = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     curie_filter = " OR ".join(
@@ -102,7 +102,7 @@ async def reverse_lookup(curies) -> Dict[str, List[str]]:
         for curie in curies
     }
     for doc in response_json["response"]["docs"]:
-        output[doc["curie"]].extend(doc["names"])
+        output[doc["curie"]] = doc
     return output
 
 class LookupResult(BaseModel):
