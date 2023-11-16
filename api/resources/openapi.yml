@@ -6,15 +6,15 @@ info:
   name: Chris Bizon
   x-id: https://github.com/cbizon
   x-role: responsible developer
-  description: 'Name resolution service<p/>This service takes lexical strings and attempts to map them to identifiers
-    (curies) from a vocabulary or ontology.  The lookup is not exact, but includes partial matches.<p/>
+  description: 'Name Resolution/Name Lookup service<p/>This service takes lexical strings and attempts to map them to identifiers
+    (CURIEs) from a vocabulary or ontology.  The lookup is not exact, but includes partial matches.<p/>
      Multiple results may be returned representing possible conceptual matches, but all of the identifiers
-     have been correctly normalized using the <a href="https://nodenormalization-sri.renci.org>NodeNormalization
-     service</a>.'
+     have been correctly normalized using the
+     <a href="https://github.com/TranslatorSRI/NodeNormalization">Node Normalization</a> service.'
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  termsOfService: robokop.renci.org:7055/tos?service_long=Name+Resolver&provider_long=the+Translator+Consortium
+  termsOfService: https://toss.apps.renci.org/tos?service_long=Name+Resolver&provider_long=the+Translator+Consortium
   x-translator:
     component: Utility
     team:
