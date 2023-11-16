@@ -110,6 +110,7 @@ class LookupResult(BaseModel):
     label: str
     synonyms: List[str]
     types: List[str]
+    score: float
 
 
 @app.get("/lookup",
@@ -253,7 +254,8 @@ async def lookup(string: str,
         "sort": "score DESC, curie_suffix ASC",
         "limit": limit,
         "offset": offset,
-        "filter": filters
+        "filter": filters,
+        "fields": "*, score"
     }
     logging.debug(f"Query: {json.dumps(params)}")
 
@@ -265,6 +267,7 @@ async def lookup(string: str,
         response.raise_for_status()
     response = response.json()
     output = [ LookupResult(curie=doc.get("curie", ""), label=doc.get("preferred_name", ""), synonyms=doc.get("names", []),
+                score=doc.get("score", ""),
                 types=[f"biolink:{d}" for d in doc.get("types", [])])
                for doc in response["response"]["docs"]]
 
