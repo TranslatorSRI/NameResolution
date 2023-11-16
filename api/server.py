@@ -143,12 +143,16 @@ async def lookup_curies_get(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="MONDO|EFO"
-        )] = None
+        )] = None,
+        exclude_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
+            example="UMLS|EFO"
+        )] = "UMLS"
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, offset, limit, biolink_type, only_prefixes)
+    return await lookup(string, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
 
 
 @app.post("/lookup",
@@ -181,12 +185,16 @@ async def lookup_curies_post(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="MONDO|EFO"
-        )] = None
+        )] = None,
+        exclude_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
+            example="UMLS|EFO"
+        )] = "UMLS"
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, offset, limit, biolink_type, only_prefixes)
+    return await lookup(string, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
 
 
 async def lookup(string: str,
