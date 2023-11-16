@@ -193,7 +193,8 @@ async def lookup(string: str,
            offset: int = 0,
            limit: conint(le=1000) = 10,
            biolink_type: str = None,
-           only_prefixes: str = ""
+           only_prefixes: str = "",
+           exclude_prefixes: str = ""
 ) -> List[LookupResult]:
     """Returns cliques with a name or synonym that contains a specified string."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
@@ -230,14 +231,19 @@ async def lookup(string: str,
             biolink_type = biolink_type[8:]
         filters.append(f"types:{biolink_type}")
 
-    # Prefix filter
+    # Prefix: only filter
     if only_prefixes:
         prefix_filters = []
         for prefix in re.split('\\s*\\|\\s*', only_prefixes):
-            # TODO: there are better ways to do a prefix search in Solr, such as using Regex,
-            # but I can't hunt down the right syntax at the moment...
             prefix_filters.append(f"curie:/{prefix}:.*/")
         filters.append(" OR ".join(prefix_filters))
+
+    # Prefix: exclude filter
+    if exclude_prefixes:
+        prefix_exclude_filters = []
+        for prefix in re.split('\\s*\\|\\s*', exclude_prefixes):
+            prefix_exclude_filters.append(f"NOT curie:/{prefix}:.*/")
+        filters.append(" AND ".join(prefix_exclude_filters))
 
     params = {
         "query": {
