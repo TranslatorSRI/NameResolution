@@ -309,6 +309,6 @@ if os.environ.get('OTEL_ENABLED', False):
     processor = BatchSpanProcessor(jaeger_exporter)
     provider.add_span_processor(processor)
     trace.set_tracer_provider(provider)
-    FastAPIInstrumentor.instrument_app(APP, tracer_provider=provider, excluded_urls=
+    FastAPIInstrumentor.instrument_app(app, tracer_provider=provider, excluded_urls=
                                        "docs,openapi.json")    
     HTTPXClientInstrumentor().instrument()
