@@ -8,7 +8,7 @@
   * Matching names are returned first, followed by non-matching names
 """
 import json
-import logging
+import logging, warnings
 import os
 import re
 from typing import Dict, List, Union, Annotated
@@ -275,3 +275,51 @@ async def lookup(string: str,
 
 # Override open api schema with custom schema
 app.openapi_schema = construct_open_api_schema(app)
+
+if os.environ.get('OTEL_ENABLED', False):
+    from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+    from opentelemetry import trace
+    from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+    from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
+    # from opentelemetry.sdk.trace.export import ConsoleSpanExporter
+
+    from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
+
+    # httpx connections need to be open a little longer by the otel decorators
+    # but some libs display warnings of resource being unclosed.
+    # these supresses such warnings.
+    logging.captureWarnings(capture=True)
+    warnings.filterwarnings("ignore", category=ResourceWarning)
+    plater_service_name = os.environ.get('PLATER_TITLE', 'PLATER')
+    assert plater_service_name and isinstance(plater_service_name, str)
+
+    jaeger_exporter = JaegerExporter(
+        agent_host_name=os.environ.get("JAEGER_HOST", "localhost"),
+        agent_port=int(os.environ.get("JAEGER_PORT", "6831")),
+    )
+    resource = Resource(attributes={
+        SERVICE_NAME: os.environ.get("JAEGER_SERVICE_NAME", plater_service_name),
+    })
+    provider = TracerProvider(resource=resource)
+    # processor = BatchSpanProcessor(ConsoleSpanExporter())
+    processor = BatchSpanProcessor(jaeger_exporter)
+    provider.add_span_processor(processor)
+    trace.set_tracer_provider(provider)
+    FastAPIInstrumentor.instrument_app(APP, tracer_provider=provider, excluded_urls=
+                                       "docs,openapi.json")
+
+    async def request_hook(span, request):
+        # logs cypher queries set to neo4j
+        # check url
+        if span.attributes.get('http.url').endswith('/db/data/transaction/commit'):
+            # if url matches try to json load the query
+            try:
+                neo4j_query = json.loads(
+                    request.stream._stream.decode('utf-8')
+                )['statements'][0]['statement']
+                span.set_attribute('cypher', neo4j_query)
+            except Exception as ex:
+                logger.error(f"error logging neo4j query when sending to OTEL: {ex}")
+    HTTPXClientInstrumentor().instrument(request_hook=request_hook)
