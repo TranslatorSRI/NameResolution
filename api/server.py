@@ -143,12 +143,17 @@ async def lookup_curies_get(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="MONDO|EFO"
+        )] = None,
+        exclude_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="UMLS|EFO"
         )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, offset, limit, biolink_type, only_prefixes)
+    return await lookup(string, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
 
 
 @app.post("/lookup",
@@ -181,19 +186,25 @@ async def lookup_curies_post(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="MONDO|EFO"
+        )] = None,
+        exclude_prefixes: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="UMLS|EFO"
         )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, offset, limit, biolink_type, only_prefixes)
+    return await lookup(string, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
 
 
 async def lookup(string: str,
            offset: int = 0,
            limit: conint(le=1000) = 10,
            biolink_type: str = None,
-           only_prefixes: str = ""
+           only_prefixes: str = "",
+           exclude_prefixes: str = ""
 ) -> List[LookupResult]:
     """Returns cliques with a name or synonym that contains a specified string."""
     #This original code tokenizes on spaces, and then removes all other punctuation.
@@ -230,14 +241,19 @@ async def lookup(string: str,
             biolink_type = biolink_type[8:]
         filters.append(f"types:{biolink_type}")
 
-    # Prefix filter
+    # Prefix: only filter
     if only_prefixes:
         prefix_filters = []
         for prefix in re.split('\\s*\\|\\s*', only_prefixes):
-            # TODO: there are better ways to do a prefix search in Solr, such as using Regex,
-            # but I can't hunt down the right syntax at the moment...
             prefix_filters.append(f"curie:/{prefix}:.*/")
         filters.append(" OR ".join(prefix_filters))
+
+    # Prefix: exclude filter
+    if exclude_prefixes:
+        prefix_exclude_filters = []
+        for prefix in re.split('\\s*\\|\\s*', exclude_prefixes):
+            prefix_exclude_filters.append(f"NOT curie:/{prefix}:.*/")
+        filters.append(" AND ".join(prefix_exclude_filters))
 
     params = {
         "query": {
