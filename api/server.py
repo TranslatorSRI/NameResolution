@@ -35,6 +35,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ENDPOINT /
 # If someone tries accessing /, we should redirect them to the Swagger interface.
 @app.get("/", include_in_schema=False)
 async def docs_redirect():
@@ -43,6 +44,57 @@ async def docs_redirect():
     """
     return RedirectResponse(url='/docs')
 
+
+@app.get("/status",
+         summary="Get status and counts for this NameRes instance.",
+         description="This endpoint will return status information and a list of counts from the underlying Solr "
+                     "instance for this NameRes instance."
+         )
+async def status_get() -> Dict:
+    """ Return status and count information from the underyling Solr instance. """
+    return await status()
+
+
+async def status() -> Dict:
+    """ Return a dictionary containing status and count information for the underlying Solr instance. """
+    query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/admin/cores"
+    async with httpx.AsyncClient(timeout=None) as client:
+        response = await client.get(query_url, params={
+            'action': 'STATUS'
+        })
+    if response.status_code >= 300:
+        LOGGER.error("Solr error on accessing /solr/admin/cores?action=STATUS: %s", response.text)
+        response.raise_for_status()
+    result = response.json()
+
+    # We should have a status for name_lookup_shard1_replica_n1.
+    if 'status' in result and 'name_lookup_shard1_replica_n1' in result['status']:
+        core = result['status']['name_lookup_shard1_replica_n1']
+
+        index = {}
+        if 'index' in core:
+            index = core['index']
+
+        return {
+            'status': 'ok',
+            'message': 'Reporting results from primary core.',
+            'startTime': core['startTime'],
+            'numDocs': index.get('numDocs', ''),
+            'maxDoc': index.get('maxDoc', ''),
+            'deletedDocs': index.get('deletedDocs', ''),
+            'version': index.get('version', ''),
+            'segmentCount': index.get('segmentCount', ''),
+            'lastModified': index.get('lastModified', ''),
+            'size': index.get('size', ''),
+        }
+    else:
+        return {
+            'status': 'error',
+            'message': 'Expected core not found.'
+        }
+
+
+# ENDPOINT /reverse_lookup
 
 class Request(BaseModel):
     """Reverse-lookup request body."""
