@@ -31,6 +31,7 @@ clean:
 #
 # Step 1. Download an uncompress synonym files.
 data/synonyms/done:
+	mkdir -p data/synonyms
 	wget -c -r -l1 -nd -P data/synonyms ${SYNONYMS_URL}
 	gunzip data/synonyms/*.txt.gz
 	echo Downloaded synonyms from ${SYNONYMS_URL}
