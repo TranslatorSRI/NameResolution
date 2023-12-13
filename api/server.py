@@ -276,8 +276,7 @@ async def lookup(string: str,
 # Override open api schema with custom schema
 app.openapi_schema = construct_open_api_schema(app)
 
-
-
+# Set up opentelemetry if enabled.
 if os.environ.get('OTEL_ENABLED', False):
     from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
     from opentelemetry import trace
@@ -312,3 +311,4 @@ if os.environ.get('OTEL_ENABLED', False):
     FastAPIInstrumentor.instrument_app(app, tracer_provider=provider, excluded_urls=
                                        "docs,openapi.json")    
     HTTPXClientInstrumentor().instrument()
+    
