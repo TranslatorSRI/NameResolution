@@ -34,3 +34,16 @@ Helm charts can be found at https://github.com/helxplatform/translator-devops/he
 ```bash
 curl -X POST "http://localhost:6434/lookup?string=oxycod&offset=0&limit=10" -H "accept: application/json"
 ```
+
+## Configuration
+
+NameRes can be configured by setting environmental variables:
+
+* `SOLR_HOST` and `SOLR_PORT`: Hostname and port for the Solr database containing NameRes information.
+* `SERVER_NAME`: The name of this server (defaults to `infores:sri-name-resolver`)
+* `SERVER_ROOT`: The server root (defaults to `/`)
+* `MATURITY_VALUE`: How mature is this NameRes (defaults to `maturity`, e.g. `development`)
+* `LOCATION_VALUE`: Where is this NameRes setup (defaults to `location`, e.g. `RENCI`)
+* `OTEL_ENABLED`: Turn on Open TELemetry (default: `'false'`) -- only `'true'` will turn this on. 
+    * `JAEGER_HOST` and `JAEGER_PORT`: Hostname and port for the Jaegar instance to provide telemetry to.
+    * `JAEGER_SERVICE_NAME`: The name of this service (defaults to the value of `SERVER_NAME`)
