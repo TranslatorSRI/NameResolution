@@ -311,4 +311,3 @@ if os.environ.get('OTEL_ENABLED', False):
     FastAPIInstrumentor.instrument_app(app, tracer_provider=provider, excluded_urls=
                                        "docs,openapi.json")    
     HTTPXClientInstrumentor().instrument()
-    
