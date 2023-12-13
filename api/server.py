@@ -277,7 +277,7 @@ async def lookup(string: str,
 app.openapi_schema = construct_open_api_schema(app)
 
 # Set up opentelemetry if enabled.
-if os.environ.get('OTEL_ENABLED', 'false') != 'true':
+if os.environ.get('OTEL_ENABLED', 'false') == 'true':
     from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
     from opentelemetry import trace
     from opentelemetry.exporter.jaeger.thrift import JaegerExporter
