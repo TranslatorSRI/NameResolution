@@ -44,6 +44,6 @@ NameRes can be configured by setting environmental variables:
 * `SERVER_ROOT`: The server root (defaults to `/`)
 * `MATURITY_VALUE`: How mature is this NameRes (defaults to `maturity`, e.g. `development`)
 * `LOCATION_VALUE`: Where is this NameRes setup (defaults to `location`, e.g. `RENCI`)
-* `OTEL_ENABLED`: Turn on Open TELemetry (default: False)
+* `OTEL_ENABLED`: Turn on Open TELemetry (default: `'false'`) -- only `'true'` will turn this on. 
     * `JAEGER_HOST` and `JAEGER_PORT`: Hostname and port for the Jaegar instance to provide telemetry to.
     * `JAEGER_SERVICE_NAME`: The name of this service (defaults to the value of `SERVER_NAME`)
