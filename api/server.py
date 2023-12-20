@@ -150,7 +150,7 @@ async def reverse_lookup(curies) -> Dict[str, Dict]:
     response.raise_for_status()
     response_json = response.json()
     output = {
-        curie: []
+        curie: {}
         for curie in curies
     }
     for doc in response_json["response"]["docs"]:
