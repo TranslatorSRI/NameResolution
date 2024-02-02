@@ -1,4 +1,4 @@
-# NameRes Translator October 2023 Release
+# NameRes Translator December 2023 Release
 
 - Babel: [2023nov5](https://stars.renci.org/var/babel_outputs/2023nov5/)
 - NameRes: [v2.3.11](https://github.com/TranslatorSRI/NameResolution/releases/tag/v1.3.11)
