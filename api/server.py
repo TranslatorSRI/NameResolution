@@ -298,7 +298,7 @@ async def lookup(string: str,
     if autocomplete:
         query = f"({string_lc_escaped}) OR ({string_lc_escaped}*)"
     else:
-        query = f"({string_lc_escaped})"
+        query = f"({string_lc_escaped}) OR ({string_lc_escaped})"
 
     # Apply filters as needed.
     # Biolink type filter
@@ -340,7 +340,7 @@ async def lookup(string: str,
         "filter": filters,
         "fields": "*, score"
     }
-    logging.debug(f"Query: {json.dumps(params)}")
+    logging.error(f"Query: {json.dumps(params)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
