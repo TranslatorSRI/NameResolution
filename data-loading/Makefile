@@ -36,7 +36,8 @@ data/synonyms/done:
 	gunzip data/synonyms/*.txt.gz
 	echo Downloaded synonyms from ${SYNONYMS_URL}
 	split -d -l 10000000 data/synonyms/Protein.txt data/synonyms/Protein.txt. && rm data/synonyms/Protein.txt
-	split -d -l 10000000 data/synonyms/SmallMolecule.txt data/synonyms/SmallMolecule.txt. && rm data/synonyms/SmallMolecule.txt
+	# split -d -l 10000000 data/synonyms/SmallMolecule.txt data/synonyms/SmallMolecule.txt. && rm data/synonyms/SmallMolecule.txt
+	split -d -l 10000000 data/synonyms/DrugChemicalConflated.txt data/synonyms/DrugChemicalConflated.txt. && rm data/synonyms/DrugChemicalConflated.txt
 	split -d -l 10000000 data/synonyms/Gene.txt data/synonyms/Gene.txt. && rm data/synonyms/Gene.txt
 	echo Split Protein.txt, SmallMolecule.txt and Gene.txt, and deleted the original files.
 	touch $@
