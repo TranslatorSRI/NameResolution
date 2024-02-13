@@ -103,6 +103,17 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
             "stored":true,
             "required":false,
             "sortMissingLast":true
+        },
+        {
+            "name":"taxa",
+            "type":"string",
+            "stored":true,
+            "multiValued":true
+        },
+        {
+            "name":"clique_identifier_count",
+            "type":"pint",
+            "stored":true
         }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
 
