@@ -205,12 +205,18 @@ async def lookup_curies_get(
             description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="UMLS|EFO"
+        )] = None,
+        only_taxa: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of taxa to filter, "
+                        "e.g. `NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955"
         )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
+    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
 
 
 @app.post("/lookup",
@@ -251,12 +257,18 @@ async def lookup_curies_post(
             description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="UMLS|EFO"
+        )] = None,
+        only_taxa: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of taxa to filter, "
+                        "e.g. `NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955"
         )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
+    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
 
 
 async def lookup(string: str,
@@ -266,6 +278,7 @@ async def lookup(string: str,
            biolink_type: str = None,
            only_prefixes: str = "",
            exclude_prefixes: str = "",
+           only_taxa: str = ""
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
@@ -325,7 +338,7 @@ async def lookup(string: str,
         filters.append(" AND ".join(prefix_exclude_filters))
 
     # Taxa filter.
-    only_taxa = 'NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955'
+    # only_taxa is like: 'NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955'
     if only_taxa:
         taxa_filters = []
         for taxon in re.split('\\s*\\|\\s*', only_taxa):
@@ -343,13 +356,13 @@ async def lookup(string: str,
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
                 "pf": "preferred_name_exactish^20 preferred_name^6 names^2",
                 # Boost by:
-                "bq":   'clique_identifier_count:[1 TO *]^1 ' +     # - clique identifier count.
+                "bq":   'clique_identifier_count:[1 TO *]^10 ' +     # - clique identifier count.
                         'shortest_name_length[1 TO *]^10 ' +        # - prioritize smaller names
                         'curie_suffix[1 TO *]^10 ' +                # - prioritize smaller names
                         ''
             },
         },
-        "sort": "score DESC, shortest_name_length DESC, curie_suffix ASC",
+        "sort": "score DESC, shortest_name_length DESC, clique_identifier_count DESC, curie_suffix ASC",
         "limit": limit,
         "offset": offset,
         "filter": filters,
