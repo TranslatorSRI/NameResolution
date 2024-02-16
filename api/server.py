@@ -356,9 +356,10 @@ async def lookup(string: str,
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
                 "pf": "preferred_name_exactish^20 preferred_name^6 names^2",
                 # Boost by:
-                "bq":   'clique_identifier_count:[1 TO *]^10 ' +     # - clique identifier count.
-                        'shortest_name_length[1 TO *]^10 ' +        # - prioritize smaller names
-                        'curie_suffix[1 TO *]^10 ' +                # - prioritize smaller names
+                "bq":   'clique_identifier_count:[10 TO *]^10 ' +     # - clique identifier count.
+                        'clique_identifier_count:[1 TO 9]^2 ' +     # - clique identifier count.
+                        'shortest_name_length[1 TO 2]^10 ' +        # - prioritize smaller names
+                        'shortest_name_length[3 TO 5]^5 ' +        # - prioritize smaller names
                         ''
             },
         },
