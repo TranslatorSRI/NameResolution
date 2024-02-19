@@ -351,16 +351,17 @@ async def lookup(string: str,
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^10 preferred_name^3 names^1",
+                "qf": "preferred_name_exactish^30 preferred_name^10 names^1",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^20 preferred_name^6 names^2",
+                "pf": "preferred_name_exactish^40 preferred_name^20 names^5",
                 # Boost by:
-                "bq":   'clique_identifier_count:[10 TO *]^30 ' +     # - clique identifier count.
-                        'clique_identifier_count:[5 TO 9]^20 ' +     # - clique identifier count.
-                        'clique_identifier_count:[2 TO 4]^2 ' +     # - clique identifier count.
-                        'shortest_name_length[1 TO 2]^10 ' +        # - prioritize smaller names
-                        'shortest_name_length[3 TO 5]^5 ' +        # - prioritize smaller names
+                "bq":   'clique_identifier_count:[10 TO *]^20 ' +     # - clique identifier count.
+                        'clique_identifier_count:[4 TO 9]^10 ' +     # - clique identifier count.
+                        'clique_identifier_count:[2 TO 3]^1 ' +     # - clique identifier count.
+                        'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
+                        'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
+                        'shortest_name_length[5 TO 10]^5 ' +        # - prioritize smaller names
                         ''
             },
         },
