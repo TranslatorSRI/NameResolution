@@ -311,7 +311,7 @@ async def lookup(string: str,
 
     # If in autocomplete mode, we combine it into a query that allows for incomplete words.
     if autocomplete:
-        query = f"({string_lc_escaped}) OR ({string_lc_escaped}*)"
+        query = f"({string_lc_escaped}*)"
     else:
         query = f"({string_lc_escaped})"
 
@@ -346,8 +346,8 @@ async def lookup(string: str,
         filters.append(" OR ".join(taxa_filters))
 
     # Boost queries
-    boost_queries = 'clique_identifier_count:[10 TO *]^5 ' + \
-                    'clique_identifier_count:[4 TO 9]^2 '
+    boost_queries = 'clique_identifier_count:[10 TO *]^20 ' + \
+                    'clique_identifier_count:[4 TO 9]^10 '
     #                'clique_identifier_count:[2 TO 3]^1 '
     #                         'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
     #                         'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
@@ -360,10 +360,10 @@ async def lookup(string: str,
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^40 preferred_name^20 names^5",
+                "qf": "preferred_name_exactish^50 preferred_name^20 names^1",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^50 preferred_name^30 names^15",
+                "pf": "preferred_name_exactish^60 preferred_name^30 names^10",
                 # Boost by:
                 "bq":   boost_queries,
             },
