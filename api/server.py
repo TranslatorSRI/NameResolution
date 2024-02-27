@@ -345,24 +345,27 @@ async def lookup(string: str,
             taxa_filters.append(f'taxa:"{taxon}"')
         filters.append(" OR ".join(taxa_filters))
 
+    # Boost queries
+    boost_queries = 'clique_identifier_count:[10 TO *]^5 ' + \
+                    'clique_identifier_count:[4 TO 9]^2 '
+    #                'clique_identifier_count:[2 TO 3]^1 '
+    #                         'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
+    #                         'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
+    #                         'shortest_name_length[5 TO 10]^5 ' +        # - prioritize smaller names
+    #                         ''
+
     params = {
         "query": {
             "edismax": {
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^30 preferred_name^10 names^1",
+                "qf": "preferred_name_exactish^40 preferred_name^20 names^5",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^40 preferred_name^20 names^5",
+                "pf": "preferred_name_exactish^50 preferred_name^30 names^15",
                 # Boost by:
-                "bq":   'clique_identifier_count:[10 TO *]^20 ' +     # - clique identifier count.
-                        'clique_identifier_count:[4 TO 9]^10 ' +     # - clique identifier count.
-                        'clique_identifier_count:[2 TO 3]^1 ' +     # - clique identifier count.
-                        'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
-                        'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
-                        'shortest_name_length[5 TO 10]^5 ' +        # - prioritize smaller names
-                        ''
+                "bq":   boost_queries,
             },
         },
         "sort": "score DESC, clique_identifier_count DESC, shortest_name_length ASC, curie_suffix ASC",
