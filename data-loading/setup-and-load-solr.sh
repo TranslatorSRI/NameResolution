@@ -78,13 +78,13 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
             "type":"LowerTextField",
             "stored":true
         },
-	{
-	    "name":"preferred_name_exactish",
-	    "type":"exactish",
-	    "indexed":true,
-	    "stored":false,
-	    "multiValued":false
-	},
+        {
+            "name":"preferred_name_exactish",
+            "type":"exactish",
+            "indexed":true,
+            "stored":false,
+            "multiValued":false
+        },
         {
             "name":"types",
             "type":"string",
@@ -95,15 +95,26 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
             "name":"shortest_name_length",
             "type":"pint",
             "stored":true
-    	},
-	{
-	    "name":"curie_suffix",
-	    "type":"plong",
-	    "docValues":true,
-	    "stored":true,
-	    "required":false,
-	    "sortMissingLast":true
-	}
+    	  },
+        {
+            "name":"curie_suffix",
+            "type":"plong",
+            "docValues":true,
+            "stored":true,
+            "required":false,
+            "sortMissingLast":true
+        },
+        {
+            "name":"taxa",
+            "type":"string",
+            "stored":true,
+            "multiValued":true
+        },
+        {
+            "name":"clique_identifier_count",
+            "type":"pint",
+            "stored":true
+        }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
 
 # Add a copy field to copy preferred_name into preferred_name_exactish.
