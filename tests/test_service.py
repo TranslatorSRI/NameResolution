@@ -57,8 +57,8 @@ def test_hyphens():
     """The test data contains CHEBI:74925 with name 'beta-secretase inhibitor.
     Show that we can find it with or without the hyphen"""
     client = TestClient(app)
-    #no hyphen
-    params = {'string': 'beta secretase'}
+    #with hyphen
+    params = {'string': 'beta-secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
 
@@ -71,8 +71,8 @@ def test_hyphens():
     assert len(syns) == 2
     assert syns[0]["curie"] == 'CHEBI:74925'
     assert syns[1]["curie"] == 'MONDO:0011561'
-    #with hyphen
-    params = {'string': 'beta-secretase'}
+    #no hyphen
+    params = {'string': 'beta secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 2
@@ -81,7 +81,7 @@ def test_hyphens():
 
 def test_structure():
     client = TestClient(app)
-    params = {'string': 'beta secretase'}
+    params = {'string': 'beta-secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     #do we get a preferred name and type?
