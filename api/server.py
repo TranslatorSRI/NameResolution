@@ -304,7 +304,9 @@ async def lookup(string: str,
     # First, we need forms of the query that are (1) lowercase, and (2) missing any Lucene special characters
     # (as listed at https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
     string_lc = string.lower()
-    string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc)
+    string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', ' ', string_lc)
+    # We could use r'\\\g<0>' to add a slash before the character to escape it, but that doesn't seem to work
+    # with the StandardTokenizer, so I'm going to replace this with spaces for now.
 
     # We need to escape '&&' and '||' specially, since they are double-character sequences.
     string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
