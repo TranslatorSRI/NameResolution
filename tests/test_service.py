@@ -67,7 +67,7 @@ def test_hyphens():
     assert syns[0]["curie"] == 'CHEBI:74925'
     assert syns[1]["curie"] == 'MONDO:0011561'
     #with hyphen
-    params = {'string': 'beta secretase'}
+    params = {'string': 'beta-secretase'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 2
