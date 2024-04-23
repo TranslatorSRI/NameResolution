@@ -301,20 +301,29 @@ async def lookup(string: str,
     # This version of the code replaces the previous facet-based multiple-query search NameRes used to have
     # (see https://github.com/TranslatorSRI/NameResolution/blob/v1.2.0/api/server.py#L79-L165)
 
-    # First, we need forms of the query that are (1) lowercase, and (2) missing any Lucene special characters
-    # (as listed at https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
+    # For reasons we don't fully understand, we can put escaped special characters into the non-autocomplete
+    # query but not the autocomplete query. So we handle those cases separately here. See
+    # https://github.com/TranslatorSRI/NameResolution/issues/146 for a deeper dive into what's going on.
     string_lc = string.lower()
-    string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', ' ', string_lc)
-    # We could use r'\\\g<0>' to add a slash before the character to escape it, but that doesn't seem to work
-    # with the StandardTokenizer, so I'm going to replace this with spaces for now.
-
-    # We need to escape '&&' and '||' specially, since they are double-character sequences.
-    string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
-
-    # If in autocomplete mode, we combine it into a query that allows for incomplete words.
     if autocomplete:
+        # Remove any Lucene special characters (as listed at
+        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
+        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', ' ', string_lc)
+
+        # We need to remove '&&' and '||' specially, since they are double-character sequences.
+        string_lc_escaped = string_lc_escaped.replace('&&', ' ').replace('||', ' ')
+
+        # Construct query with an asterisk at the end so we look for incomplete terms.
         query = f"({string_lc_escaped}*)"
     else:
+        # Escape any Lucene special characters (as listed at
+        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
+        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc)
+
+        # We need to escape '&&' and '||' specially, since they are double-character sequences.
+        string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
+
+        # Construct query.
         query = f"({string_lc_escaped})"
 
     # Apply filters as needed.
