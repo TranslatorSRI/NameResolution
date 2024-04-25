@@ -161,8 +161,10 @@ class LookupResult(BaseModel):
     curie:str
     label: str
     synonyms: List[str]
+    taxa: List[str]
     types: List[str]
     score: float
+    clique_identifier_count: int
 
 
 @app.get("/lookup",
@@ -203,12 +205,18 @@ async def lookup_curies_get(
             description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="UMLS|EFO"
+        )] = None,
+        only_taxa: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of taxa to filter, "
+                        "e.g. `NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955"
         )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
+    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
 
 
 @app.post("/lookup",
@@ -249,12 +257,18 @@ async def lookup_curies_post(
             description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
             # example="UMLS|EFO"
+        )] = None,
+        only_taxa: Annotated[Union[str, None], Query(
+            description="Pipe-separated, case-sensitive list of taxa to filter, "
+                        "e.g. `NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955`.",
+            # We can't use `example` here because otherwise it gets filled in when filling this in.
+            # example="NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955"
         )] = None
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes)
+    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
 
 
 async def lookup(string: str,
@@ -263,7 +277,8 @@ async def lookup(string: str,
            limit: conint(le=1000) = 10,
            biolink_type: str = None,
            only_prefixes: str = "",
-           exclude_prefixes: str = ""
+           exclude_prefixes: str = "",
+           only_taxa: str = ""
 ) -> List[LookupResult]:
     """
     Returns cliques with a name or synonym that contains a specified string.
@@ -286,18 +301,29 @@ async def lookup(string: str,
     # This version of the code replaces the previous facet-based multiple-query search NameRes used to have
     # (see https://github.com/TranslatorSRI/NameResolution/blob/v1.2.0/api/server.py#L79-L165)
 
-    # First, we need forms of the query that are (1) lowercase, and (2) missing any Lucene special characters
-    # (as listed at https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
+    # For reasons we don't fully understand, we can put escaped special characters into the non-autocomplete
+    # query but not the autocomplete query. So we handle those cases separately here. See
+    # https://github.com/TranslatorSRI/NameResolution/issues/146 for a deeper dive into what's going on.
     string_lc = string.lower()
-    string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc)
-
-    # We need to escape '&&' and '||' specially, since they are double-character sequences.
-    string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
-
-    # If in autocomplete mode, we combine it into a query that allows for incomplete words.
     if autocomplete:
-        query = f"({string_lc_escaped}) OR ({string_lc_escaped}*)"
+        # Remove any Lucene special characters (as listed at
+        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
+        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', ' ', string_lc)
+
+        # We need to remove '&&' and '||' specially, since they are double-character sequences.
+        string_lc_escaped = string_lc_escaped.replace('&&', ' ').replace('||', ' ')
+
+        # Construct query with an asterisk at the end so we look for incomplete terms.
+        query = f"({string_lc_escaped}*)"
     else:
+        # Escape any Lucene special characters (as listed at
+        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
+        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc)
+
+        # We need to escape '&&' and '||' specially, since they are double-character sequences.
+        string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
+
+        # Construct query.
         query = f"({string_lc_escaped})"
 
     # Apply filters as needed.
@@ -322,19 +348,38 @@ async def lookup(string: str,
             prefix_exclude_filters.append(f"NOT curie:/{prefix}:.*/")
         filters.append(" AND ".join(prefix_exclude_filters))
 
+    # Taxa filter.
+    # only_taxa is like: 'NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955'
+    if only_taxa:
+        taxa_filters = []
+        for taxon in re.split('\\s*\\|\\s*', only_taxa):
+            taxa_filters.append(f'taxa:"{taxon}"')
+        filters.append(" OR ".join(taxa_filters))
+
+    # Boost queries
+    boost_queries = 'clique_identifier_count:[10 TO *]^20 ' + \
+                    'clique_identifier_count:[4 TO 9]^10 '
+    #                'clique_identifier_count:[2 TO 3]^1 '
+    #                         'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
+    #                         'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
+    #                         'shortest_name_length[5 TO 10]^5 ' +        # - prioritize smaller names
+    #                         ''
+
     params = {
         "query": {
             "edismax": {
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^10 preferred_name^1 names^1",
+                "qf": "preferred_name_exactish^30 preferred_name^20 names^10",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^20 preferred_name^3 names^2"
+                "pf": "preferred_name_exactish^35 preferred_name^25 names^15",
+                # Boost by:
+                "bq":   boost_queries,
             },
         },
-        "sort": "score DESC, curie_suffix ASC",
+        "sort": "score DESC, clique_identifier_count DESC, shortest_name_length ASC, curie_suffix ASC",
         "limit": limit,
         "offset": offset,
         "filter": filters,
@@ -351,6 +396,8 @@ async def lookup(string: str,
     response = response.json()
     output = [ LookupResult(curie=doc.get("curie", ""), label=doc.get("preferred_name", ""), synonyms=doc.get("names", []),
                 score=doc.get("score", ""),
+                taxa=doc.get("taxa", []),
+                clique_identifier_count=doc.get("clique_identifier_count", 0),
                 types=[f"biolink:{d}" for d in doc.get("types", [])])
                for doc in response["response"]["docs"]]
 

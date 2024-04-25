@@ -5,7 +5,7 @@
 #
 
 # Configuration
-SYNONYMS_URL=https://stars.renci.org/var/babel_outputs/2023nov5/synonyms/
+SYNONYMS_URL=https://stars.renci.org/var/babel_outputs/2024mar24/synonyms/
 
 # How much memory should Solr use.
 SOLR_MEM=220G
@@ -19,8 +19,8 @@ SOLR_MEM=220G
 .PHONY: all clean
 all: data/setup.done
 	echo Solr has now been set up and loaded with the synonym data.
-	echo Run `make start-solr-backup` to start a backup. Run `make check-solr-backup` to check
-	echo if the backup has completed. Once that has completed, run `make data/backup.done` to
+	echo Run 'make start-solr-backup' to start a backup. Run 'make check-solr-backup' to check
+	echo if the backup has completed. Once that has completed, run 'make data/backup.done' to
 	echo generate a snapshot.backup.tar.gz file that can be used in NameRes.
 
 clean:
@@ -36,9 +36,10 @@ data/synonyms/done:
 	gunzip data/synonyms/*.txt.gz
 	echo Downloaded synonyms from ${SYNONYMS_URL}
 	split -d -l 10000000 data/synonyms/Protein.txt data/synonyms/Protein.txt. && rm data/synonyms/Protein.txt
-	split -d -l 10000000 data/synonyms/SmallMolecule.txt data/synonyms/SmallMolecule.txt. && rm data/synonyms/SmallMolecule.txt
+	# split -d -l 10000000 data/synonyms/SmallMolecule.txt data/synonyms/SmallMolecule.txt. && rm data/synonyms/SmallMolecule.txt
+	split -d -l 10000000 data/synonyms/DrugChemicalConflated.txt data/synonyms/DrugChemicalConflated.txt. && rm data/synonyms/DrugChemicalConflated.txt
 	split -d -l 10000000 data/synonyms/Gene.txt data/synonyms/Gene.txt. && rm data/synonyms/Gene.txt
-	echo Split Protein.txt, SmallMolecule.txt and Gene.txt, and deleted the original files.
+	echo Split Protein.txt, DrugChemicalConflated.txt and Gene.txt, and deleted the original files.
 	touch $@
 
 # Step 3. Start Solr server.

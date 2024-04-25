@@ -1,5 +1,10 @@
+import logging
+
 from api.server import app
 from fastapi.testclient import TestClient
+
+# Turn on debugging for tests.
+logging.basicConfig(level=logging.DEBUG)
 
 def test_simple_check():
     client = TestClient(app)
