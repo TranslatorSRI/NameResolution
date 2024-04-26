@@ -1,9 +1,9 @@
 # NameRes Translator December 2023 Release
 
 - Babel: [2023nov5](https://stars.renci.org/var/babel_outputs/2023nov5/)
-- NameRes: [v2.3.11](https://github.com/TranslatorSRI/NameResolution/releases/tag/v1.3.11)
+- NameRes: [v1.3.11](https://github.com/TranslatorSRI/NameResolution/releases/tag/v1.3.11)
 
-Next release: _None as yet_
+Next release: [Translator May 2024](TranslatorMay2024.md)
 
 ## New features
 * The `/lookup` endpoints now:
