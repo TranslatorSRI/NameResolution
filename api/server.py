@@ -314,7 +314,7 @@ async def lookup(string: str,
         string_lc_escaped = string_lc_escaped.replace('&&', ' ').replace('||', ' ')
 
         # Construct query with an asterisk at the end so we look for incomplete terms.
-        query = f'({string_lc_escaped}*)'
+        query = f'"{string_lc_escaped}" OR ({string_lc_escaped}*)'
     else:
         # Escape any Lucene special characters (as listed at
         # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
@@ -324,7 +324,7 @@ async def lookup(string: str,
         string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
 
         # Construct query.
-        query = f'"{string_lc_escaped}"'
+        query = f'{string_lc_escaped}'
 
     # Apply filters as needed.
     # Biolink type filter
@@ -371,10 +371,10 @@ async def lookup(string: str,
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^30 names_exactish^20 preferred_name^10 names",
+                "qf": "preferred_name_exactish^60 names_exactish^30 preferred_name^10 names",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^70 names_exactish^50 preferred_name^25 names^15",
+                "pf": "preferred_name_exactish^100 names_exactish^80 preferred_name^25 names^15",
                 # Boost by:
                 "bq":   boost_queries,
             },
