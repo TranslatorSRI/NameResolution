@@ -324,7 +324,7 @@ async def lookup(string: str,
         string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
 
         # Construct query.
-        query = f'{string_lc_escaped}'
+        query = f'"{string_lc_escaped}"'
 
     # Apply filters as needed.
     # Biolink type filter
@@ -357,8 +357,10 @@ async def lookup(string: str,
         filters.append(" OR ".join(taxa_filters))
 
     # Boost queries
-    boost_queries = 'clique_identifier_count:[10 TO *]^20 ' + \
-                    'clique_identifier_count:[4 TO 9]^10 '
+    boost_queries = 'clique_identifier_count[41 TO *]^100 ' + \
+                    'clique_identifier_count[21 TO 40]^50 ' + \
+                    'clique_identifier_count[10 TO 20]^20 ' + \
+                    'clique_identifier_count[4 TO 9]^10 '
     #                'clique_identifier_count:[2 TO 3]^1 '
     #                         'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
     #                         'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
