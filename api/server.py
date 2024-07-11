@@ -305,26 +305,17 @@ async def lookup(string: str,
     # query but not the autocomplete query. So we handle those cases separately here. See
     # https://github.com/TranslatorSRI/NameResolution/issues/146 for a deeper dive into what's going on.
     string_lc = string.lower()
+
+    string_lc_escape_groupings = string_lc.replace('(', '').replace(')', '').replace('"', '')
+    string_lc_escape_everything = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc) \
+        .replace('&&', ' ').replace('||', ' ')
+
     if autocomplete:
-        # Remove any Lucene special characters (as listed at
-        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
-        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', ' ', string_lc)
-
-        # We need to remove '&&' and '||' specially, since they are double-character sequences.
-        string_lc_escaped = string_lc_escaped.replace('&&', ' ').replace('||', ' ')
-
         # Construct query with an asterisk at the end so we look for incomplete terms.
-        query = f'"{string_lc_escaped}" OR ({string_lc_escaped}*)'
+        query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything}*)'
     else:
-        # Escape any Lucene special characters (as listed at
-        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
-        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc)
-
-        # We need to escape '&&' and '||' specially, since they are double-character sequences.
-        string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
-
         # Construct query.
-        query = f'"{string_lc_escaped}"'
+        query = f'({string_lc_escape_everything})'
 
     # Apply filters as needed.
     # Biolink type filter
