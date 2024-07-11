@@ -324,7 +324,7 @@ async def lookup(string: str,
         string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
 
         # Construct query.
-        query = f'{string_lc_escaped}'
+        query = f'"{string_lc_escaped}"'
 
     # Apply filters as needed.
     # Biolink type filter
@@ -362,14 +362,14 @@ async def lookup(string: str,
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^40 names_exactish^20 preferred_name^10 names",
+                "qf": "preferred_name_exactish^100 names_exactish^30 preferred_name^10 names",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^50 names_exactish^30 preferred_name^15 names^5",
+                "pf": "preferred_name_exactish^150 names_exactish^50 preferred_name^20 names^10",
                 # Boosts
                 "bq": [],
                 "boost": [
-                    "log(log(clique_identifier_count))",
+                    "log(clique_identifier_count)",
                     "div(1,shortest_name_length)"
                 ],
             },
