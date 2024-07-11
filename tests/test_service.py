@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 def test_simple_check():
     client = TestClient(app)
-    params = {'string':'alzheimer'}
+    params = {'string':'alzheimer', 'autocomplete': 'false'}
     response = client.post("/lookup",params=params)
     syns = response.json()
     #There are more than 10, but it should cut off at 10 if we don't give it a max?
@@ -16,7 +16,7 @@ def test_simple_check():
 
 def test_limit():
     client = TestClient(app)
-    params = {'string': 'alzheimer', 'limit': 1}
+    params = {'string': 'alzheimer', 'limit': 1, 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 1
@@ -30,17 +30,17 @@ def test_limit():
 def test_type_subsetting():
     client = TestClient(app)
     #Get everything with Parkinson (57)
-    params = {'string': 'Parkinson', "limit": 100}
+    params = {'string': 'Parkinson', "limit": 100, 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 57
     #Now limit to Disease (just 53)
-    params = {'string': 'Parkinson', "limit": 100, "biolink_type": "biolink:Disease"}
+    params = {'string': 'Parkinson', "limit": 100, "biolink_type": "biolink:Disease", 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 53
     #Now verify that NamedThing is everything
-    params = {'string': 'Parkinson', "limit": 100, "biolink_type": "biolink:NamedThing"}
+    params = {'string': 'Parkinson', "limit": 100, "biolink_type": "biolink:NamedThing", 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 57
@@ -48,7 +48,7 @@ def test_type_subsetting():
 def test_offset():
     client = TestClient(app)
     #There are 31 total.  If we say, start at 20 and give me then next 100 , we should get 11
-    params = {'string': 'alzheimer', 'limit': 100, 'offset': 20}
+    params = {'string': 'alzheimer', 'limit': 100, 'offset': 20, 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 11
@@ -58,7 +58,7 @@ def test_hyphens():
     Show that we can find it with or without the hyphen"""
     client = TestClient(app)
     #with hyphen
-    params = {'string': 'beta-secretase'}
+    params = {'string': 'beta-secretase', 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
 
@@ -72,7 +72,7 @@ def test_hyphens():
     assert syns[0]["curie"] == 'CHEBI:74925'
     assert syns[1]["curie"] == 'MONDO:0011561'
     #no hyphen
-    params = {'string': 'beta secretase'}
+    params = {'string': 'beta secretase', 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     assert len(syns) == 2
@@ -81,7 +81,7 @@ def test_hyphens():
 
 def test_structure():
     client = TestClient(app)
-    params = {'string': 'beta-secretase'}
+    params = {'string': 'beta-secretase', 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
     #do we get a preferred name and type?
