@@ -310,12 +310,8 @@ async def lookup(string: str,
     string_lc_escape_everything = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc) \
         .replace('&&', ' ').replace('||', ' ')
 
-    if autocomplete:
-        # Construct query with an asterisk at the end so we look for incomplete terms.
-        query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything}*)'
-    else:
-        # Construct query.
-        query = f'({string_lc_escape_everything})'
+    # Construct query with an asterisk at the end so we look for incomplete terms.
+    query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything}*)'
 
     # Apply filters as needed.
     # Biolink type filter
