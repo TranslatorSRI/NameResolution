@@ -324,7 +324,7 @@ async def lookup(string: str,
         string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
 
         # Construct query.
-        query = f'"{string_lc_escaped}"'
+        query = f'{string_lc_escaped}'
 
     # Apply filters as needed.
     # Biolink type filter
@@ -356,29 +356,22 @@ async def lookup(string: str,
             taxa_filters.append(f'taxa:"{taxon}"')
         filters.append(" OR ".join(taxa_filters))
 
-    # Boost queries
-    boost_queries = 'clique_identifier_count[41 TO *]^100 ' + \
-                    'clique_identifier_count[21 TO 40]^50 ' + \
-                    'clique_identifier_count[10 TO 20]^20 ' + \
-                    'clique_identifier_count[4 TO 9]^10 '
-    #                'clique_identifier_count:[2 TO 3]^1 '
-    #                         'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
-    #                         'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
-    #                         'shortest_name_length[5 TO 10]^5 ' +        # - prioritize smaller names
-    #                         ''
-
     params = {
         "query": {
             "edismax": {
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^60 names_exactish^30 preferred_name^10 names",
+                "qf": "preferred_name_exactish^40 names_exactish^20 preferred_name^10 names",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^100 names_exactish^80 preferred_name^25 names^15",
-                # Boost by:
-                "bq":   boost_queries,
+                "pf": "preferred_name_exactish^50 names_exactish^30 preferred_name^15 names^5",
+                # Boosts
+                "bq": [],
+                "boost": [
+                    "log(log(clique_identifier_count))",
+                    "div(1,shortest_name_length)"
+                ],
             },
         },
         "sort": "score DESC, clique_identifier_count DESC, shortest_name_length ASC, curie_suffix ASC",
@@ -387,7 +380,7 @@ async def lookup(string: str,
         "filter": filters,
         "fields": "*, score"
     }
-    logging.debug(f"Query: {json.dumps(params)}")
+    print(f"Query: {json.dumps(params, indent=2)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
@@ -402,6 +395,7 @@ async def lookup(string: str,
                 clique_identifier_count=doc.get("clique_identifier_count", 0),
                 types=[f"biolink:{d}" for d in doc.get("types", [])])
                for doc in response["response"]["docs"]]
+    # print(f"Response: {json.dumps(response, indent=2)}")
 
     return output
 
