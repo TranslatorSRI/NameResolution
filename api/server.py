@@ -311,7 +311,10 @@ async def lookup(string: str,
         .replace('&&', ' ').replace('||', ' ')
 
     # Construct query with an asterisk at the end so we look for incomplete terms.
-    query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything}*)'
+    if autocomplete:
+        query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything}*)'
+    else:
+        query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything})'
 
     # Apply filters as needed.
     # Biolink type filter
@@ -356,8 +359,7 @@ async def lookup(string: str,
                 # Boosts
                 "bq": [],
                 "boost": [
-                    "log(clique_identifier_count)",
-                    "div(1,shortest_name_length)"
+                    "log(clique_identifier_count)"
                 ],
             },
         },
