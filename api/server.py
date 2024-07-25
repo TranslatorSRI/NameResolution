@@ -286,31 +286,21 @@ async def lookup(string: str,
     :param autocomplete: Should we do the lookup in autocomplete mode (in which we expect the final word to be
         incomplete) or not (in which the entire phrase is expected to be complete, i.e. as an entity linker)?
     """
-    #This original code tokenizes on spaces, and then removes all other punctuation.
-    # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
-    # This turns out to be rarely what is wanted, especially because the tokenizer
-    # isn't tokenizing this way.  I think that this may have come about due to chemical searching
-    # but there is no documentation explaining the decision.  In the event that chemical or other punctuation
-    # heavy searches start to fail, this may need to be revisited.
-    #fragments = string.split(" ")
-    #name_filters = " AND ".join(
-    #    f"name:{not_alpha.sub('', fragment)}*"
-    #    for fragment in fragments
-    #)
 
-    # This version of the code replaces the previous facet-based multiple-query search NameRes used to have
-    # (see https://github.com/TranslatorSRI/NameResolution/blob/v1.2.0/api/server.py#L79-L165)
-
-    # For reasons we don't fully understand, we can put escaped special characters into the non-autocomplete
-    # query but not the autocomplete query. So we handle those cases separately here. See
-    # https://github.com/TranslatorSRI/NameResolution/issues/146 for a deeper dive into what's going on.
+    # First, we lowercase the query since all our indexes are case-insensitive.
     string_lc = string.lower()
 
-    string_lc_escape_groupings = string_lc.replace('(', '').replace(')', '').replace('"', '')
-    string_lc_escape_everything = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc) \
+    # For reasons I don't understand, we need to use backslash to escape characters (e.g. "\(") to remove the special
+    # significance of characters inside round brackets, but not inside double-quotes. So we escape them separately:
+    # - For a full exact search, we only remove double-quotes and slashes, leaving other special characters as-is.
+    string_lc_escape_groupings = string_lc.replace('"', '').replace('\\', '')
+
+    # - For a tokenized search, we escape all special characters with backslashes as well as other characters that might
+    #   mess up the search.
+    string_lc_escape_everything = re.sub(r'([!(){}\[\]^"~*?:/+-\\])', r'\\\g<0>', string_lc) \
         .replace('&&', ' ').replace('||', ' ')
 
-    # Construct query with an asterisk at the end so we look for incomplete terms.
+    # If autocomplete mode is turned on, add an asterisk at the end so that we look for incomplete terms.
     if autocomplete:
         query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything}*)'
     else:
