@@ -65,6 +65,14 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
         {
             "name":"names",
             "type":"LowerTextField",
+            "indexed":true,
+            "stored":true,
+            "multiValued":true
+        },
+        {
+            "name":"names_exactish",
+            "type":"exactish",
+            "indexed":true,
             "stored":true,
             "multiValued":true
         },
@@ -116,6 +124,14 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
             "stored":true
         }
     ] }' 'http://localhost:8983/solr/name_lookup/schema'
+
+# Add a copy field to copy names into names_exactish.
+curl -X POST -H 'Content-type:application/json' --data-binary '{
+    "add-copy-field": {
+      "source": "names",
+      "dest": "names_exactish"
+    }
+}' 'http://localhost:8983/solr/name_lookup/schema'
 
 # Add a copy field to copy preferred_name into preferred_name_exactish.
 curl -X POST -H 'Content-type:application/json' --data-binary '{

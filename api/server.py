@@ -286,45 +286,25 @@ async def lookup(string: str,
     :param autocomplete: Should we do the lookup in autocomplete mode (in which we expect the final word to be
         incomplete) or not (in which the entire phrase is expected to be complete, i.e. as an entity linker)?
     """
-    #This original code tokenizes on spaces, and then removes all other punctuation.
-    # so x-linked becomes xlinked and beta-secretasse becomes betasecretase.
-    # This turns out to be rarely what is wanted, especially because the tokenizer
-    # isn't tokenizing this way.  I think that this may have come about due to chemical searching
-    # but there is no documentation explaining the decision.  In the event that chemical or other punctuation
-    # heavy searches start to fail, this may need to be revisited.
-    #fragments = string.split(" ")
-    #name_filters = " AND ".join(
-    #    f"name:{not_alpha.sub('', fragment)}*"
-    #    for fragment in fragments
-    #)
 
-    # This version of the code replaces the previous facet-based multiple-query search NameRes used to have
-    # (see https://github.com/TranslatorSRI/NameResolution/blob/v1.2.0/api/server.py#L79-L165)
-
-    # For reasons we don't fully understand, we can put escaped special characters into the non-autocomplete
-    # query but not the autocomplete query. So we handle those cases separately here. See
-    # https://github.com/TranslatorSRI/NameResolution/issues/146 for a deeper dive into what's going on.
+    # First, we lowercase the query since all our indexes are case-insensitive.
     string_lc = string.lower()
+
+    # For reasons I don't understand, we need to use backslash to escape characters (e.g. "\(") to remove the special
+    # significance of characters inside round brackets, but not inside double-quotes. So we escape them separately:
+    # - For a full exact search, we only remove double-quotes and slashes, leaving other special characters as-is.
+    string_lc_escape_groupings = string_lc.replace('"', '').replace('\\', '')
+
+    # - For a tokenized search, we escape all special characters with backslashes as well as other characters that might
+    #   mess up the search.
+    string_lc_escape_everything = re.sub(r'([!(){}\[\]^"~*?:/+-\\])', r'\\\g<0>', string_lc) \
+        .replace('&&', ' ').replace('||', ' ')
+
+    # If autocomplete mode is turned on, add an asterisk at the end so that we look for incomplete terms.
     if autocomplete:
-        # Remove any Lucene special characters (as listed at
-        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
-        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', ' ', string_lc)
-
-        # We need to remove '&&' and '||' specially, since they are double-character sequences.
-        string_lc_escaped = string_lc_escaped.replace('&&', ' ').replace('||', ' ')
-
-        # Construct query with an asterisk at the end so we look for incomplete terms.
-        query = f"({string_lc_escaped}*)"
+        query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything}*)'
     else:
-        # Escape any Lucene special characters (as listed at
-        # https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html#escaping-special-characters)
-        string_lc_escaped = re.sub(r'([!(){}\[\]^"~*?:/+-])', r'\\\g<0>', string_lc)
-
-        # We need to escape '&&' and '||' specially, since they are double-character sequences.
-        string_lc_escaped = string_lc_escaped.replace('&&', '\\&\\&').replace('||', '\\|\\|')
-
-        # Construct query.
-        query = f"({string_lc_escaped})"
+        query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything})'
 
     # Apply filters as needed.
     # Biolink type filter
@@ -356,36 +336,32 @@ async def lookup(string: str,
             taxa_filters.append(f'taxa:"{taxon}"')
         filters.append(" OR ".join(taxa_filters))
 
-    # Boost queries
-    boost_queries = 'clique_identifier_count:[10 TO *]^20 ' + \
-                    'clique_identifier_count:[4 TO 9]^10 '
-    #                'clique_identifier_count:[2 TO 3]^1 '
-    #                         'clique_identifier_count:1^0.1 ' +     # - clique identifier count.
-    #                         'shortest_name_length[1 TO 5]^10 ' +        # - prioritize smaller names
-    #                         'shortest_name_length[5 TO 10]^5 ' +        # - prioritize smaller names
-    #                         ''
-
     params = {
         "query": {
             "edismax": {
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^30 preferred_name^20 names^10",
+                "qf": "preferred_name_exactish^8 names_exactish^2 preferred_name names",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^35 preferred_name^25 names^15",
-                # Boost by:
-                "bq":   boost_queries,
+                "pf": "preferred_name_exactish^10 names_exactish^5 preferred_name names",
+                # Boosts
+                "bq": [],
+                "boost": [
+                    # The boost is multiplied with score -- calculating the log() reduces how quickly this increases
+                    # the score for increasing clique identifier counts.
+                    "log(clique_identifier_count)"
+                ],
             },
         },
-        "sort": "score DESC, clique_identifier_count DESC, shortest_name_length ASC, curie_suffix ASC",
+        "sort": "score DESC, clique_identifier_count DESC, curie_suffix ASC",
         "limit": limit,
         "offset": offset,
         "filter": filters,
         "fields": "*, score"
     }
-    logging.debug(f"Query: {json.dumps(params)}")
+    logging.debug(f"Query: {json.dumps(params, indent=2)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
@@ -400,6 +376,7 @@ async def lookup(string: str,
                 clique_identifier_count=doc.get("clique_identifier_count", 0),
                 types=[f"biolink:{d}" for d in doc.get("types", [])])
                for doc in response["response"]["docs"]]
+    # logging.debug(f"Response: {json.dumps(response, indent=2)}")
 
     return output
 

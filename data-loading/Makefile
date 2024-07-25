@@ -5,7 +5,7 @@
 #
 
 # Configuration
-SYNONYMS_URL=https://stars.renci.org/var/babel_outputs/2024mar24/synonyms/
+SYNONYMS_URL=https://stars.renci.org/var/babel_outputs/2024jul13/synonyms/
 
 # How much memory should Solr use.
 SOLR_MEM=220G
