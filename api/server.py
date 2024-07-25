@@ -349,6 +349,8 @@ async def lookup(string: str,
                 # Boosts
                 "bq": [],
                 "boost": [
+                    # The boost is multiplied with score -- calculating the log() reduces how quickly this increases
+                    # the score for increasing clique identifier counts.
                     "log(clique_identifier_count)"
                 ],
             },
@@ -359,7 +361,7 @@ async def lookup(string: str,
         "filter": filters,
         "fields": "*, score"
     }
-    print(f"Query: {json.dumps(params, indent=2)}")
+    logging.debug(f"Query: {json.dumps(params, indent=2)}")
 
     query_url = f"http://{SOLR_HOST}:{SOLR_PORT}/solr/name_lookup/select"
     async with httpx.AsyncClient(timeout=None) as client:
@@ -374,7 +376,7 @@ async def lookup(string: str,
                 clique_identifier_count=doc.get("clique_identifier_count", 0),
                 types=[f"biolink:{d}" for d in doc.get("types", [])])
                for doc in response["response"]["docs"]]
-    # print(f"Response: {json.dumps(response, indent=2)}")
+    # logging.debug(f"Response: {json.dumps(response, indent=2)}")
 
     return output
 
