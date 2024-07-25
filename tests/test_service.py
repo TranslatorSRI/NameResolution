@@ -104,7 +104,7 @@ def test_autocomplete():
     assert syns[0]["types"] == ["biolink:NamedThing"]
     assert syns[1]['curie'] == 'MONDO:0011561'
     assert syns[1]["label"] == 'Alzheimer disease 6'
-    assert syns[1]["types"] == ["biolink:NamedThing"]
+    assert syns[1]["types"][0] == "biolink:Disease"
 
     # Or even an incomplete query.
     params = {'string': 'beta-secreta', 'autocomplete': 'false'}
@@ -117,5 +117,5 @@ def test_autocomplete():
     assert syns[0]["types"] == ["biolink:NamedThing"]
     assert syns[1]['curie'] == 'MONDO:0011561'
     assert syns[1]["label"] == 'Alzheimer disease 6'
-    assert syns[1]["types"] == ["biolink:NamedThing"]
+    assert syns[1]["types"][0] == "biolink:Disease"
 
