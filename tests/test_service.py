@@ -97,17 +97,25 @@ def test_autocomplete():
     params = {'string': 'beta-secretase', 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
-    assert len(syns) == 1
+    assert len(syns) == 2
     #do we get a preferred name and type?
+    assert syns[0]['curie'] == 'CHEBI:74925'
     assert syns[0]["label"] == 'BACE1 inhibitor'
     assert syns[0]["types"] == ["biolink:NamedThing"]
+    assert syns[1]['curie'] == 'MONDO:0011561'
+    assert syns[1]["label"] == 'Alzheimer disease 6'
+    assert syns[1]["types"] == ["biolink:NamedThing"]
 
     # Or even an incomplete query.
     params = {'string': 'beta-secreta', 'autocomplete': 'false'}
     response = client.post("/lookup", params=params)
     syns = response.json()
-    assert len(syns) == 1
+    assert len(syns) == 2
     #do we get a preferred name and type?
+    assert syns[0]['curie'] == 'CHEBI:74925'
     assert syns[0]["label"] == 'BACE1 inhibitor'
     assert syns[0]["types"] == ["biolink:NamedThing"]
+    assert syns[1]['curie'] == 'MONDO:0011561'
+    assert syns[1]["label"] == 'Alzheimer disease 6'
+    assert syns[1]["types"] == ["biolink:NamedThing"]
 
