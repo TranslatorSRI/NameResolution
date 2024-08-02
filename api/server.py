@@ -359,7 +359,16 @@ async def lookup(string: str,
         "limit": limit,
         "offset": offset,
         "filter": filters,
-        "fields": "*, score"
+        "fields": "*, score",
+        "params": {
+            # Highlighting
+            "hl": "true",
+            "hl.method": "fastVector",
+            "hl.encoder": "html",
+            "hl.tag.pre": "<strong>",
+            "hl.tag.post": "</strong>",
+            "hl.usePhraseHighlighter": "true",
+        },
     }
     logging.debug(f"Query: {json.dumps(params, indent=2)}")
 
@@ -370,6 +379,7 @@ async def lookup(string: str,
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
+    print(f"Solr response: {json.dumps(response, indent=2)}")
     output = [ LookupResult(curie=doc.get("curie", ""), label=doc.get("preferred_name", ""), synonyms=doc.get("names", []),
                 score=doc.get("score", ""),
                 taxa=doc.get("taxa", []),
