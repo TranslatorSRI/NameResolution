@@ -160,6 +160,8 @@ async def reverse_lookup(curies) -> Dict[str, Dict]:
 class LookupResult(BaseModel):
     curie:str
     label: str
+    preferred_matches: List[str]
+    synonym_matches: List[str]
     synonyms: List[str]
     taxa: List[str]
     types: List[str]
@@ -363,11 +365,12 @@ async def lookup(string: str,
         "params": {
             # Highlighting
             "hl": "true",
-            "hl.method": "fastVector",
+            "hl.method": "unified",
             "hl.encoder": "html",
             "hl.tag.pre": "<strong>",
             "hl.tag.post": "</strong>",
-            "hl.usePhraseHighlighter": "true",
+            # "hl.usePhraseHighlighter": "true",
+            # "hl.highlightMultiTerm": "true",
         },
     }
     logging.debug(f"Query: {json.dumps(params, indent=2)}")
@@ -380,15 +383,47 @@ async def lookup(string: str,
         response.raise_for_status()
     response = response.json()
     print(f"Solr response: {json.dumps(response, indent=2)}")
-    output = [ LookupResult(curie=doc.get("curie", ""), label=doc.get("preferred_name", ""), synonyms=doc.get("names", []),
-                score=doc.get("score", ""),
-                taxa=doc.get("taxa", []),
-                clique_identifier_count=doc.get("clique_identifier_count", 0),
-                types=[f"biolink:{d}" for d in doc.get("types", [])])
-               for doc in response["response"]["docs"]]
-    # logging.debug(f"Response: {json.dumps(response, indent=2)}")
 
-    return output
+    # Associate highlighting information with search results.
+    highlighting = response["highlighting"]
+
+    outputs = []
+    for doc in response['response']['docs']:
+        preferred_matches = []
+        synonym_matches = []
+
+        if doc['id'] in highlighting:
+            matches = highlighting[doc['id']]
+
+            # We order exactish matches before token matches.
+            if 'preferred_name_exactish' in matches:
+                preferred_matches.extend(matches['preferred_name_exactish'])
+            if 'preferred_name' in matches:
+                preferred_matches.extend(matches['preferred_name'])
+
+            # Solr sometimes returns duplicates or a blank string here?
+            preferred_matches = list(filter(lambda s: s, set(preferred_matches)))
+
+            # We order exactish matches before token matches.
+            if 'names_exactish' in matches:
+                synonym_matches.extend(matches['names_exactish'])
+            if 'names' in matches:
+                synonym_matches.extend(matches['names'])
+
+            # Solr sometimes returns duplicates or a blank string here?
+            synonym_matches = list(filter(lambda s: s, set(synonym_matches)))
+
+        outputs.append(LookupResult(curie=doc.get("curie", ""),
+                           label=doc.get("preferred_name", ""),
+                           preferred_matches=preferred_matches,
+                           synonym_matches=synonym_matches,
+                           synonyms=doc.get("names", []),
+                           score=doc.get("score", ""),
+                           taxa=doc.get("taxa", []),
+                           clique_identifier_count=doc.get("clique_identifier_count", 0),
+                           types=[f"biolink:{d}" for d in doc.get("types", [])]))
+
+    return outputs
 
 # Override open api schema with custom schema
 app.openapi_schema = construct_open_api_schema(app)
