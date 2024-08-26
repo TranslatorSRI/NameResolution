@@ -160,6 +160,7 @@ async def reverse_lookup(curies) -> Dict[str, Dict]:
 class LookupResult(BaseModel):
     curie:str
     label: str
+    highlighting: Dict[str, List[str]]
     synonyms: List[str]
     taxa: List[str]
     types: List[str]
@@ -180,6 +181,9 @@ async def lookup_curies_get(
         autocomplete: Annotated[bool, Query(
             description="Is the input string incomplete (autocomplete=true) or a complete phrase (autocomplete=false)?"
         )] = True,
+        highlighting: Annotated[bool, Query(
+            description="Return information on which labels and synonyms matched the search query?"
+        )] = False,
         offset: Annotated[int, Query(
             description="The number of results to skip. Can be used to page through the results of a query.",
             # Offset should be greater than or equal to zero.
@@ -216,7 +220,7 @@ async def lookup_curies_get(
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
+    return await lookup(string, autocomplete, highlighting, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
 
 
 @app.post("/lookup",
@@ -232,6 +236,9 @@ async def lookup_curies_post(
         autocomplete: Annotated[bool, Query(
             description="Is the input string incomplete (autocomplete=true) or a complete phrase (autocomplete=false)?"
         )] = True,
+        highlighting: Annotated[bool, Query(
+            description="Return information on which labels and synonyms matched the search query?"
+        )] = False,
         offset: Annotated[int, Query(
             description="The number of results to skip. Can be used to page through the results of a query.",
             # Offset should be greater than or equal to zero.
@@ -268,11 +275,12 @@ async def lookup_curies_post(
     """
     Returns cliques with a name or synonym that contains a specified string.
     """
-    return await lookup(string, autocomplete, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
+    return await lookup(string, autocomplete, highlighting, offset, limit, biolink_type, only_prefixes, exclude_prefixes, only_taxa)
 
 
 async def lookup(string: str,
            autocomplete: bool = False,
+           highlighting: bool = False,
            offset: int = 0,
            limit: conint(le=1000) = 10,
            biolink_type: str = None,
@@ -285,6 +293,7 @@ async def lookup(string: str,
 
     :param autocomplete: Should we do the lookup in autocomplete mode (in which we expect the final word to be
         incomplete) or not (in which the entire phrase is expected to be complete, i.e. as an entity linker)?
+    :param highlighting: Return information on which labels and synonyms matched the search query.
     """
 
     # First, we lowercase the query since all our indexes are case-insensitive.
@@ -336,6 +345,20 @@ async def lookup(string: str,
             taxa_filters.append(f'taxa:"{taxon}"')
         filters.append(" OR ".join(taxa_filters))
 
+    # Turn on highlighting if requested.
+    inner_params = {}
+    if highlighting:
+        inner_params.update({
+            # Highlighting
+            "hl": "true",
+            "hl.method": "unified",
+            "hl.encoder": "html",
+            "hl.tag.pre": "<strong>",
+            "hl.tag.post": "</strong>",
+            # "hl.usePhraseHighlighter": "true",
+            # "hl.highlightMultiTerm": "true",
+        })
+
     params = {
         "query": {
             "edismax": {
@@ -359,7 +382,8 @@ async def lookup(string: str,
         "limit": limit,
         "offset": offset,
         "filter": filters,
-        "fields": "*, score"
+        "fields": "*, score",
+        "params": inner_params,
     }
     logging.debug(f"Query: {json.dumps(params, indent=2)}")
 
@@ -370,15 +394,50 @@ async def lookup(string: str,
         LOGGER.error("Solr REST error: %s", response.text)
         response.raise_for_status()
     response = response.json()
-    output = [ LookupResult(curie=doc.get("curie", ""), label=doc.get("preferred_name", ""), synonyms=doc.get("names", []),
-                score=doc.get("score", ""),
-                taxa=doc.get("taxa", []),
-                clique_identifier_count=doc.get("clique_identifier_count", 0),
-                types=[f"biolink:{d}" for d in doc.get("types", [])])
-               for doc in response["response"]["docs"]]
-    # logging.debug(f"Response: {json.dumps(response, indent=2)}")
+    logging.debug(f"Solr response: {json.dumps(response, indent=2)}")
 
-    return output
+    # Associate highlighting information with search results.
+    highlighting_response = response.get("highlighting", {})
+
+    outputs = []
+    for doc in response['response']['docs']:
+        preferred_matches = []
+        synonym_matches = []
+
+        if doc['id'] in highlighting_response:
+            matches = highlighting_response[doc['id']]
+
+            # We order exactish matches before token matches.
+            if 'preferred_name_exactish' in matches:
+                preferred_matches.extend(matches['preferred_name_exactish'])
+            if 'preferred_name' in matches:
+                preferred_matches.extend(matches['preferred_name'])
+
+            # Solr sometimes returns duplicates or a blank string here?
+            preferred_matches = list(filter(lambda s: s, set(preferred_matches)))
+
+            # We order exactish matches before token matches.
+            if 'names_exactish' in matches:
+                synonym_matches.extend(matches['names_exactish'])
+            if 'names' in matches:
+                synonym_matches.extend(matches['names'])
+
+            # Solr sometimes returns duplicates or a blank string here?
+            synonym_matches = list(filter(lambda s: s, set(synonym_matches)))
+
+        outputs.append(LookupResult(curie=doc.get("curie", ""),
+                           label=doc.get("preferred_name", ""),
+                           highlighting={
+                               'labels': preferred_matches,
+                               'synonyms': synonym_matches,
+                           } if highlighting else {},
+                           synonyms=doc.get("names", []),
+                           score=doc.get("score", ""),
+                           taxa=doc.get("taxa", []),
+                           clique_identifier_count=doc.get("clique_identifier_count", 0),
+                           types=[f"biolink:{d}" for d in doc.get("types", [])]))
+
+    return outputs
 
 # Override open api schema with custom schema
 app.openapi_schema = construct_open_api_schema(app)
