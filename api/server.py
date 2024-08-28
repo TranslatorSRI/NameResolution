@@ -195,11 +195,15 @@ async def lookup_curies_get(
             ge=0,
             le=1000
         )] = 10,
-        biolink_type: Annotated[Union[str, None], Query(
-            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
-            # We can't use `example` here because otherwise it gets filled in when filling this in.
-            # example="biolink:Disease"
-        )] = None,
+        biolink_type: Annotated[Union[List[str], None], Query(
+            description="The Biolink types to filter to (with or without the `biolink:` prefix), "
+                        "e.g. `biolink:Disease` or `Disease`. Multiple types will be combined with OR, i.e. filtering "
+                        "for PhenotypicFeature and Disease will return concepts that are either PhenotypicFeatures OR "
+                        "Disease, not concepts that are both PhenotypicFeature AND Disease.",
+            # We can't use `example` here because otherwise it gets filled in when you click "Try it out",
+            # which is easy to overlook.
+            # example=["biolink:Disease", "biolink:PhenotypicFeature"]
+        )] = [],
         only_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
@@ -250,11 +254,15 @@ async def lookup_curies_post(
             ge=0,
             le=1000
         )] = 10,
-        biolink_type: Annotated[Union[str, None], Query(
-            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
-            # We can't use `example` here because otherwise it gets filled in when filling this in.
-            # example="biolink:Disease"
-        )] = None,
+        biolink_type: Annotated[Union[List[str], None], Query(
+            description="The Biolink types to filter to (with or without the `biolink:` prefix), "
+                        "e.g. `biolink:Disease` or `Disease`. Multiple types will be combined with OR, i.e. filtering "
+                        "for PhenotypicFeature and Disease will return concepts that are either PhenotypicFeatures OR "
+                        "Disease, not concepts that are both PhenotypicFeature AND Disease.",
+            # We can't use `example` here because otherwise it gets filled in when you click "Try it out",
+            # which is easy to overlook.
+            # example=["biolink:Disease", "biolink:PhenotypicFeature"]
+        )] = [],
         only_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
@@ -283,7 +291,7 @@ async def lookup(string: str,
            highlighting: bool = False,
            offset: int = 0,
            limit: conint(le=1000) = 10,
-           biolink_type: str = None,
+           biolink_types: List[str] = None,
            only_prefixes: str = "",
            exclude_prefixes: str = "",
            only_taxa: str = ""
@@ -294,6 +302,9 @@ async def lookup(string: str,
     :param autocomplete: Should we do the lookup in autocomplete mode (in which we expect the final word to be
         incomplete) or not (in which the entire phrase is expected to be complete, i.e. as an entity linker)?
     :param highlighting: Return information on which labels and synonyms matched the search query.
+    :param biolink_types: A list of Biolink types to filter (with or without the `biolink:` prefix). Note that these are
+        additive, i.e. if this list is ['PhenotypicFeature', 'Disease'], then both phenotypic features AND diseases
+        will be returned, rather than filtering to concepts that are both PhenotypicFeature and Disease.
     """
 
     # First, we lowercase the query since all our indexes are case-insensitive.
@@ -316,12 +327,16 @@ async def lookup(string: str,
         query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything})'
 
     # Apply filters as needed.
-    # Biolink type filter
     filters = []
-    if biolink_type:
-        if biolink_type.startswith('biolink:'):
-            biolink_type = biolink_type[8:]
-        filters.append(f"types:{biolink_type}")
+
+    # Biolink type filter
+    if biolink_types:
+        biolink_types_filters = []
+        for biolink_type in biolink_types:
+            if biolink_type.startswith('biolink:'):
+                biolink_type = biolink_type[8:]
+            biolink_types_filters.append(f"types:{biolink_type}")
+        filters.append(" OR ".join(biolink_types_filters))
 
     # Prefix: only filter
     if only_prefixes:
