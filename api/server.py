@@ -195,11 +195,14 @@ async def lookup_curies_get(
             ge=0,
             le=1000
         )] = 10,
-        biolink_type: Annotated[Union[str, None], Query(
-            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
+        biolink_type: Annotated[Union[List[str], None], Query(
+            description="The Biolink types to filter to (with or without the `biolink:` prefix), "
+                        "e.g. `biolink:Disease` or `Disease`. Multiple types will be combined with OR, i.e. filtering "
+                        "for PhenotypicFeature and Disease will return concepts that are either PhenotypicFeatures OR "
+                        "Disease, not concepts that are both PhenotypicFeature AND Disease.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
-            # example="biolink:Disease"
-        )] = None,
+            example=["biolink:Disease", "biolink:PhenotypicFeature"]
+        )] = [],
         only_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
@@ -250,11 +253,14 @@ async def lookup_curies_post(
             ge=0,
             le=1000
         )] = 10,
-        biolink_type: Annotated[Union[str, None], Query(
-            description="The Biolink type to filter to (with or without the `biolink:` prefix), e.g. `biolink:Disease` or `Disease`.",
+        biolink_type: Annotated[Union[List[str], None], Query(
+            description="The Biolink types to filter to (with or without the `biolink:` prefix), "
+                        "e.g. `biolink:Disease` or `Disease`. Multiple types will be combined with OR, i.e. filtering "
+                        "for PhenotypicFeature and Disease will return concepts that are either PhenotypicFeatures OR "
+                        "Disease, not concepts that are both PhenotypicFeature AND Disease.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
-            # example="biolink:Disease"
-        )] = None,
+            example=["biolink:Disease", "biolink:PhenotypicFeature"]
+        )] = [],
         only_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
             # We can't use `example` here because otherwise it gets filled in when filling this in.
