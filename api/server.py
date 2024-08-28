@@ -283,7 +283,7 @@ async def lookup(string: str,
            highlighting: bool = False,
            offset: int = 0,
            limit: conint(le=1000) = 10,
-           biolink_type: str = None,
+           biolink_types: List[str] = None,
            only_prefixes: str = "",
            exclude_prefixes: str = "",
            only_taxa: str = ""
@@ -294,6 +294,9 @@ async def lookup(string: str,
     :param autocomplete: Should we do the lookup in autocomplete mode (in which we expect the final word to be
         incomplete) or not (in which the entire phrase is expected to be complete, i.e. as an entity linker)?
     :param highlighting: Return information on which labels and synonyms matched the search query.
+    :param biolink_types: A list of Biolink types to filter (with or without the `biolink:` prefix). Note that these are
+        additive, i.e. if this list is ['PhenotypicFeature', 'Disease'], then both phenotypic features AND diseases
+        will be returned, rather than filtering to concepts that are both PhenotypicFeature and Disease.
     """
 
     # First, we lowercase the query since all our indexes are case-insensitive.
@@ -316,12 +319,16 @@ async def lookup(string: str,
         query = f'"{string_lc_escape_groupings}" OR ({string_lc_escape_everything})'
 
     # Apply filters as needed.
-    # Biolink type filter
     filters = []
-    if biolink_type:
-        if biolink_type.startswith('biolink:'):
-            biolink_type = biolink_type[8:]
-        filters.append(f"types:{biolink_type}")
+
+    # Biolink type filter
+    if biolink_types:
+        biolink_types_filters = []
+        for biolink_type in biolink_types:
+            if biolink_type.startswith('biolink:'):
+                biolink_type = biolink_type[8:]
+            biolink_types_filters.append(f"types:{biolink_type}")
+        filters.append(" OR ".join(biolink_types_filters))
 
     # Prefix: only filter
     if only_prefixes:
