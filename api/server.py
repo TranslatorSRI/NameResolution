@@ -200,8 +200,9 @@ async def lookup_curies_get(
                         "e.g. `biolink:Disease` or `Disease`. Multiple types will be combined with OR, i.e. filtering "
                         "for PhenotypicFeature and Disease will return concepts that are either PhenotypicFeatures OR "
                         "Disease, not concepts that are both PhenotypicFeature AND Disease.",
-            # We can't use `example` here because otherwise it gets filled in when filling this in.
-            example=["biolink:Disease", "biolink:PhenotypicFeature"]
+            # We can't use `example` here because otherwise it gets filled in when you click "Try it out",
+            # which is easy to overlook.
+            # example=["biolink:Disease", "biolink:PhenotypicFeature"]
         )] = [],
         only_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
@@ -258,8 +259,9 @@ async def lookup_curies_post(
                         "e.g. `biolink:Disease` or `Disease`. Multiple types will be combined with OR, i.e. filtering "
                         "for PhenotypicFeature and Disease will return concepts that are either PhenotypicFeatures OR "
                         "Disease, not concepts that are both PhenotypicFeature AND Disease.",
-            # We can't use `example` here because otherwise it gets filled in when filling this in.
-            example=["biolink:Disease", "biolink:PhenotypicFeature"]
+            # We can't use `example` here because otherwise it gets filled in when you click "Try it out",
+            # which is easy to overlook.
+            # example=["biolink:Disease", "biolink:PhenotypicFeature"]
         )] = [],
         only_prefixes: Annotated[Union[str, None], Query(
             description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
