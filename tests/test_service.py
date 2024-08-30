@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 def test_simple_check():
     client = TestClient(app)
-    params = {'string':'alzheimer'}
+    params = {'string':'alzheimer', 'biolink_type': ''}
     response = client.post("/lookup",params=params)
     syns = response.json()
     #There are more than 10, but it should cut off at 10 if we don't give it a max?
