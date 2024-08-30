@@ -333,9 +333,11 @@ async def lookup(string: str,
     if biolink_types:
         biolink_types_filters = []
         for biolink_type in biolink_types:
-            if biolink_type.startswith('biolink:'):
-                biolink_type = biolink_type[8:]
-            biolink_types_filters.append(f"types:{biolink_type}")
+            biolink_type_stripped = biolink_type.strip()
+            if biolink_type_stripped:
+                if biolink_type_stripped.startswith('biolink:'):
+                    biolink_type_stripped = biolink_type_stripped[8:]
+                biolink_types_filters.append(f"types:{biolink_type_stripped}")
         filters.append(" OR ".join(biolink_types_filters))
 
     # Prefix: only filter
