@@ -10,7 +10,7 @@ Previous release: [Translator "Fugu" July 2024](./TranslatorFuguJuly2024.md)
 * Added a Solr highlighter identify matching terms ([#156](https://github.com/TranslatorSRI/NameResolution/pull/156))
 * Added support for multitype filtering ([#158](https://github.com/TranslatorSRI/NameResolution/pull/158))
 
-## Babel updates (from Babel Translator "Guppy" August 2024 Release)
+## Babel updates (from [Babel Translator "Guppy" August 2024 Release](https://github.com/TranslatorSRI/Babel/blob/master/releases/TranslatorGuppyAugust2024.md))
 * [Feature] Added support for generating DuckDB and Parquet files from the compendium and synonym files,
   allowing us to run queries such as looking for all the identically labeled cliques across
   all the compendia. Increased Babel Outputs file size to support DuckDB.
@@ -31,7 +31,7 @@ Previous release: [Translator "Fugu" July 2024](./TranslatorFuguJuly2024.md)
 * [Updates] Added additional Ubergraph IRI stem prefixes.
 * [Updates] Changed DrugBank ID types from 'ChemicalEntity' to 'Drug'.
 
-## Releases since [Translator Fugu July 2024](./TranslatorFuguJuly2024.md)
+## Releases since [Translator "Fugu" July 2024](./TranslatorFuguJuly2024.md)
 * [1.4.3](https://github.com/TranslatorSRI/NameResolution/releases/tag/v1.4.3)
   * Fix issue with empty Biolink type by @gaurav in [#159](https://github.com/TranslatorSRI/NameResolution/pull/159)
 * [1.4.2](https://github.com/TranslatorSRI/NameResolution/releases/tag/v1.4.2)
