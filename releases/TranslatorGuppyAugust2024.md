@@ -7,7 +7,7 @@ Previous release: [Translator "Fugu" July 2024](./TranslatorFuguJuly2024.md)
 
 ## New features
 * Added exactish index for synonyms ([#150](https://github.com/TranslatorSRI/NameResolution/pull/150))
-* Added a Solr highlighter identify matching terms ([#156](https://github.com/TranslatorSRI/NameResolution/pull/156))
+* Added a Solr highlighter to report on matching labels and synonyms ([#156](https://github.com/TranslatorSRI/NameResolution/pull/156))
 * Added support for multitype filtering ([#158](https://github.com/TranslatorSRI/NameResolution/pull/158))
 
 ## Babel updates (from [Babel Translator "Guppy" August 2024 Release](https://github.com/TranslatorSRI/Babel/blob/master/releases/TranslatorGuppyAugust2024.md))
