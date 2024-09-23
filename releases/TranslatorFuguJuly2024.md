@@ -3,7 +3,7 @@
   ([Babel Translator July 2024 Release](https://github.com/TranslatorSRI/Babel/blob/master/releases/TranslatorFuguJuly2024.md))
 - NameRes: [v1.3.14](https://github.com/TranslatorSRI/NameResolution/releases/tag/v1.3.14)
 
-Next release: _None as yet_
+Next release: [Translator "Guppy" August 2024](./TranslatorGuppyAugust2024.md)
 
 ## New features
 * None.
