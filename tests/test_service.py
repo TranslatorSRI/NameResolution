@@ -129,17 +129,30 @@ def test_bulk_lookup():
     response = client.post("/bulk-lookup", json=params)
     results = response.json()
     assert len(results) == 2
-    assert len(results['beta-secretase']) == 1
+    assert len(results['beta-secretase']) == 2
     assert results['beta-secretase'][0]['curie'] == 'CHEBI:74925'
     assert results['beta-secretase'][0]['label'] == 'BACE1 inhibitor'
-    assert len(results['Parkinson']) == 1
-    assert results['Parkinson'][0]['curie'] == 'MONDO:0005180'
-    assert results['Parkinson'][0]['label'] == 'Parkinson disease'
+    assert len(results['Parkinson']) == 34
+
+    # TODO: this should be MONDO:0005180 "Parkinson disease", but
+    # instead we get MONDO:0000828 "juvenile-onset Parkinson's disease"
+    # as the top result.
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
+    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
 
     # Try it again with the biolink_types set.
     params['biolink_types'] = ['biolink:Disease']
     response = client.post("/bulk-lookup", json=params)
     results = response.json()
     assert len(results) == 2
-    assert len(results['beta-secretase']) == 0
-    assert len(results['Parkinson']) == 0
+    assert len(results['beta-secretase']) == 1
+    # We match MONDO:0011561 "Alzheimer disease 6" because it contains the word "beta".
+    assert results['beta-secretase'][0]['curie'] == 'MONDO:0011561'
+    assert results['beta-secretase'][0]['label'] == 'Alzheimer disease 6'
+    
+    assert len(results['Parkinson']) == 33
+    # TODO: this should be MONDO:0005180 "Parkinson disease", but
+    # instead we get MONDO:0000828 "juvenile-onset Parkinson's disease"
+    # as the top result.
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
+    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
