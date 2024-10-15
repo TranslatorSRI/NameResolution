@@ -119,3 +119,25 @@ def test_autocomplete():
     assert syns[1]["label"] == 'Alzheimer disease 6'
     assert syns[1]["types"][0] == "biolink:Disease"
 
+
+def test_bulk_lookup():
+    client = TestClient(app)
+    params = {
+        'strings': ['beta-secretase', 'Parkinson'],
+        'limit': 100,
+    }
+    response = client.post("/bulk_lookup", params=params)
+    results = response.json()
+    assert len(results) == 2
+    assert len(results['beta-secretase']) == 1
+    assert results['beta-secretase'][0]['curie'] == 'CHEBI:74925'
+    assert results['beta-secretase'][0]['label'] == 'BACE1 inhibitor'
+    assert len(results['Parkinson']) == 1
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0005180'
+    assert results['Parkinson'][0]['label'] == 'Parkinson disease'
+
+    # Try it again with the biolink_types set.
+    params['biolink_types'] = ['biolink:Disease']
+    assert len(results) == 2
+    assert len(results['beta-secretase']) == 0
+    assert len(results['Parkinson']) == 0
