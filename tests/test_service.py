@@ -126,7 +126,7 @@ def test_bulk_lookup():
         'strings': ['beta-secretase', 'Parkinson'],
         'limit': 100,
     }
-    response = client.post("/bulk_lookup", params=params)
+    response = client.post("/bulk-lookup", params=params)
     results = response.json()
     assert len(results) == 2
     assert len(results['beta-secretase']) == 1
