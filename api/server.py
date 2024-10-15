@@ -495,18 +495,19 @@ class NameResQuery(BaseModel):
                     "Disease, not concepts that are both PhenotypicFeature AND Disease.",
     )
     only_prefixes: Optional[str] = Field(
-        None,
+        "",
         description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
         # We can't use `example` here because otherwise it gets filled in when filling this in.
         # example="MONDO|EFO"
     )
     exclude_prefixes: Optional[str] = Field(
-        '',
+        "",
         description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
         # We can't use `example` here because otherwise it gets filled in when filling this in.
         # example="UMLS|EFO"
     )
     only_taxa: Optional[str] = Query(
+        "",
         description="Pipe-separated, case-sensitive list of taxa to filter, "
                     "e.g. `NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955`.",
         # We can't use `example` here because otherwise it gets filled in when filling this in.
