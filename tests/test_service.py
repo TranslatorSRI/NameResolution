@@ -126,7 +126,7 @@ def test_bulk_lookup():
         'strings': ['beta-secretase', 'Parkinson'],
         'limit': 100,
     }
-    response = client.post("/bulk-lookup", params=params)
+    response = client.post("/bulk-lookup", json=params)
     results = response.json()
     assert len(results) == 2
     assert len(results['beta-secretase']) == 1
@@ -138,6 +138,8 @@ def test_bulk_lookup():
 
     # Try it again with the biolink_types set.
     params['biolink_types'] = ['biolink:Disease']
+    response = client.post("/bulk-lookup", json=params)
+    results = response.json()
     assert len(results) == 2
     assert len(results['beta-secretase']) == 0
     assert len(results['Parkinson']) == 0
