@@ -14,6 +14,14 @@ def test_simple_check():
     #There are more than 10, but it should cut off at 10 if we don't give it a max?
     assert len(syns) == 10
 
+
+def test_empty():
+    client = TestClient(app)
+    response = client.get("/lookup", params={'string':''})
+    syns = response.json()
+    assert len(syns) == 0
+
+
 def test_limit():
     client = TestClient(app)
     params = {'string': 'alzheimer', 'limit': 1}
