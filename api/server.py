@@ -307,6 +307,10 @@ async def lookup(string: str,
         will be returned, rather than filtering to concepts that are both PhenotypicFeature and Disease.
     """
 
+    # Do we have a search string at all?
+    if string.strip() == "":
+        return []
+
     # First, we lowercase the query since all our indexes are case-insensitive.
     string_lc = string.lower()
 
@@ -492,5 +496,5 @@ if os.environ.get('OTEL_ENABLED', 'false') == 'true':
     provider.add_span_processor(processor)
     trace.set_tracer_provider(provider)
     FastAPIInstrumentor.instrument_app(app, tracer_provider=provider, excluded_urls=
-                                       "docs,openapi.json")    
+                                       "docs,openapi.json")
     HTTPXClientInstrumentor().instrument()
