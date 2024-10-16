@@ -16,6 +16,7 @@ def test_simple_check():
 
 
 def test_empty():
+    """ Checks that calling NameRes without an input string return an empty list. """
     client = TestClient(app)
     response = client.get("/lookup", params={'string':''})
     syns = response.json()
