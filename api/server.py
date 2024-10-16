@@ -100,6 +100,9 @@ class Request(BaseModel):
     """Reverse-lookup request body."""
     curies: List[str]
 
+class SynonymsRequest(BaseModel):
+    """ Synonyms search request body. """
+    preferred_curies: List[str]
 
 @app.get(
     "/reverse_lookup",
@@ -107,15 +110,23 @@ class Request(BaseModel):
     description="Returns a list of synonyms for a particular CURIE.",
     response_model=Dict[str, Dict],
     tags=["lookup"],
+    deprecated=True,
+)
+@app.get(
+    "/synonyms",
+    summary="Look up synonyms for a CURIE.",
+    description="Returns a list of synonyms for a particular CURIE.",
+    response_model=Dict[str, Dict],
+    tags=["lookup"],
 )
 async def lookup_names_get(
-        curies: List[str]= Query(
+        preferred_curies: List[str]= Query(
             example=["MONDO:0005737", "MONDO:0009757"],
             description="A list of CURIEs to look up synonyms for."
         )
 ) -> Dict[str, Dict]:
     """Returns a list of synonyms for a particular CURIE."""
-    return await reverse_lookup(curies)
+    return await reverse_lookup(preferred_curies)
 
 
 @app.post(
@@ -124,14 +135,31 @@ async def lookup_names_get(
     description="Returns a list of synonyms for a particular CURIE.",
     response_model=Dict[str, Dict],
     tags=["lookup"],
+    deprecated=True,
 )
 async def lookup_names_post(
         request: Request = Body(..., example={
             "curies": ["MONDO:0005737", "MONDO:0009757"],
         }),
-) -> Dict[str, List[str]]:
+) -> Dict[str, Dict]:
     """Returns a list of synonyms for a particular CURIE."""
     return await reverse_lookup(request.curies)
+
+
+@app.post(
+    "/synonyms",
+    summary="Look up synonyms for a CURIE.",
+    description="Returns a list of synonyms for a particular CURIE.",
+    response_model=Dict[str, Dict],
+    tags=["lookup"],
+)
+async def lookup_names_post(
+        request: SynonymsRequest = Body(..., example={
+            "preferred_curies": ["MONDO:0005737", "MONDO:0009757"],
+        }),
+) -> Dict[str, Dict]:
+    """Returns a list of synonyms for a particular CURIE."""
+    return await reverse_lookup(request.preferred_curies)
 
 
 async def reverse_lookup(curies) -> Dict[str, Dict]:
@@ -492,5 +520,5 @@ if os.environ.get('OTEL_ENABLED', 'false') == 'true':
     provider.add_span_processor(processor)
     trace.set_tracer_provider(provider)
     FastAPIInstrumentor.instrument_app(app, tracer_provider=provider, excluded_urls=
-                                       "docs,openapi.json")    
+                                       "docs,openapi.json")
     HTTPXClientInstrumentor().instrument()
