@@ -133,7 +133,7 @@ def test_synonyms():
     assert chebi_74925_results['preferred_name'] == 'BACE1 inhibitor'
 
     none_1234_results = results['NONE:1234']
-    assert none_1234_results['NONE:1234'] == {}
+    assert none_1234_results == {}
 
     mondo_0000828_results = results['NONE:1234']
     assert mondo_0000828_results['curie'] == 'MONDO:0000828'
@@ -147,7 +147,7 @@ def test_synonyms():
     assert chebi_74925_results['preferred_name'] == 'BACE1 inhibitor'
 
     none_1234_results = results['NONE:1234']
-    assert none_1234_results['NONE:1234'] == {}
+    assert none_1234_results == {}
 
     mondo_0000828_results = results['MONDO:0000828']
     assert mondo_0000828_results['curie'] == 'MONDO:0000828'
