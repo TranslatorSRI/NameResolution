@@ -135,7 +135,7 @@ def test_synonyms():
     none_1234_results = results['NONE:1234']
     assert none_1234_results == {}
 
-    mondo_0000828_results = results['NONE:1234']
+    mondo_0000828_results = results['MONDO:0000828']
     assert mondo_0000828_results['curie'] == 'MONDO:0000828'
     assert mondo_0000828_results['preferred_name'] == 'juvenile-onset Parkinson disease'
 
