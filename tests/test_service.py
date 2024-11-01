@@ -132,10 +132,10 @@ def test_synonyms():
     assert chebi_74925_results['curie'] == 'CHEBI:74925'
     assert chebi_74925_results['preferred_name'] == 'BACE1 inhibitor'
 
-    none_1234_results = response.json()
+    none_1234_results = results['NONE:1234']
     assert none_1234_results['NONE:1234'] == {}
 
-    mondo_0000828_results = response.json()
+    mondo_0000828_results = results['NONE:1234']
     assert mondo_0000828_results['curie'] == 'MONDO:0000828'
     assert mondo_0000828_results['preferred_name'] == 'juvenile-onset Parkinson disease'
 
@@ -146,10 +146,10 @@ def test_synonyms():
     assert chebi_74925_results['curie'] == 'CHEBI:74925'
     assert chebi_74925_results['preferred_name'] == 'BACE1 inhibitor'
 
-    none_1234_results = response.json()
+    none_1234_results = results['NONE:1234']
     assert none_1234_results['NONE:1234'] == {}
 
-    mondo_0000828_results = response.json()
+    mondo_0000828_results = results['MONDO:0000828']
     assert mondo_0000828_results['curie'] == 'MONDO:0000828'
     assert mondo_0000828_results['preferred_name'] == 'juvenile-onset Parkinson disease'
 
