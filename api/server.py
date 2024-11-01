@@ -115,7 +115,7 @@ class SynonymsRequest(BaseModel):
 @app.get(
     "/synonyms",
     summary="Look up synonyms for a CURIE.",
-    description="Returns a list of synonyms for a particular CURIE.",
+    description="Returns a list of synonyms for a particular preferred CURIE. You can normalize a CURIE to a preferred CURIE using NodeNorm.",
     response_model=Dict[str, Dict],
     tags=["lookup"],
 )
@@ -149,7 +149,7 @@ async def lookup_names_post(
 @app.post(
     "/synonyms",
     summary="Look up synonyms for a CURIE.",
-    description="Returns a list of synonyms for a particular CURIE.",
+    description="Returns a list of synonyms for a particular preferred CURIE. You can normalize a CURIE to a preferred CURIE using NodeNorm.",
     response_model=Dict[str, Dict],
     tags=["lookup"],
 )
