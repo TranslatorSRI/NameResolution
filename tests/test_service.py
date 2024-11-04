@@ -14,6 +14,15 @@ def test_simple_check():
     #There are more than 10, but it should cut off at 10 if we don't give it a max?
     assert len(syns) == 10
 
+
+def test_empty():
+    """ Checks that calling NameRes without an input string return an empty list. """
+    client = TestClient(app)
+    response = client.get("/lookup", params={'string':''})
+    syns = response.json()
+    assert len(syns) == 0
+
+
 def test_limit():
     client = TestClient(app)
     params = {'string': 'alzheimer', 'limit': 1}
@@ -156,3 +165,37 @@ def test_bulk_lookup():
     # as the top result.
     assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
     assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
+
+
+def test_synonyms():
+    """
+    Test the /synonyms endpoints -- these are used to look up all the information we know about a preferred CURIE.
+    """
+    client = TestClient(app)
+    response = client.get("/synonyms", params={'preferred_curies': ['CHEBI:74925', 'NONE:1234', 'MONDO:0000828']})
+
+    results = response.json()
+    chebi_74925_results = results['CHEBI:74925']
+    assert chebi_74925_results['curie'] == 'CHEBI:74925'
+    assert chebi_74925_results['preferred_name'] == 'BACE1 inhibitor'
+
+    none_1234_results = results['NONE:1234']
+    assert none_1234_results == {}
+
+    mondo_0000828_results = results['MONDO:0000828']
+    assert mondo_0000828_results['curie'] == 'MONDO:0000828'
+    assert mondo_0000828_results['preferred_name'] == 'juvenile-onset Parkinson disease'
+
+    response = client.post("/synonyms", json={'preferred_curies': ['MONDO:0000828', 'NONE:1234', 'CHEBI:74925']})
+
+    results = response.json()
+    chebi_74925_results = results['CHEBI:74925']
+    assert chebi_74925_results['curie'] == 'CHEBI:74925'
+    assert chebi_74925_results['preferred_name'] == 'BACE1 inhibitor'
+
+    none_1234_results = results['NONE:1234']
+    assert none_1234_results == {}
+
+    mondo_0000828_results = results['MONDO:0000828']
+    assert mondo_0000828_results['curie'] == 'MONDO:0000828'
+    assert mondo_0000828_results['preferred_name'] == 'juvenile-onset Parkinson disease'
