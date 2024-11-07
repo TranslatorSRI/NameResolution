@@ -112,6 +112,16 @@ class SynonymsRequest(BaseModel):
     tags=["lookup"],
     deprecated=True,
 )
+async def reverse_lookup_get(
+        curies: List[str]= Query(
+            example=["MONDO:0005737", "MONDO:0009757"],
+            description="A list of CURIEs to look up synonyms for."
+        )
+) -> Dict[str, Dict]:
+    """Returns a list of synonyms for a particular CURIE."""
+    return await reverse_lookup(curies)
+
+
 @app.get(
     "/synonyms",
     summary="Look up synonyms for a CURIE.",
