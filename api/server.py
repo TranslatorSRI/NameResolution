@@ -11,12 +11,12 @@ import json
 import logging, warnings
 import os
 import re
-from typing import Dict, List, Union, Annotated
+from typing import Dict, List, Union, Annotated, Optional
 
 from fastapi import Body, FastAPI, Query
 from fastapi.responses import RedirectResponse
 import httpx
-from pydantic import BaseModel, conint
+from pydantic import BaseModel, conint, Field
 from starlette.middleware.cors import CORSMiddleware
 
 from .apidocs import get_app_info, construct_open_api_schema
@@ -497,6 +497,87 @@ async def lookup(string: str,
                            types=[f"biolink:{d}" for d in doc.get("types", [])]))
 
     return outputs
+
+## BULK ENDPOINT
+
+class NameResQuery(BaseModel):
+    """
+    A request for name resolution.
+    """
+    strings: List[str] = Field(
+        ..., # Ellipsis means field is required
+        description="The strings to search for. The returned results will be in a dictionary with these values as keys."
+    )
+    autocomplete: Optional[bool] = Field(
+        False,
+        description="Is the input string incomplete (autocomplete=true) or a complete phrase (autocomplete=false)?"
+    )
+    highlighting: Optional[bool] = Field(
+        False,
+        description="Return information on which labels and synonyms matched the search query?"
+    )
+    offset: Optional[int] = Field(
+        0,
+        description="The number of results to skip. Can be used to page through the results of a query.",
+        # Offset should be greater than or equal to zero.
+        ge=0
+    )
+    limit: Optional[int] = Field(
+        10,
+        description="The number of results to skip. Can be used to page through the results of a query.",
+        # Limit should be greater than or equal to zero and less than or equal to 1000.
+        ge=0,
+        le=1000
+    )
+    biolink_types: Optional[List[str]] = Field(
+        [],
+        description="The Biolink types to filter to (with or without the `biolink:` prefix), "
+                    "e.g. `biolink:Disease` or `Disease`. Multiple types will be combined with OR, i.e. filtering "
+                    "for PhenotypicFeature and Disease will return concepts that are either PhenotypicFeatures OR "
+                    "Disease, not concepts that are both PhenotypicFeature AND Disease.",
+    )
+    only_prefixes: Optional[str] = Field(
+        "",
+        description="Pipe-separated, case-sensitive list of prefixes to filter to, e.g. `MONDO|EFO`.",
+        # We can't use `example` here because otherwise it gets filled in when filling this in.
+        # example="MONDO|EFO"
+    )
+    exclude_prefixes: Optional[str] = Field(
+        "",
+        description="Pipe-separated, case-sensitive list of prefixes to exclude, e.g. `UMLS|EFO`.",
+        # We can't use `example` here because otherwise it gets filled in when filling this in.
+        # example="UMLS|EFO"
+    )
+    only_taxa: Optional[str] = Query(
+        "",
+        description="Pipe-separated, case-sensitive list of taxa to filter, "
+                    "e.g. `NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955`.",
+        # We can't use `example` here because otherwise it gets filled in when filling this in.
+        # example="NCBITaxon:9606|NCBITaxon:10090|NCBITaxon:10116|NCBITaxon:7955"
+    )
+
+
+@app.post("/bulk-lookup",
+          summary="Look up cliques for a fragment of multiple names or synonyms.",
+          description="Returns cliques for each query.",
+          response_model=Dict[str, List[LookupResult]],
+          tags=["lookup"]
+)
+async def bulk_lookup(query: NameResQuery) -> Dict[str, List[LookupResult]]:
+    result = {}
+    for string in query.strings:
+        result[string] = await lookup(
+            string,
+            query.autocomplete,
+            query.highlighting,
+            query.offset,
+            query.limit,
+            query.biolink_types,
+            query.only_prefixes,
+            query.exclude_prefixes,
+            query.only_taxa)
+    return result
+
 
 # Override open api schema with custom schema
 app.openapi_schema = construct_open_api_schema(app)
