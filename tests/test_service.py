@@ -128,6 +128,24 @@ def test_autocomplete():
     assert syns[1]["label"] == 'Alzheimer disease 6'
     assert syns[1]["types"][0] == "biolink:Disease"
 
+    # Previously, searching for an autocomplete query ending in whitespace
+    # would trigger a blank search (e.g. `abc ` would be expanded into `abc *`).
+    params = {'string': 'beta-secretase ', 'autocomplete': 'true'}
+    response = client.post("/lookup", params=params)
+    syns = response.json()
+
+    # When this bug was around, it would result in the following:
+    # assert len(syns) == 10
+    # assert syns[0]['curie'] == 'CHEBI:48407'
+    # assert syns[0]["label"] == 'antiparkinson agent'
+    # assert syns[0]["types"] == ["biolink:NamedThing"]
+
+    # But now we only get beta-secretase.
+    assert len(syns) == 1
+    assert syns[0]['curie'] == 'CHEBI:74925'
+    assert syns[0]["label"] == 'BACE1 inhibitor'
+    assert syns[0]["types"] == ["biolink:NamedThing"]
+
 
 def test_bulk_lookup():
     client = TestClient(app)
