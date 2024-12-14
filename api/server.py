@@ -345,12 +345,12 @@ async def lookup(string: str,
         will be returned, rather than filtering to concepts that are both PhenotypicFeature and Disease.
     """
 
-    # Do we have a search string at all?
-    if string.strip() == "":
-        return []
+    # First, we strip and lowercase the query since all our indexes are case-insensitive.
+    string_lc = string.strip().lower()
 
-    # First, we lowercase the query since all our indexes are case-insensitive.
-    string_lc = string.lower()
+    # Do we have a search string at all?
+    if string_lc == "":
+        return []
 
     # For reasons I don't understand, we need to use backslash to escape characters (e.g. "\(") to remove the special
     # significance of characters inside round brackets, but not inside double-quotes. So we escape them separately:
