@@ -146,6 +146,7 @@ def test_autocomplete():
     assert syns[0]["label"] == 'BACE1 inhibitor'
     assert syns[0]["types"] == ["biolink:NamedThing"]
 
+
 def test_bulk_lookup():
     client = TestClient(app)
     params = {
