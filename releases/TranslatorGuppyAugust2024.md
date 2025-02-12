@@ -2,7 +2,7 @@
 - Babel: [2024aug18](https://stars.renci.org/var/babel_outputs/2024aug18/)
   ([Babel Translator "Guppy" August 2024 Release](https://github.com/TranslatorSRI/Babel/blob/master/releases/TranslatorGuppyAugust2024.md))
 - NameRes: [v1.4.3](https://github.com/TranslatorSRI/NameResolution/releases/tag/v1.4.3)
-Next release: _None as yet_
+Next release: [Translator "Hammerhead" November 2024](./TranslatorHammerheadNovember2024.md)
 Previous release: [Translator "Fugu" July 2024](./TranslatorFuguJuly2024.md)
 
 ## New features
