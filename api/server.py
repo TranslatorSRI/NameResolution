@@ -348,6 +348,15 @@ async def lookup(string: str,
     # First, we strip and lowercase the query since all our indexes are case-insensitive.
     string_lc = string.strip().lower()
 
+    # There is a possibility that the input text isn't in UTF-8.
+    # We could try a bunch of Python packages to try to determine what the encoding actually is:
+    #   - https://pypi.org/project/charset-normalizer/
+    #   - https://www.crummy.com/software/BeautifulSoup/bs4/doc/#unicode-dammit
+    # But the only issue we've actually run into so far has been the Windows smart
+    # quote (https://github.com/TranslatorSRI/NameResolution/issues/176), so for now
+    # let's detect and replace just those characters.
+    string_lc = re.sub(r"[“”]", '"', re.sub(r"[‘’]", "'", string_lc))
+
     # Do we have a search string at all?
     if string_lc == "":
         return []
