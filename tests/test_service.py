@@ -146,6 +146,18 @@ def test_autocomplete():
     assert syns[0]["label"] == 'BACE1 inhibitor'
     assert syns[0]["types"] == ["biolink:NamedThing"]
 
+def test_windows_smartquotes():
+    client = TestClient(app)
+
+    # Query with Windows Smart Quote (’), but this should match against our database which uses Unicode quotes.
+    response = client.get("/lookup", params={'string':"Alzheimer’s disease"})
+    syns = response.json()
+
+    assert len(syns) > 1
+    assert syns[0]['curie'] == 'MONDO:0004975'
+    assert syns[0]['label'] == 'Alzheimer disease'
+    assert syns[0]['types'][0] == "Disease"
+
 
 def test_bulk_lookup():
     client = TestClient(app)
@@ -176,7 +188,7 @@ def test_bulk_lookup():
     # We match MONDO:0011561 "Alzheimer disease 6" because it contains the word "beta".
     assert results['beta-secretase'][0]['curie'] == 'MONDO:0011561'
     assert results['beta-secretase'][0]['label'] == 'Alzheimer disease 6'
-    
+
     assert len(results['Parkinson']) == 33
     # TODO: this should be MONDO:0005180 "Parkinson disease", but
     # instead we get MONDO:0000828 "juvenile-onset Parkinson's disease"
