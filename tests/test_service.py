@@ -150,7 +150,7 @@ def test_windows_smartquotes():
     client = TestClient(app)
 
     # Query with Windows Smart Quote (’), but this should match against our database which uses Unicode quotes.
-    response = client.get("/lookup", params={'string':"Alzheimer’s disease", 'biolink_type': 'Disease'})
+    response = client.get("/lookup", params={'string': "Alzheimer’s disease", 'biolink_type': 'Disease'})
     syns = response.json()
 
     assert len(syns) > 1
