@@ -67,6 +67,10 @@ async def status() -> Dict:
         response.raise_for_status()
     result = response.json()
 
+    # Do we know the Babel version and version URL? It will be stored in an environmental variable if we do.
+    babel_version = os.environ.get("BABEL_VERSION", "unknown")
+    babel_version_url = os.environ.get("BABEL_VERSION_URL", "")
+
     # We should have a status for name_lookup_shard1_replica_n1.
     if 'status' in result and 'name_lookup_shard1_replica_n1' in result['status']:
         core = result['status']['name_lookup_shard1_replica_n1']
@@ -78,6 +82,8 @@ async def status() -> Dict:
         return {
             'status': 'ok',
             'message': 'Reporting results from primary core.',
+            'babel_version': babel_version,
+            'babel_version_url': babel_version_url,
             'startTime': core['startTime'],
             'numDocs': index.get('numDocs', ''),
             'maxDoc': index.get('maxDoc', ''),
