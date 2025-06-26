@@ -55,33 +55,28 @@ instance or from Translator.
 
 #### Loading from synonyms files
 
-TODO
+The best way to do this is by using the [data-loading Docker image](./data-loading/README.md).
 
-## Docker setup
+### Python packaging
 
-`docker-compose up`
-
-## native setup
-
-### Solr database
-
-See instructions in the `data-loading/` directory.
-
-### API
+Currently, NameRes is only packaged as a Docker image (see [Dockerfile](./Dockerfile)), but you can
+also run it directly via Uvicorn.
 
 ```bash
-pip install -r requirements.txt
-./main.sh
+$ python -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+$ bash main.sh
 ```
 
 ### Kubernetes
 
-Helm charts can be found at https://github.com/helxplatform/translator-devops/helm/r3
+Helm charts can be found at https://github.com/helxplatform/translator-devops/helm/name-lookup.
 
 ## examples
 
 ```bash
-curl -X POST "http://localhost:6434/lookup?string=oxycod&offset=0&limit=10" -H "accept: application/json"
+curl -X POST "http://localhost:2433/lookup?string=oxycod&offset=0&limit=10" -H "accept: application/json"
 ```
 
 ## Configuration
