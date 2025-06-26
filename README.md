@@ -49,6 +49,9 @@ instance or from Translator.
 8. Run the Solr restore script using `bash`, i.e. `bash solr-restore/restore.sh`. This script
    assumes that the Solr pod is available on `localhost:8983` and contains a
    `var/solr/data/snapshot.backup` directory with the data to restore.
+9. Look for the script to end properly (`Solr restore complete!`). Look up http://localhost:2433/status
+   to ensure that the database has been loaded as expected, and use http://localhost:2433/docs (after
+   changing the server) to try some test queries to make sure NameRes is working properly.
 
 #### Loading from synonyms files
 
