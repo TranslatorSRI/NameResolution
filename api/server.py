@@ -435,11 +435,25 @@ async def lookup(string: str,
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
                 "pf": "preferred_name_exactish^10 names_exactish^5 preferred_name names",
                 # Boosts
-                "bq": [],
+                "bq": [
+                    # We don't like results that only have a single clique, so we slightly un-boost these results.
+                    # Unfortunately this is quite slow and doesn't seem to be very useful.
+                    # "clique_identifier_count:[0 TO 1]^0.8"
+                ],
                 "boost": [
                     # The boost is multiplied with score -- calculating the log() reduces how quickly this increases
-                    # the score for increasing clique identifier counts.
-                    "log(clique_identifier_count)"
+                    # the score for increasing clique identifier counts. However, this can lead to confusing results,
+                    # where we pick a non-exact match instead of an exact match (see
+                    # https://github.com/TranslatorSRI/NameResolution/issues/174 and
+                    # https://github.com/TranslatorSRI/NameResolution/issues/161).
+                    #
+                    # The downside to turning this off is that:
+                    #   1. We get a ton of UMLS results coming back in (which can be filtered out if needed, but that's
+                    #      not ideal).
+                    #   2. We get back a random gene instead of the human gene (although you could filter that with
+                    #      the taxon name, but also not ideal).
+                    #
+                    # "log(clique_identifier_count)"
                 ],
             },
         },
