@@ -26,11 +26,14 @@ instance or from Translator.
 2. Create the local directory where your Solr data will be stored -- by default, this is
    `./data/solr` in this directory, but you can change this in
    [docker-compose.yml](./docker-compose.yml). This directory will need to have a maximum
-   storage of approx 400Gi: 104G of the downloaded file, 
+   storage of approx 400G: 104G of the downloaded file (which can be deleted once decompressed),
+   147G of uncompressed backup (both of which can be deleted once restored) and 147G of
+   Apache Solr databases.
 3. Download the Solr backup URL you want to use into your Solr data directory. It should be
    approximately 104G in size.
 4. Uncompress the Solr backup file. It should produce a `var/solr/data/snapshot.backup` directory
-   in the Solr data (by default, `./data/solr/var/solr/data/snapshot.backup`).
+   in the Solr data (by default, `./data/solr/var/solr/data/snapshot.backup`). You can delete
+   the downloaded file (`snapshot.backup.tar.gz`) once it has been decompressed.
 5. Check the [docker-compose.yml](./docker-compose.yml) file to ensure that it is
    as you expect.
    * By default, the Docker Compose file will use the latest released version of NameRes
@@ -52,6 +55,7 @@ instance or from Translator.
 9. Look for the script to end properly (`Solr restore complete!`). Look up http://localhost:2433/status
    to ensure that the database has been loaded as expected, and use http://localhost:2433/docs (after
    changing the server) to try some test queries to make sure NameRes is working properly.
+10. You can now delete the uncompressed database backup in `$SOLR_DATA/var` to save disk space.
 
 #### Loading from synonyms files
 
