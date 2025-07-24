@@ -67,6 +67,10 @@ async def status() -> Dict:
         response.raise_for_status()
     result = response.json()
 
+    # Do we know the Babel version and version URL? It will be stored in an environmental variable if we do.
+    babel_version = os.environ.get("BABEL_VERSION", "unknown")
+    babel_version_url = os.environ.get("BABEL_VERSION_URL", "")
+
     # We should have a status for name_lookup_shard1_replica_n1.
     if 'status' in result and 'name_lookup_shard1_replica_n1' in result['status']:
         core = result['status']['name_lookup_shard1_replica_n1']
@@ -78,6 +82,8 @@ async def status() -> Dict:
         return {
             'status': 'ok',
             'message': 'Reporting results from primary core.',
+            'babel_version': babel_version,
+            'babel_version_url': babel_version_url,
             'startTime': core['startTime'],
             'numDocs': index.get('numDocs', ''),
             'maxDoc': index.get('maxDoc', ''),
@@ -433,16 +439,19 @@ async def lookup(string: str,
                 "query": query,
                 # qf = query fields, i.e. how should we boost these fields if they contain the same fields as the input.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#qf-query-fields-parameter
-                "qf": "preferred_name_exactish^8 names_exactish^2 preferred_name names",
+                "qf": "preferred_name_exactish^800 names_exactish^200 preferred_name^3 names^1",
                 # pf = phrase fields, i.e. how should we boost these fields if they contain the entire search phrase.
                 # https://solr.apache.org/guide/solr/latest/query-guide/dismax-query-parser.html#pf-phrase-fields-parameter
-                "pf": "preferred_name_exactish^10 names_exactish^5 preferred_name names",
+                "pf": "preferred_name_exactish^1000 names_exactish^500 preferred_name^4 names^2",
                 # Boosts
-                "bq": [],
+                "bq": [
+                    "clique_identifier_count:[2 TO 5]^2",
+                    "clique_identifier_count:[6 TO *]^3",
+                ],
                 "boost": [
                     # The boost is multiplied with score -- calculating the log() reduces how quickly this increases
                     # the score for increasing clique identifier counts.
-                    "log(clique_identifier_count)"
+                    # "log(clique_identifier_count)"
                 ],
             },
         },
