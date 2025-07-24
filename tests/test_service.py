@@ -175,11 +175,8 @@ def test_bulk_lookup():
     assert results['beta-secretase'][0]['label'] == 'Alzheimer disease 6'
 
     assert len(results['Parkinson']) == 33
-    # TODO: this should be MONDO:0005180 "Parkinson disease", but
-    # instead we get MONDO:0000828 "juvenile-onset Parkinson's disease"
-    # as the top result.
-    assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
-    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0005180'
+    assert results['Parkinson'][0]['label'] == "Parkinson disease"
 
 
 def test_synonyms():
