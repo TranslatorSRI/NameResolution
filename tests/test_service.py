@@ -161,8 +161,8 @@ def test_bulk_lookup():
     assert results['beta-secretase'][0]['label'] == 'BACE1 inhibitor'
     assert len(results['Parkinson']) == 34
 
-    assert results['Parkinson'][0]['curie'] == 'MONDO:0005180'
-    assert results['Parkinson'][0]['label'] == "Parkinson disease"
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
+    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson's disease"
 
     # Try it again with the biolink_types set.
     params['biolink_types'] = ['biolink:Disease']
@@ -175,8 +175,8 @@ def test_bulk_lookup():
     assert results['beta-secretase'][0]['label'] == 'Alzheimer disease 6'
 
     assert len(results['Parkinson']) == 33
-    assert results['Parkinson'][0]['curie'] == 'MONDO:0005180'
-    assert results['Parkinson'][0]['label'] == "Parkinson disease"
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
+    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson's disease"
 
 
 def test_synonyms():
