@@ -161,6 +161,9 @@ def test_bulk_lookup():
     assert results['beta-secretase'][0]['label'] == 'BACE1 inhibitor'
     assert len(results['Parkinson']) == 34
 
+    # TODO: this should be MONDO:0005180 "Parkinson disease", but
+    # instead we get MONDO:0000828 "juvenile-onset Parkinson's disease"
+    # as the top result.
     assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
     assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
 
@@ -174,6 +177,9 @@ def test_bulk_lookup():
     assert results['beta-secretase'][0]['curie'] == 'MONDO:0011561'
     assert results['beta-secretase'][0]['label'] == 'Alzheimer disease 6'
 
+    # TODO: this should be MONDO:0005180 "Parkinson disease", but
+    # instead we get MONDO:0000828 "juvenile-onset Parkinson disease"
+    # as the top result.
     assert len(results['Parkinson']) == 33
     assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
     assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
