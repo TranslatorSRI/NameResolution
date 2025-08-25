@@ -162,7 +162,7 @@ def test_bulk_lookup():
     assert len(results['Parkinson']) == 34
 
     assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
-    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson's disease"
+    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
 
     # Try it again with the biolink_types set.
     params['biolink_types'] = ['biolink:Disease']
@@ -176,7 +176,7 @@ def test_bulk_lookup():
 
     assert len(results['Parkinson']) == 33
     assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
-    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson's disease"
+    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
 
 
 def test_synonyms():
