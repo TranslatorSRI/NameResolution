@@ -448,7 +448,7 @@ async def lookup(string: str,
                 "boost": [
                     # The boost is multiplied with score -- calculating the log() reduces how quickly this increases
                     # the score for increasing clique identifier counts.
-                    "log(clique_identifier_count)"
+                    "log(sum(clique_identifier_count, 1))"
                 ],
             },
         },
