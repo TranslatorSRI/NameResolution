@@ -146,6 +146,18 @@ def test_autocomplete():
     assert syns[0]["label"] == 'BACE1 inhibitor'
     assert syns[0]["types"] == ["biolink:NamedThing"]
 
+def test_windows_smartquotes():
+    client = TestClient(app)
+
+    # Query with Windows Smart Quote (’), but this should match against our database which uses Unicode quotes.
+    response = client.get("/lookup", params={'string': "Alzheimer’s disease", 'biolink_type': 'Disease'})
+    syns = response.json()
+
+    assert len(syns) > 1
+    assert syns[0]['curie'] == 'MONDO:0004975'
+    assert syns[0]['label'] == 'Alzheimer disease'
+    assert syns[0]['types'][0] == 'biolink:Disease'
+
 
 def test_bulk_lookup():
     client = TestClient(app)
@@ -161,11 +173,8 @@ def test_bulk_lookup():
     assert results['beta-secretase'][0]['label'] == 'BACE1 inhibitor'
     assert len(results['Parkinson']) == 34
 
-    # TODO: this should be MONDO:0005180 "Parkinson disease", but
-    # instead we get MONDO:0000828 "juvenile-onset Parkinson's disease"
-    # as the top result.
-    assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
-    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0005180'
+    assert results['Parkinson'][0]['label'] == "Parkinson disease"
 
     # Try it again with the biolink_types set.
     params['biolink_types'] = ['biolink:Disease']
@@ -177,12 +186,9 @@ def test_bulk_lookup():
     assert results['beta-secretase'][0]['curie'] == 'MONDO:0011561'
     assert results['beta-secretase'][0]['label'] == 'Alzheimer disease 6'
 
-    # TODO: this should be MONDO:0005180 "Parkinson disease", but
-    # instead we get MONDO:0000828 "juvenile-onset Parkinson disease"
-    # as the top result.
     assert len(results['Parkinson']) == 33
-    assert results['Parkinson'][0]['curie'] == 'MONDO:0000828'
-    assert results['Parkinson'][0]['label'] == "juvenile-onset Parkinson disease"
+    assert results['Parkinson'][0]['curie'] == 'MONDO:0005180'
+    assert results['Parkinson'][0]['label'] == "Parkinson disease"
 
 
 def test_synonyms():
