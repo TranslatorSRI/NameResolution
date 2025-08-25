@@ -144,7 +144,9 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 # add data
 for f in $1; do
 	echo "Loading $f..."
-	curl -X POST -H 'Content-Type: application/json' -d @$f \
+	# curl -d @$f needs to load the entire file into memory before uploading it, whereas
+	# curl -X POST -T $f will stream it. See https://github.com/TranslatorSRI/NameResolution/issues/194
+	curl -H 'Content-Type: application/json' -X POST -T $f \
 	    'http://localhost:8983/solr/name_lookup/update/json/docs?processor=uuid&uuid.fieldName=id&commit=true'
 	sleep 30
 done
